@@ -4,12 +4,21 @@ header {
 
 div {
   text-align: center;
+  justify-content: center;
 }
 
+table {
+  border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+}
 th {
-  text-align: left;
+  border: 1px solid black;
 }
 
-.id {
-  text-align: center;
+th.description {
+  padding: 10px;
+  width: 250px;
+  text-align: left;
+  border: 1px solid black;
 }

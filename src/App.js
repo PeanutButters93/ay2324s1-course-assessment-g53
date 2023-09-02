@@ -6,7 +6,7 @@ const DEFAULT_QNS = [
     id: 1,
     title: "Reverse a String",
     description:
-      "Write a function that reverses a string. The input string is given as an array of characters s.You must do this by modifying the input array in-place with O(1) extra memory.",
+      "Write a function that reverses a string. The input string is given as an array of characters s. You must do this by modifying the input array in-place with O(1) extra memory.",
     category: "Strings, Algorithms",
     complexity: "EASY",
   },
@@ -44,7 +44,7 @@ function App() {
             <tr>
               <th>{x.id}</th>
               <th>{x.title}</th>
-              <th>{x.description}</th>
+              <th className="description">{x.description}</th>
               <th>{x.category}</th>
               <th>{x.complexity}</th>
             </tr>
