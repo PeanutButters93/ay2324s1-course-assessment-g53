@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import QuestionForm from "./QuestionForm";
 
 const DEFAULT_QNS = [
   {
@@ -50,6 +51,7 @@ function App() {
             </tr>
           ))}
         </table>
+        <QuestionForm />
       </div>
     </>
   );
