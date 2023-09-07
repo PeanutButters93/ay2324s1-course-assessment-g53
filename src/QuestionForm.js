@@ -10,6 +10,11 @@ const QuestionForm = (props) => {
             alert("Please fill in all fields!");
             return;
         }
+        addQuestion(title, description, category, complexity);
+        setTitle("");
+        setDescription("");
+        setCategory("");
+        setComplexity(null);
     };
 
     const [title, setTitle] = useState("");
