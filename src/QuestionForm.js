@@ -6,7 +6,7 @@ const QuestionForm = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (!title || !description || !category || complexity === null) {
+        if (!title || !description || !category || !complexity) {
             alert("Please fill in all fields!");
             return;
         }
@@ -14,7 +14,7 @@ const QuestionForm = (props) => {
         setTitle("");
         setDescription("");
         setCategory("");
-        setComplexity(null);
+        setComplexity("");
     };
 
     const [title, setTitle] = useState("");
@@ -57,7 +57,7 @@ const QuestionForm = (props) => {
                   id = "complexity"
                   value={ complexity } 
                   onChange = {(event) => setComplexity(event.target.value)}>
-                    <option value = {null}>--Please choose an option--</option>
+                    <option value = "">--Please choose an option--</option>
                     {Object.values(COMPLEXITY).map((option) => (
                         <option key={option} value={option}>
                             {option}

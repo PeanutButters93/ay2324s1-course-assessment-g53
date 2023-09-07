@@ -33,6 +33,7 @@ function App() {
     const addQuestion = ({ title, description, category, complexity }) => {
         const id = questions.length + 1;
         const question = { id, title, description, category, complexity };
+        console.log(description);
         setQuestions([...questions, question]);
     };
     
