@@ -1,0 +1,14 @@
+/* label[for="title"] {
+    flex: 1;
+    text-align: left;
+    display: block;
+    margin-bottom: 0.5rem;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+input#title {
+    flex: 2;
+} */
