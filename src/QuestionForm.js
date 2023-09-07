@@ -2,19 +2,34 @@ import { useState } from "react";
 import "./QuestionForm.css";
 
 const QuestionForm = (props) => {
-    const { addQuestion, COMPLEXITY } = props;
+    const { questions, setQuestions, COMPLEXITY } = props;
+
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!title || !description || !category || !complexity) {
-            alert("Please fill in all fields!");
+            setErrorMessage("Please fill in all fields!");
             return;
         }
-        addQuestion(title, description, category, complexity);
+
+        const isDuplicate = questions.some(
+          (question) => question.title === title || question.description === description);
+        
+        if (isDuplicate) {
+            setErrorMessage("This question already exists!");
+            return;
+        }
+
+        const id = questions.length + 1;
+        const question = { id, title, description, category, complexity };
+        setQuestions([...questions, question]);
+
         setTitle("");
         setDescription("");
         setCategory("");
         setComplexity("");
+        setErrorMessage("");
     };
 
     const [title, setTitle] = useState("");
@@ -66,6 +81,7 @@ const QuestionForm = (props) => {
                 </select>
             </div>
             <button type = "submit" onClick = {handleSubmit}>Submit</button>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
         </form>
     )
 }

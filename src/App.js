@@ -30,12 +30,17 @@ const DEFAULT_QNS = [
 function App() {
     const [questions, setQuestions] = useState(DEFAULT_QNS);
     
-    const addQuestion = ({ title, description, category, complexity }) => {
-        const id = questions.length + 1;
-        const question = { id, title, description, category, complexity };
-        console.log(description);
-        setQuestions([...questions, question]);
-    };
+    // const addQuestion = (title, description, category, complexity) => {
+    //     const isDuplicate = questions.some(
+    //       (question) => question.title === title || question.description === description);
+    //     if (isDuplicate) {
+    //         alert("This question already exists!"); 
+    //         return;
+    //     }
+    //     const id = questions.length + 1;
+    //     const question = { id, title, description, category, complexity };
+    //     setQuestions([...questions, question]);
+    // };
     
     return (
     <>
@@ -66,7 +71,8 @@ function App() {
             }
             </table>
             <QuestionForm 
-                addQuestion = {addQuestion} 
+                questions = {questions} 
+                setQuestions = {setQuestions} 
                 COMPLEXITY = {COMPLEXITY} 
             />
         </div>
