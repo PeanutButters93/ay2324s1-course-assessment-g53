@@ -28,39 +28,49 @@ const DEFAULT_QNS = [
 ];
 
 function App() {
-  const [questions, setQuestions] = useState(DEFAULT_QNS);
-
-  return (
+    const [questions, setQuestions] = useState(DEFAULT_QNS);
+    
+    const addQuestion = ({ title, description, category, complexity }) => {
+        const id = questions.length + 1;
+        const question = { id, title, description, category, complexity };
+        setQuestions([...questions, question]);
+    };
+    
+    return (
     <>
-      <header>
-        <h1>Welcome to PeerPrep</h1>
-      </header>
-      <div>
-        <h2>
-          Here are some questions you can practice! Feel free to add more :)
-        </h2>
-        <table>
-          <tr>
-            <th>Question ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Complexity</th>
-          </tr>
-          {questions.map((x) => (
+        <header>
+            <h1>Welcome to PeerPrep</h1>
+        </header>
+        <div>
+            <h2>
+                Here are some questions you can practice! Feel free to add more :)
+            </h2>
+            <table>
             <tr>
-              <th>{x.id}</th>
-              <th>{x.title}</th>
-              <th className="description">{x.description}</th>
-              <th>{x.category}</th>
-              <th>{x.complexity}</th>
+                <th>Question ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Complexity</th>
             </tr>
-          ))}
-        </table>
-        <QuestionForm />
-      </div>
+            {
+            questions.map((x) => (
+                <tr>
+                <th>{x.id}</th>
+                <th>{x.title}</th>
+                <th className="description">{x.description}</th>
+                <th>{x.category}</th>
+                <th>{x.complexity}</th>
+                </tr>))
+            }
+            </table>
+            <QuestionForm 
+                addQuestion = {addQuestion} 
+                COMPLEXITY = {COMPLEXITY} 
+            />
+        </div>
     </>
-  );
+    );
 }
 
 export default App;

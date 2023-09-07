@@ -1,6 +1,14 @@
+import { useState } from "react";
 import "./QuestionForm.css";
 
-const QuestionForm = () => {
+const QuestionForm = (props) => {
+    const { addQuestion, COMPLEXITY } = props;
+
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [category, setCategory] = useState("");
+    const [complexity, setComplexity] = useState(COMPLEXITY.EASY);
+
     return (
         <form>
             <h2>Question Form</h2>
@@ -19,6 +27,7 @@ const QuestionForm = () => {
             <div>
                 <label htmlFor="complexity">Complexity: </label>
                 <select id="complexity">
+                    <option value="">--Please choose an option--</option>
                     <option value="EASY">Easy</option>
                     <option value="MEDIUM">Medium</option>
                     <option value="HARD">Hard</option>
