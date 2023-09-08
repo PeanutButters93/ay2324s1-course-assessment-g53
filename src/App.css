@@ -7,8 +7,20 @@ html, body {
     color: #839496;
 }
 
+.App {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* .App > * {
+    margin-bottom: 20px;
+} */
+
 .content {
-    padding: 0 300px;
+    padding-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h1, h2, h3, h4, h5, h6 {

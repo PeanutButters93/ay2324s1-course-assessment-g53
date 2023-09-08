@@ -31,7 +31,7 @@ function App() {
     const [questions, setQuestions] = useState(DEFAULT_QNS);
     
     return (
-    <div>
+    <div className = "App">
         <header>
             <h1>Welcome to PeerPrep</h1>
         </header>
