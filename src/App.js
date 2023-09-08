@@ -30,24 +30,12 @@ const DEFAULT_QNS = [
 function App() {
     const [questions, setQuestions] = useState(DEFAULT_QNS);
     
-    // const addQuestion = (title, description, category, complexity) => {
-    //     const isDuplicate = questions.some(
-    //       (question) => question.title === title || question.description === description);
-    //     if (isDuplicate) {
-    //         alert("This question already exists!"); 
-    //         return;
-    //     }
-    //     const id = questions.length + 1;
-    //     const question = { id, title, description, category, complexity };
-    //     setQuestions([...questions, question]);
-    // };
-    
     return (
-    <>
+    <div>
         <header>
             <h1>Welcome to PeerPrep</h1>
         </header>
-        <div>
+        <div className = "content">
             <h2>
                 Here are some questions you can practice! Feel free to add more :)
             </h2>
@@ -76,7 +64,7 @@ function App() {
                 COMPLEXITY = {COMPLEXITY} 
             />
         </div>
-    </>
+    </ div>
     );
 }
 
