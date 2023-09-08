@@ -8,7 +8,7 @@ html, body {
 }
 
 .content {
-    padding: 100px;
+    padding: 0 100px;
 }
 
 h1, h2, h3, h4, h5, h6 {
