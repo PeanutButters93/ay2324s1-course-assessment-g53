@@ -39,8 +39,8 @@ const QuestionForm = (props) => {
 
     return (
         <form onSubmit = {handleSubmit}>
-            <h2>Question Form</h2>
-            <div>
+            <h2 className = "left-aligned">Question Form</h2>
+            <div className = "Title">
                 <label htmlFor = "title">Title: </label>
                 <input 
                   type = "text" 
@@ -49,7 +49,7 @@ const QuestionForm = (props) => {
                   onChange = {(event) => setTitle(event.target.value)}
                 />
             </div>
-            <div>
+            <div className = "Description">
                 <label htmlFor = "description">Description: </label>
                 <textarea 
                   id = "description" 
@@ -57,7 +57,7 @@ const QuestionForm = (props) => {
                   onChange = {(event) => setDescription(event.target.value)}
                 />
             </div>
-            <div>
+            <div className = "Category">
                 <label htmlFor = "category">Category: </label>
                 <input 
                   type = "text" 
@@ -66,7 +66,7 @@ const QuestionForm = (props) => {
                   onChange = {(event) => setCategory(event.target.value)}
                 />
             </div>
-            <div>
+            <div className = "Complexity">
                 <label htmlFor = "complexity">Complexity: </label>
                 <select 
                   id = "complexity"

@@ -52,7 +52,7 @@ function App() {
                 <tr>
                 <th>{x.id}</th>
                 <th>{x.title}</th>
-                <th className="description">{x.description}</th>
+                <th className = "description">{x.description}</th>
                 <th>{x.category}</th>
                 <th>{x.complexity}</th>
                 </tr>))
