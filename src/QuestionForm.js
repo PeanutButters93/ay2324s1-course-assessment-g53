@@ -41,9 +41,9 @@ const QuestionForm = (props) => {
         <form className = "QuestionForm" onSubmit = {handleSubmit}>
             <h2 className = "left-aligned">Question Form</h2>
 
-            <div className = "Title, Category and Complexity">
-                
-                <div className = "Title and Category">
+            {/* <div className = "TitleCategoryComplexity">
+
+                <div className = "TitleCategory">
 
                     <div className = "Title">
                         <label htmlFor = "title">Title: </label>
@@ -91,11 +91,59 @@ const QuestionForm = (props) => {
                   value = { description } 
                   onChange = {(event) => setDescription(event.target.value)}
                 />
+            </div> */}
+
+            <div className = "form-group">
+
+                <div className = "input-group">
+                    <label htmlFor = "title">Title: </label>
+                    <input 
+                    type = "text" 
+                    id = "title" 
+                    value = { title } 
+                    onChange = {(event) => setTitle(event.target.value)}
+                    />
+                </div>
+
+                <div className = "input-group">
+                    <label htmlFor = "description">Description: </label>
+                    <textarea 
+                    id = "description" 
+                    value = { description } 
+                    onChange = {(event) => setDescription(event.target.value)}
+                    />
+                </div>
+
+                <div className = "input-group">
+                    <label htmlFor = "category">Category: </label>
+                    <input 
+                    type = "text" 
+                    id = "category" 
+                    value = { category } 
+                    onChange = {(event) => setCategory(event.target.value)}
+                    />
+                </div>
+
+
+                <div className = "input-group">
+                    <label htmlFor = "complexity">Complexity: </label>
+                    <select 
+                    id = "complexity"
+                    value={ complexity } 
+                    onChange = {(event) => setComplexity(event.target.value)}>
+                        <option value = "">--Please choose an option--</option>
+                        {Object.values(COMPLEXITY).map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <button type = "submit" onClick = {handleSubmit}>Submit</button>
+
+                {errorMessage && <div className="error-message">{errorMessage}</div>}
             </div>
-
-            <button type = "submit" onClick = {handleSubmit}>Submit</button>
-
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
         </form>
     )
 }
