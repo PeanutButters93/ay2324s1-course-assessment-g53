@@ -39,59 +39,8 @@ const QuestionForm = (props) => {
 
     return (
         <form className = "QuestionForm" onSubmit = {handleSubmit}>
+            
             <h2 className = "left-aligned">Question Form</h2>
-
-            {/* <div className = "TitleCategoryComplexity">
-
-                <div className = "TitleCategory">
-
-                    <div className = "Title">
-                        <label htmlFor = "title">Title: </label>
-                        <input 
-                        type = "text" 
-                        id = "title" 
-                        value = { title } 
-                        onChange = {(event) => setTitle(event.target.value)}
-                        />
-                    </div>
-
-                    <div className = "Category">
-                        <label htmlFor = "category">Category: </label>
-                        <input 
-                        type = "text" 
-                        id = "category" 
-                        value = { category } 
-                        onChange = {(event) => setCategory(event.target.value)}
-                        />
-                    </div>
-
-                </div>
-
-                <div className = "Complexity">
-                    <label htmlFor = "complexity">Complexity: </label>
-                    <select 
-                    id = "complexity"
-                    value={ complexity } 
-                    onChange = {(event) => setComplexity(event.target.value)}>
-                        <option value = "">--Please choose an option--</option>
-                        {Object.values(COMPLEXITY).map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-            </div>
-
-            <div className = "Description">
-                <label htmlFor = "description">Description: </label>
-                <textarea 
-                  id = "description" 
-                  value = { description } 
-                  onChange = {(event) => setDescription(event.target.value)}
-                />
-            </div> */}
 
             <div className = "form-group">
 
@@ -140,7 +89,7 @@ const QuestionForm = (props) => {
                     </select>
                 </div>
 
-                <button type = "submit" onClick = {handleSubmit}>Submit</button>
+                <button type = "submit" className = "button" onClick = {handleSubmit}>Submit</button>
 
                 {errorMessage && <div className="error-message">{errorMessage}</div>}
             </div>
