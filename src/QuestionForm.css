@@ -3,7 +3,9 @@
     background-color: #004354;
     border-radius: 10px;
     padding: 0 10px;
+    padding-bottom: 20px;
     gap: 10px;
+    margin-bottom: 20px;
 }
 
 .left-aligned {
@@ -95,4 +97,25 @@ select {
 select:hover, select:focus {
     border-color: #268bd2;
     background-color: #073642;
+}
+
+.button {
+    background-color: #268bd2;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.button:hover {
+    background-color: #1c6dd2;
+}
+
+.error-message {
+    color: #dc3545;
+    margin-top: 5px;
+    display: inline-block;
+    width: auto;
 }
