@@ -28,22 +28,31 @@ label {
     margin-right: 10px;
 }
 
-input, select {
-    flex: 1;
-    width: auto;
+input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #004354;
+    color: #839496;
+    transition: border 0.3s ease-in-out;
+}
+
+input[type="text"]:hover, input[type="text"]:focus {
+    border: 1px solid #007bff;
+    background-color: #073642;
+}
+
+input[type="text"]:focus {
+    border: 1px solid #007bff;
+    outline: none;
 }
 
 .textarea-label {
     align-self: flex-start;
     margin-top: 5px;
-    /* Adjust the margin-top as needed */
-}
-
-select {
-    width: auto;
-    background-color: #004354;
-    color: #839496;
-    /* Adjust width as needed */
 }
 
 textarea {
@@ -56,16 +65,34 @@ textarea {
     border-radius: 4px;
     background-color: #004354;
     color: #839496;
+    transition: border 0.3s ease-in-out;
 }
 
-input[type="text"] {
-    width: 100%;
-    padding: 12px 15px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+textarea:hover, textarea:focus {
+    border-color: #268bd2;
+    background-color: #073642;
+}
+
+.select-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-right: 590px;
+}
+
+select {
+    min-width: 0;
     background-color: #004354;
     color: #839496;
-    transition: border 0.3s ease-in-out;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: border 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+select:hover, select:focus {
+    border-color: #268bd2;
+    background-color: #073642;
 }

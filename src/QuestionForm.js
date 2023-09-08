@@ -125,7 +125,7 @@ const QuestionForm = (props) => {
                 </div>
 
 
-                <div className = "input-group">
+                <div className = "select-group">
                     <label htmlFor = "complexity">Complexity: </label>
                     <select 
                     id = "complexity"
