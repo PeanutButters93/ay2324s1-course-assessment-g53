@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "./App.css";
 import QuestionForm from "./QuestionForm";
+import QuestionTable from "./components/QuestionTable";
 
 const COMPLEXITY = {
-    EASY: "EASY",
-    MEDIUM: "MEDIUM",
-    HARD: "HARD",
+  EASY: "EASY",
+  MEDIUM: "MEDIUM",
+  HARD: "HARD",
 };
 
 const DEFAULT_QNS = [
@@ -28,44 +29,29 @@ const DEFAULT_QNS = [
 ];
 
 function App() {
-    const [questions, setQuestions] = useState(DEFAULT_QNS);
-    
-    return (
-    <div className = "App">
-        <header>
-            <h1>Welcome to PeerPrep</h1>
-        </header>
-        <div className = "content">
-            <h2>
-                Here are some questions you can practice! Feel free to add more :)
-            </h2>
-            <table>
-            <tr>
-                <th>Question ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Complexity</th>
-            </tr>
-            {
-            questions.map((x) => (
-                <tr>
-                <th>{x.id}</th>
-                <th>{x.title}</th>
-                <th className = "description">{x.description}</th>
-                <th>{x.category}</th>
-                <th>{x.complexity}</th>
-                </tr>))
-            }
-            </table>
-            <QuestionForm 
-                questions = {questions} 
-                setQuestions = {setQuestions} 
-                COMPLEXITY = {COMPLEXITY} 
-            />
+  const [questions, setQuestions] = useState(DEFAULT_QNS);
+
+  return (
+    <div className="App">
+      <header>
+        <h1>Welcome to PeerPrep</h1>
+      </header>
+      <div className="content">
+        <h2>
+          Here are some questions you can practice! Feel free to add more :)
+        </h2>
+        <div>
+          <QuestionTable questions={questions}></QuestionTable>
         </div>
-    </ div>
-    );
+
+        <QuestionForm
+          questions={questions}
+          setQuestions={setQuestions}
+          COMPLEXITY={COMPLEXITY}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default App;

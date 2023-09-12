@@ -1,0 +1,26 @@
+table {
+  background-color: #073642;
+  color: #839496;
+  border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+}
+
+th {
+  background-color: #394e55;
+  color: #eee8d5;
+  border: 1px solid black;
+}
+
+th.description {
+  padding: 10px;
+  width: 250px;
+  text-align: left;
+  border: 1px solid black;
+}
+
+td {
+  height: fit-content;
+  background-color: #002b36;
+}
