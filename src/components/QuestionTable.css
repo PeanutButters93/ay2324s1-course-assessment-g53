@@ -1,5 +1,5 @@
 table {
-  background-color: #073642;
+  background-color: #157fbdc3;
   color: #839496;
   border: 1px solid black;
   margin-left: auto;
@@ -8,7 +8,7 @@ table {
 }
 
 th {
-  background-color: #394e55;
+  background-color: #002b36;
   color: #eee8d5;
   border: 1px solid black;
 }
@@ -22,5 +22,6 @@ th.description {
 
 td {
   height: fit-content;
-  background-color: #002b36;
+  background-color: #024151;
+  color: rgb(244, 240, 240);
 }

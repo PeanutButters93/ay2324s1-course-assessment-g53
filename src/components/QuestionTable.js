@@ -1,4 +1,5 @@
 import React from "react";
+import "./QuestionTable.css";
 import Question from "./Question";
 
 const QuestionTable = (props) => {
