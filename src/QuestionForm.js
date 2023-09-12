@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./QuestionForm.css";
+import {
+  saveQuestionsToLocalStorage,
+  getQuestionsFromLocalStorage,
+} from "./LocalStorage";
 
 const QuestionForm = (props) => {
   const { questions, setQuestions, COMPLEXITY } = props;
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Use local storage to initialize the questions state
+  useEffect(() => {
+    const storedQuestions = getQuestionsFromLocalStorage();
+    setQuestions(storedQuestions);
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,6 +37,9 @@ const QuestionForm = (props) => {
     const question = { id, title, description, category, complexity };
     setQuestions([...questions, question]);
 
+    // Save the new questions to local storage
+    saveQuestionsToLocalStorage([...questions, question]);
+
     setTitle("");
     setDescription("");
     setCategory("");
@@ -37,7 +50,7 @@ const QuestionForm = (props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [complexity, setComplexity] = useState("");
+  const [complexity, setComplexity] = useState(null);
 
   return (
     <form className="QuestionForm" onSubmit={handleSubmit}>
