@@ -12,9 +12,15 @@ const QuestionForm = (props) => {
 
   // Use local storage to initialize the questions state
   useEffect(() => {
-    const storedQuestions = getQuestionsFromLocalStorage();
-    setQuestions(storedQuestions);
-  }, [setQuestions]);
+    const local = getQuestionsFromLocalStorage();
+    const storedQuestions = local ? local : questions;
+    if (local !== null) {
+      setQuestions(local);
+    } else {
+      setQuestions(questions);
+      saveQuestionsToLocalStorage(questions);
+    }
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();

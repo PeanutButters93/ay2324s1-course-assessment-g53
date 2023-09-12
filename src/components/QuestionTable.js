@@ -5,23 +5,26 @@ import Question from "./Question";
 const QuestionTable = (props) => {
   const questions = props.questions;
   return (
-    <table>
-      <tbody>
-        <tr>
-          <th>Question ID</th>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Category</th>
-          <th>Complexity</th>
-        </tr>
-
-        {questions.map((qn) => (
+    <>
+      <table>
+        <thead>
           <tr>
-            <Question key={qn.id} question_data={qn} />
+            <th>Question ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Complexity</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {questions.map((qn) => (
+            <tr key={qn.id}>
+              <Question question_data={qn} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 };
 
