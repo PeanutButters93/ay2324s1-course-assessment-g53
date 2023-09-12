@@ -1,0 +1,13 @@
+td {
+  height: auto;
+  background-color: #4fa0ba;
+  color: #eee8d5;
+  border: 1px solid black;
+}
+
+td.description {
+  padding: 10px;
+  width: 250px;
+  text-align: left;
+  border: 1px solid black;
+}
