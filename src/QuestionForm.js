@@ -14,7 +14,7 @@ const QuestionForm = (props) => {
   useEffect(() => {
     const storedQuestions = getQuestionsFromLocalStorage();
     setQuestions(storedQuestions);
-  }, []);
+  }, [setQuestions]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -50,7 +50,7 @@ const QuestionForm = (props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [complexity, setComplexity] = useState(null);
+  const [complexity, setComplexity] = useState("");
 
   return (
     <form className="QuestionForm" onSubmit={handleSubmit}>
