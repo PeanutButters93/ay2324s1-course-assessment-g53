@@ -1,7 +1,13 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 const Layout = () => {
-  return <div style={{ color: "white" }}>This is the Layout page</div>;
+  return (
+    <>
+      <div>LAYOUT AFFECTS GIVEN PAGE</div>
+      <Outlet />
+    </>
+  );
 };
 
 export default Layout;
