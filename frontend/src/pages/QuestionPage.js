@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "./App.css";
-import QuestionForm from "./QuestionForm";
-import QuestionTable from "./components/QuestionTable";
+import "./QuestionPage.css";
+import QuestionForm from "../QuestionForm";
+import QuestionTable from "../components/QuestionTable";
 
 const COMPLEXITY = {
   EASY: "EASY",
@@ -28,7 +28,7 @@ const DEFAULT_QNS = [
   },
 ];
 
-function App() {
+function QuestionPage() {
   const [questions, setQuestions] = useState(DEFAULT_QNS);
 
   return (
@@ -40,10 +40,7 @@ function App() {
         <h2>
           Here are some questions you can practice! Feel free to add more :)
         </h2>
-        <div>
-          <QuestionTable questions={questions}></QuestionTable>
-        </div>
-
+        <QuestionTable questions={questions} />
         <QuestionForm
           questions={questions}
           setQuestions={setQuestions}
@@ -54,4 +51,4 @@ function App() {
   );
 }
 
-export default App;
+export default QuestionPage;

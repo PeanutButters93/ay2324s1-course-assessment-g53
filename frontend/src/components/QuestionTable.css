@@ -13,7 +13,7 @@ th {
   border: 1px solid black;
 }
 
-th.description {
+td.description {
   padding: 10px;
   width: 250px;
   text-align: left;
