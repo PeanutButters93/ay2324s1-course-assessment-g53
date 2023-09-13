@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./QuestionPage.css";
 import QuestionForm from "../QuestionForm";
+import QuestionTable from "../components/QuestionTable";
 
 const COMPLEXITY = {
   EASY: "EASY",
@@ -39,24 +40,7 @@ function QuestionPage() {
         <h2>
           Here are some questions you can practice! Feel free to add more :)
         </h2>
-        <table>
-          <tr>
-            <th>Question ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Complexity</th>
-          </tr>
-          {questions.map((x) => (
-            <tr>
-              <th>{x.id}</th>
-              <th>{x.title}</th>
-              <th className="description">{x.description}</th>
-              <th>{x.category}</th>
-              <th>{x.complexity}</th>
-            </tr>
-          ))}
-        </table>
+        <QuestionTable questions={questions} />
         <QuestionForm
           questions={questions}
           setQuestions={setQuestions}
