@@ -7,7 +7,6 @@ const Question = ({ question_data }) => {
     <>
       <td>{question_data.id}</td>
       <td title={question_data.description}>{question_data.title}</td>
-      <td className="description">{question_data.description}</td>
       <td>{question_data.category}</td>
       <td>{question_data.complexity}</td>
     </>
