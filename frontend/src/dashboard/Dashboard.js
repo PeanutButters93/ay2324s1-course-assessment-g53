@@ -166,17 +166,26 @@ export default function Dashboard() {
             >
             <Toolbar />
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                <Grid container spacing={3}>
+                <Grid container spacing={0}> {/* Set spacing to 0 */}
                     {/* Questions */}
                     <Grid item xs={12} md={6}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <Orders />
+                        <Orders />
                         </Paper>
                     </Grid>
-                    {/*View Edit Question*/}
-                    <Grid item xs={12} md={6}>
+                    {/* Divider Line */}
+                    <Grid item xs={12} md={1}>
+                        <div
+                        style={{
+                            height: '100%',
+                            borderRight: '1px solid white', // Adjust color as needed
+                        }}
+                        />
+                    </Grid>
+                    {/* View Edit Question */}
+                    <Grid item xs={12} md={5}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <Orders />
+                        <Orders />
                         </Paper>
                     </Grid>
                 </Grid>
