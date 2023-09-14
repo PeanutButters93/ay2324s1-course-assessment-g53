@@ -39,7 +39,8 @@ const QuestionForm = (props) => {
       return;
     }
 
-    const id = questions.length + 1;
+    const id =
+      questions.length > 0 ? questions[questions.length - 1].id + 1 : 1;
     const question = { id, title, description, category, complexity };
     setQuestions([...questions, question]);
 
