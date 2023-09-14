@@ -30,6 +30,7 @@ const DEFAULT_QNS = [
 
 function QuestionPage() {
   const [questions, setQuestions] = useState(DEFAULT_QNS);
+  const [x, setX] = useState(1)
 
   return (
     <div className="App">
@@ -40,7 +41,7 @@ function QuestionPage() {
         <h2>
           Here are some questions you can practice! Feel free to add more :)
         </h2>
-        <QuestionTable questions={questions} />
+        <QuestionTable questions={questions} setQuestions={setQuestions} />
         <QuestionForm
           questions={questions}
           setQuestions={setQuestions}
