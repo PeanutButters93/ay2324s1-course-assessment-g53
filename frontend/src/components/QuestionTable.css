@@ -27,18 +27,18 @@ td {
 }
 
 .delete-button {
-  background-color: #002b36;      /* Background color from the th element */
-  color: #eee8d5;                 /* Text color from the th element */
-  border: none;                   /* Remove default borders */
-  border-radius: 50%;             /* Make the button circular */
-  width: 20px;                    /* Width of the button */
-  height: 20px;                   /* Height of the button */
-  font-weight: bold;              /* Bold text */
-  cursor: pointer;                /* Hand cursor on hover */
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  background-color: #002b36;     
+  color: #eee8d5;                
+  border: none;                   
+  border-radius: 50%;             
+  width: 20px;                    
+  height: 20px;                   
+  font-weight: bold;              
+  cursor: pointer;                
+  transition: background-color 0.3s ease;
 }
 
 .delete-button:hover {
-  background-color: #024151;     /* Darker background on hover from td background color */
-  color: #eee8d5;                /* Keep the same text color on hover */
+  background-color: #024151;     
+  color: #eee8d5;             
 }
