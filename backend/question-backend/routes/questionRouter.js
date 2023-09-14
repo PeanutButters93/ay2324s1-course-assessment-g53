@@ -1,23 +1,9 @@
 import express from "express";
 import Question from "../model/Question.js";
-const router = express.Router();
+import { getQuestions } from "../controller/getQuestions.js";
 
-async function getQuestions() {
-  try {
-    const result = await Question.find();
-    console.groupCollapsed(result);
-  } catch (error) {
-    throw error;
-  }
-}
-router.get("/", function (req, res) {
-  try {
-    const qns = getQuestions();
-  } catch (error) {
-    res.status(400).send("Error");
-  }
-  res.send("Completed GET");
-});
+const router = express.Router();
+router.get("/", getQuestions);
 
 router.get("/questionPage", function (req, res) {
   res.send("You are sending a get request to the question page!");
