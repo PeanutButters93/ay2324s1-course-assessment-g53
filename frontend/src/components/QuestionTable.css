@@ -25,3 +25,20 @@ td {
   background-color: #024151;
   color: rgb(244, 240, 240);
 }
+
+.delete-button {
+  background-color: #002b36;     
+  color: #eee8d5;                
+  border: none;                   
+  border-radius: 50%;             
+  width: 20px;                    
+  height: 20px;                   
+  font-weight: bold;              
+  cursor: pointer;                
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #024151;     
+  color: #eee8d5;             
+}
