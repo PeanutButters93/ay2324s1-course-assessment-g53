@@ -1,4 +1,4 @@
-html,
+/* html,
 body {
   height: 100%;
   margin: 0;
@@ -13,13 +13,13 @@ body {
   flex-direction: column;
   height: 100%;
   gap: 10px;
-}
+} */
 
 /* .App > * {
   margin-bottom: 20px;
 } */
 
-.content {
+/* .content {
   padding-top: 0px;
   margin-left: auto;
   margin-right: auto;
@@ -36,12 +36,12 @@ h6 {
 
 header {
   text-align: center;
-}
+} */
 
-div {
+/* div {
   text-align: center;
   justify-content: center;
-}
+} */
 /*why does this have to be here and cannot be in the other css files?
 /* table {
   background-color: #157fbdc3;
