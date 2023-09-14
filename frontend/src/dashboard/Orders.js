@@ -19,14 +19,18 @@ export default function Orders(props) {
     const questions = props.questions;
     const setViewPage = props.setViewPage;
     const setEditPage = props.setEditPage;
+    const setSelectedQuestion = props.setSelectedQuestion;
 
     const handleActionClick = (action, id) => {
         if (action === 'view') {
+            console.log("View clicked");
             setViewPage(true);
             setEditPage(false);
+            setSelectedQuestion(id);
         } else if (action === 'edit') {
             setEditPage(true);
             setViewPage(false);
+            setSelectedQuestion(id);
         } else if (action === 'delete') {
             console.log("Delete clicked");
         }
@@ -57,8 +61,8 @@ export default function Orders(props) {
                         <IconButton
                         color="primary"
                         aria-label="View"
-                        // onClick={() => handleActionClick('view', question.id)}
-                        onClick={() => console.log("View clicked")}
+                        onClick={() => handleActionClick('view', question.id)}
+                        // onClick={() => console.log("View clicked")}
                         >
                             <VisibilityIcon />
                         </IconButton>

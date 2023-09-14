@@ -106,6 +106,7 @@ export default function Dashboard() {
     const [questions, setQuestions] = useState(DEFAULT_QNS);
     const [viewPage, setViewPage] = useState(false);
     const [editPage, setEditPage] = useState(false);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -183,7 +184,11 @@ export default function Dashboard() {
                     {/* Questions */}
                     <Grid item xs={12} md={5.75}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <Orders questions={questions} setViewPage={setViewPage} setEditPage = {setEditPage}/>
+                            <Orders 
+                              questions={questions} 
+                              setViewPage={setViewPage} 
+                              setEditPage={setEditPage} 
+                              setSelectedQuestion={setSelectedQuestion}/>
                         </Paper>
                     </Grid>
 
