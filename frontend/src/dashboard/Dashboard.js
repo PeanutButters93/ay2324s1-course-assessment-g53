@@ -181,28 +181,28 @@ export default function Dashboard() {
             >
                 <Toolbar />
                 <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                    <Grid container spacing={0}> {/* Set spacing to 0 */}
+                    <Grid container spacing={3}> {/* Set spacing to 0 */}
                         {/* Questions */}
-                        <Grid item xs={12} md={5.75}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                        <Grid item xs={12} md={6}>
+                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column'}}>
                                 <Orders 
-                                questions={questions} 
-                                setViewPage={setViewPage} 
-                                setEditPage={setEditPage} 
-                                setSelectedQuestion={setSelectedQuestion}/>
+                                    questions={questions} 
+                                    setViewPage={setViewPage} 
+                                    setEditPage={setEditPage} 
+                                    setSelectedQuestion={setSelectedQuestion}/>
                             </Paper>
                         </Grid>
 
                         {/* View Question */}
                         {viewPage && <Grid item xs={12} md={6}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', width:'110%'}}>
                                 <ViewQuestion question={selectedQuestion}/>
                             </Paper>
                         </Grid>}
 
                         {/* Edit Question */}
                         {editPage && <Grid item xs={12} md={6}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', width:'110%' }}>
                                 {/* <Orders questions={questions}/> */}
                             </Paper>
                         </Grid>}
