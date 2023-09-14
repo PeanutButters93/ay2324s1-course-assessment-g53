@@ -1,9 +1,22 @@
 import express from "express";
-
+import Question from "../model/Question.js";
 const router = express.Router();
 
+async function getQuestions() {
+  try {
+    const result = await Question.find();
+    console.groupCollapsed(result);
+  } catch (error) {
+    throw error;
+  }
+}
 router.get("/", function (req, res) {
-  res.send("Connected to Question service");
+  try {
+    const qns = getQuestions();
+  } catch (error) {
+    res.status(400).send("Error");
+  }
+  res.send("Completed GET");
 });
 
 router.get("/questionPage", function (req, res) {
