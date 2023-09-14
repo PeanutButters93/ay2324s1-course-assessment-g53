@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from "react";
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -13,27 +14,11 @@ import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
-import Deposits from './Deposits';
 import Orders from './Orders';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -88,11 +73,37 @@ const defaultTheme = createTheme({
   },
 });
 
+const COMPLEXITY = {
+  EASY: "EASY",
+  MEDIUM: "MEDIUM",
+  HARD: "HARD",
+};
+
+const DEFAULT_QNS = [
+  {
+    id: 1,
+    title: "Reverse a String",
+    description:
+      "Write a function that reverses a string. The input string is given as an array of characters s. You must do this by modifying the input array in-place with O(1) extra memory.",
+    category: "Strings, Algorithms",
+    complexity: COMPLEXITY.EASY,
+  },
+  {
+    id: 2,
+    title: "Linked List Cycle Detection",
+    description:
+      "Given head, the head of a linked list, determine if the linked list has a cycle in it. There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter. Return true if there is a cycle in the linked list. Otherwise, return false.",
+    category: "Data Structures, Algorithms",
+    complexity: COMPLEXITY.EASY,
+  },
+];
+
 export default function Dashboard() {
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
     };
+    const [questions, setQuestions] = useState(DEFAULT_QNS);
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -168,28 +179,18 @@ export default function Dashboard() {
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={0}> {/* Set spacing to 0 */}
                     {/* Questions */}
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={5.75}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                        <Orders />
+                            <Orders questions={questions}/>
                         </Paper>
                     </Grid>
-                    {/* Divider Line */}
-                    <Grid item xs={12} md={1}>
-                        <div
-                        style={{
-                            height: '100%',
-                            borderRight: '1px solid white', // Adjust color as needed
-                        }}
-                        />
-                    </Grid>
                     {/* View Edit Question */}
-                    <Grid item xs={12} md={5}>
+                    <Grid item xs={12} md={6}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                        <Orders />
+                            <Orders questions={questions}/>
                         </Paper>
                     </Grid>
                 </Grid>
-                <Copyright sx={{ pt: 4 }} />
             </Container>
             </Box>
         </Box>
