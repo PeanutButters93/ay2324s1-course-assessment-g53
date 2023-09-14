@@ -3,7 +3,7 @@ require("dotenv").config({
   path: "/Users/zzthian/Desktop/proj_CS3219/ay2324s1-course-assessment-g53/backend/.env.local",
 });
 const mongoose = require("mongoose");
-const Question = require("./model/Question");
+const Question = require("./question-backend/model/Question");
 const app = express();
 
 const uri = process.env.MONGODB_URI;

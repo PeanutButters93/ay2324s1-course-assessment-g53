@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const questionSchema = new mongoose.Schema({
   id: Number,
@@ -8,4 +8,5 @@ const questionSchema = new mongoose.Schema({
   complexity: String,
 });
 
-module.exports = mongoose.model("question", questionSchema);
+const Question = mongoose.model("question", questionSchema);
+export default Question;
