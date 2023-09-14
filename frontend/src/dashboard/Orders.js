@@ -21,20 +21,17 @@ export default function Orders(props) {
     const setEditPage = props.setEditPage;
     const setSelectedQuestion = props.setSelectedQuestion;
 
-    const handleActionClick = (action, id) => {
-        if (action === 'view') {
-            console.log("View clicked");
-            setViewPage(true);
-            setEditPage(false);
-            setSelectedQuestion(id);
-        } else if (action === 'edit') {
-            setEditPage(true);
-            setViewPage(false);
-            setSelectedQuestion(id);
-        } else if (action === 'delete') {
-            console.log("Delete clicked");
-        }
+    const handleViewClick = (question) => {
+        setViewPage(true);
+        setEditPage(false);
+        setSelectedQuestion(question);
     };
+
+    const hadleEditClick = (question) => {
+        setViewPage(false);
+        setEditPage(true);
+        setSelectedQuestion(question);
+    }
 
     return (
         <React.Fragment>
@@ -61,8 +58,7 @@ export default function Orders(props) {
                         <IconButton
                         color="primary"
                         aria-label="View"
-                        onClick={() => handleActionClick('view', question.id)}
-                        // onClick={() => console.log("View clicked")}
+                        onClick={() => handleViewClick(question)}
                         >
                             <VisibilityIcon />
                         </IconButton>
@@ -70,7 +66,6 @@ export default function Orders(props) {
                             color="primary"
                             aria-label="Edit"
                             // onClick={() => handleActionClick('edit', question.id)}
-                            onClick={() => console.log("View clicked")}
                         >
                             <EditIcon />
                         </IconButton>
@@ -78,7 +73,6 @@ export default function Orders(props) {
                             color="secondary"
                             aria-label="Delete"
                             // onClick={() => handleActionClick('delete', question.id)}
-                            onClick={() => console.log("View clicked")}
                         >
                             <DeleteIcon />
                         </IconButton>
