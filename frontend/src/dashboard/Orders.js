@@ -27,7 +27,7 @@ export default function Orders(props) {
         setSelectedQuestion(question);
     };
 
-    const hadleEditClick = (question) => {
+    const handleEditClick = (question) => {
         setViewPage(false);
         setEditPage(true);
         setSelectedQuestion(question);
@@ -65,7 +65,7 @@ export default function Orders(props) {
                         <IconButton
                             color="primary"
                             aria-label="Edit"
-                            // onClick={() => handleActionClick('edit', question.id)}
+                            onClick={() => handleEditClick(question)}
                         >
                             <EditIcon />
                         </IconButton>

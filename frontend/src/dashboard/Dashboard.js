@@ -20,6 +20,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Orders from './Orders';
 import ViewQuestion from './ViewQuestion';
+import EditQuestion from './EditQuestion';
 
 const drawerWidth = 240;
 
@@ -203,7 +204,7 @@ export default function Dashboard() {
                         {/* Edit Question */}
                         {editPage && <Grid item xs={12} md={6}>
                             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', width:'110%' }}>
-                                {/* <Orders questions={questions}/> */}
+                                <EditQuestion />
                             </Paper>
                         </Grid>}
                     </Grid>
