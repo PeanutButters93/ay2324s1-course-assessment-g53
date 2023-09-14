@@ -104,6 +104,8 @@ export default function Dashboard() {
         setOpen(!open);
     };
     const [questions, setQuestions] = useState(DEFAULT_QNS);
+    const [viewPage, setViewPage] = useState(false);
+    const [editPage, setEditPage] = useState(false);
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -181,15 +183,23 @@ export default function Dashboard() {
                     {/* Questions */}
                     <Grid item xs={12} md={5.75}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <Orders questions={questions}/>
+                            <Orders questions={questions} setViewPage={setViewPage} setEditPage = {setEditPage}/>
                         </Paper>
                     </Grid>
-                    {/* View Edit Question */}
-                    <Grid item xs={12} md={6}>
+
+                    {/* View Question */}
+                    {viewPage && <Grid item xs={12} md={6}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                             <Orders questions={questions}/>
                         </Paper>
-                    </Grid>
+                    </Grid>}
+
+                    {/* Edit Question */}
+                    {editPage && <Grid item xs={12} md={6}>
+                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                            <Orders questions={questions}/>
+                        </Paper>
+                    </Grid>}
                 </Grid>
             </Container>
             </Box>

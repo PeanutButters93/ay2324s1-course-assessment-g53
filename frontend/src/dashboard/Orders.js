@@ -17,6 +17,21 @@ function preventDefault(event) {
 
 export default function Orders(props) {
     const questions = props.questions;
+    const setViewPage = props.setViewPage;
+    const setEditPage = props.setEditPage;
+
+    const handleActionClick = (action, id) => {
+        if (action === 'view') {
+            setViewPage(true);
+            setEditPage(false);
+        } else if (action === 'edit') {
+            setEditPage(true);
+            setViewPage(false);
+        } else if (action === 'delete') {
+            console.log("Delete clicked");
+        }
+    };
+
     return (
         <React.Fragment>
         <Title>Question Bank</Title>
@@ -70,7 +85,7 @@ export default function Orders(props) {
             </TableBody>
         </Table>
         <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-            See more orders
+            Add a new question
         </Link>
         </React.Fragment>
     );
