@@ -106,10 +106,10 @@ const emptyDescriptionMessage = "Description cannot be empty!";
 const emptyCategoryMessage = "Category cannot be empty!";
 const emptyComplexityMessage = "Complexity cannot be empty!";
 
-/*const duplicateMessages = {
+const duplicateMessages = {
   title: "A question with this title already exists!",
   description: "A question with this description already exists!",
-};*/
+};
 
 function checkEmpty(
   title,
@@ -306,7 +306,7 @@ export default function Dashboard() {
                       selectedQuestion={selectedQuestion}
                       setSelectedQuestion={setSelectedQuestion}
                       questions={questions}
-                      //duplicateMessages={duplicateMessages}
+                      duplicateMessages={duplicateMessages}
                     />
                   </Paper>
                 </Grid>

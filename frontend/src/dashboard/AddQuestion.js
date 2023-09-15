@@ -18,7 +18,7 @@ const AddQuestion = (props) => {
   const setSelectedQuestion = props.setSelectedQuestion;
   const duplicateCheckers = props.duplicateCheckers;
   const questions = props.questions;
-  //const duplicateMessages = props.duplicateMessages;
+  const duplicateMessages = props.duplicateMessages;
 
   const [title, setTitle] = useState("");
   const [categories, setCategories] = useState("");
@@ -34,13 +34,17 @@ const AddQuestion = (props) => {
   const [hasDuplicateDescription, setHasDuplicateDescription] = useState(false);
 
   useEffect(() => {
-    setHasDuplicateTitle(
-      duplicateCheckers.checkDuplicateTitle(title, questions)
-    );
     setHasDuplicateDescription(
       duplicateCheckers.checkDuplicateDescription(description, questions)
     );
-  }, [title, description, questions, duplicateCheckers]);
+  }, [description, questions, duplicateCheckers]);
+
+  useEffect(() => {
+    setHasDuplicateTitle(
+      duplicateCheckers.checkDuplicateTitle(title, questions)
+    );
+  }, [title, questions, duplicateCheckers]);
+
   const handleAdd = () => {
     checkEmpty(
       title,
@@ -73,6 +77,12 @@ const AddQuestion = (props) => {
       setViewPage(true);
     }
   };
+  const duplicateTitleMessage = hasDuplicateTitle
+    ? duplicateMessages.title
+    : "";
+  const duplicateDescriptionMessage = hasDuplicateDescription
+    ? duplicateMessages.description
+    : "";
 
   return (
     <div>
@@ -84,10 +94,10 @@ const AddQuestion = (props) => {
         margin="normal"
         value={title}
         onChange={(event) => setTitle(event.target.value)}
-        error={!!emptyTitleMessage}
-        helperText={emptyTitleMessage}
-        //   error = {!!emptyTitleMessage || !!duplicateTitleMessage}
-        //   helperText={emptyTitleMessage || duplicateTitleMessage}
+        // error={!!emptyTitleMessage}
+        // helperText={emptyTitleMessage}
+        error={!!emptyTitleMessage || !!duplicateTitleMessage}
+        helperText={emptyTitleMessage || duplicateTitleMessage}
       />
       <TextField
         fullWidth
@@ -130,10 +140,10 @@ const AddQuestion = (props) => {
         sx={{ marginTop: 2 }}
         value={description}
         onChange={(event) => setDescription(event.target.value)}
-        error={!!emptyDescriptionMessage}
-        helperText={emptyDescriptionMessage}
-        // error={emptyDescriptionMessage || duplicateDescriptionMessage}
-        // helperText={emptyDescriptionMessage || duplicateDescriptionMessage}
+        // error={!!emptyDescriptionMessage}
+        // helperText={emptyDescriptionMessage}
+        error={emptyDescriptionMessage || duplicateDescriptionMessage}
+        helperText={emptyDescriptionMessage || duplicateDescriptionMessage}
       />
       <Button
         variant="contained"
