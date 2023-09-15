@@ -16,6 +16,7 @@ export default function Orders(props) {
     const setAddPage = props.setAddPage;
     const setViewPage = props.setViewPage;
     const setEditPage = props.setEditPage;
+    const selectedQuestion = props.selectedQuestion;
     const setSelectedQuestion = props.setSelectedQuestion;
     const deleteQuestion = props.deleteQuestion;
 
@@ -42,6 +43,11 @@ export default function Orders(props) {
 
     const handleDeleteClick = question => {
         if (window.confirm(`Are you sure you want to delete Question ${question.id}? This is an irreversible action!`)) {
+            if (selectedQuestion == question) {
+                setViewPage(false);
+                setEditPage(false);
+                setSelectedQuestion(null);
+            }
             deleteQuestion(question);
         }
     }
