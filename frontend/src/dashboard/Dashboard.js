@@ -100,17 +100,69 @@ const DEFAULT_QNS = [
   },
 ];
 
+const emptyTitleMessage = 'Title cannot be empty!';
+const emptyDescriptionMessage = 'Description cannot be empty!';
+const emptyCategoryMessage = 'Category cannot be empty!';
+const emptyComplexityMessage = 'Complexity cannot be empty!';
+
+const duplicateTitleMessage = 'A question with this title already exists!';
+const duplicateDescriptionMessage = 'A question with this description already exists!';
+
+function checkEmpty(title, setEmptyTitleMessage, description, setEmptyDescriptionMessage, category, setEmptyCategoryMessage, complexity, setEmptyComplexityMessage) {
+  if (!title) {
+    setEmptyTitleMessage(emptyTitleMessage);
+  }
+  if (!description) {
+    setEmptyDescriptionMessage(emptyDescriptionMessage);
+  }
+  if (!category) {
+    setEmptyCategoryMessage(emptyCategoryMessage);
+  }
+  if (!complexity) {
+    setEmptyComplexityMessage(emptyComplexityMessage);
+  }
+  return;
+}
+
 export default function Dashboard() {
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
-    const checkForDuplicates = (title, description) => {
-        return questions.some(
-            question => question.title === title || question.description === description
-        );
-    }
+    // const checkDuplicates = (title, setDuplicateTitleMessage, description, setDuplicateDescriptionMessage) => {
+    //     if (checkDuplicateTitle(title)) {
+    //         setDuplicateTitleMessage(duplicateTitleMessage);
+    //     }
+    //     if (checkDuplicateDescription(description)) {    
+    //         setDuplicateDescriptionMessage(duplicateDescriptionMessage);
+    //     }
+    //     return;
+    // }
+
+    // const checkDuplicateTitle = (title, setDuplicateTitleMessage) => {
+    //     return questions.some(
+    //         question => question.title === title
+    //     );
+    // }
+    // const checkDuplicateTitle = (title, setDuplicateTitleMessage, duplicateTitleMessage1) => {
+    //     if (questions.some(question => question.title === title)) {
+    //         setDuplicateTitleMessage(duplicateTitleMessage);
+    //         console.log("duplicate found");
+    //         console.log(duplicateTitleMessage1);
+    //     }
+    // }
+
+    // const checkDuplicateDescription = (description) => {
+    //     return questions.some(
+    //         question => question.description === description
+    //     );
+    // }
+    // const checkDuplicateDescription = (description, setDuplicateDescriptionMessage) => {
+    //     if (questions.some(question => question.description === description)) {
+    //         setDuplicateDescriptionMessage(duplicateDescriptionMessage);
+    //     }
+    // }
 
     const [questions, setQuestions] = useState(DEFAULT_QNS);
     const [viewPage, setViewPage] = useState(false);
@@ -213,11 +265,15 @@ export default function Dashboard() {
                         {editPage && <Grid item xs={12} md={6}>
                             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', width:'110%' }}>
                                 <EditQuestion 
-                                  question={selectedQuestion} 
-                                  COMPLEXITY={COMPLEXITY}
-                                  setViewPage={setViewPage} 
-                                  setEditPage={setEditPage}
-                                  checkForDuplicates={checkForDuplicates} />
+                                  question={ selectedQuestion } 
+                                  COMPLEXITY={ COMPLEXITY }
+                                  setViewPage={ setViewPage } 
+                                  setEditPage={ setEditPage }
+                                  checkEmpty={ checkEmpty }
+                                //   checkDuplicates={ checkDuplicates } 
+                                //   checkDuplicateTitle={ checkDuplicateTitle } 
+                                //   checkDuplicateDescription={ checkDuplicateDescription } 
+                                />
                             </Paper>
                         </Grid>}
                     </Grid>

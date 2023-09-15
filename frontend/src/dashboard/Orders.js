@@ -51,7 +51,7 @@ export default function Orders(props) {
                 <TableRow key={question.id}>
                 <TableCell>{question.id}</TableCell>
                 <TableCell>{question.title}</TableCell>
-                <TableCell>{question.category}</TableCell>
+                <TableCell>{question.categories}</TableCell>
                 <TableCell>{question.complexity}</TableCell>
                 <TableCell>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
