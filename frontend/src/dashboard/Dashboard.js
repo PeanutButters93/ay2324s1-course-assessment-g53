@@ -131,9 +131,9 @@ export default function Dashboard() {
         setOpen(!open);
     };
 
-    const addQuestion = (title, description, category, complexity) => {
+    const addQuestion = (title, description, categories, complexity) => {
         const id = questions.length + 1;
-        const question = { id, title, description, category, complexity };
+        const question = { id, title, description, categories, complexity };
         setQuestions([...questions, question]);
         return question;
     }

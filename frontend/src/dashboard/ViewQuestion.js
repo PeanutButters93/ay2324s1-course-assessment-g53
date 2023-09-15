@@ -6,7 +6,7 @@ const ViewQuestion = (props) => {
         <div>
             <Title>Question {question.id}</Title>
             <Title>{question.title}</Title>
-            <div>Categories: {question.category}</div>
+            <div>Categories: {question.categories}</div>
             <div>Complexity: {question.complexity}</div>
             <div>{question.description}</div>
         </div>
