@@ -11,23 +11,29 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 
-function preventDefault(event) {
-  event.preventDefault();
-}
-
 export default function Orders(props) {
     const questions = props.questions;
+    const setAddPage = props.setAddPage;
     const setViewPage = props.setViewPage;
     const setEditPage = props.setEditPage;
     const setSelectedQuestion = props.setSelectedQuestion;
 
+    const handleAddClick = () => {
+        setAddPage(true);
+        setViewPage(false);
+        setEditPage(false);
+        setSelectedQuestion(null);
+    }
+    
     const handleViewClick = (question) => {
+        setAddPage(false);
         setViewPage(true);
         setEditPage(false);
         setSelectedQuestion(question);
     };
 
     const handleEditClick = (question) => {
+        setAddPage(false);
         setViewPage(false);
         setEditPage(true);
         setSelectedQuestion(question);
@@ -81,8 +87,8 @@ export default function Orders(props) {
             ))}
             </TableBody>
         </Table>
-        <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-            Add a new question
+        <Link color="primary" href="#" onClick={handleAddClick} sx={{ mt: 3 }}>
+            Add A New Question
         </Link>
         </React.Fragment>
     );

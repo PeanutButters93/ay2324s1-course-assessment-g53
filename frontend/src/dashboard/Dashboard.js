@@ -166,6 +166,7 @@ export default function Dashboard() {
 
     const [questions, setQuestions] = useState(DEFAULT_QNS);
     const [viewPage, setViewPage] = useState(false);
+    const [addPage, setAddPage] = useState(false);
     const [editPage, setEditPage] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
 
@@ -246,20 +247,23 @@ export default function Dashboard() {
                         <Grid item xs={12} md={6}>
                             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column'}}>
                                 <Orders 
-                                    questions={questions} 
-                                    setViewPage={setViewPage} 
-                                    setEditPage={setEditPage} 
-                                    setSelectedQuestion={setSelectedQuestion} 
-                                    selectedQuestion={selectedQuestion} />
+                                    questions={ questions } 
+                                    setAddPage={ setAddPage }
+                                    setViewPage={ setViewPage } 
+                                    setEditPage={ setEditPage } 
+                                    setSelectedQuestion={ setSelectedQuestion } 
+                                    selectedQuestion={ selectedQuestion } />
                             </Paper>
                         </Grid>
 
                         {/* View Question */}
                         {viewPage && <Grid item xs={12} md={6}>
                             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', width:'110%'}}>
-                                <ViewQuestion question={selectedQuestion}/>
+                                <ViewQuestion question={selectedQuestion} addPage={ setAddPage }/>
                             </Paper>
                         </Grid>}
+
+                        {/* Add Question */}
 
                         {/* Edit Question */}
                         {editPage && <Grid item xs={12} md={6}>
@@ -276,6 +280,7 @@ export default function Dashboard() {
                                 />
                             </Paper>
                         </Grid>}
+
                     </Grid>
                 </Container>
             </Box>
