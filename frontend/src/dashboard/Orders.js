@@ -17,6 +17,7 @@ export default function Orders(props) {
     const setViewPage = props.setViewPage;
     const setEditPage = props.setEditPage;
     const setSelectedQuestion = props.setSelectedQuestion;
+    const deleteQuestion = props.deleteQuestion;
 
     const handleAddClick = () => {
         setAddPage(true);
@@ -25,18 +26,24 @@ export default function Orders(props) {
         setSelectedQuestion(null);
     }
     
-    const handleViewClick = (question) => {
+    const handleViewClick = question => {
         setAddPage(false);
         setViewPage(true);
         setEditPage(false);
         setSelectedQuestion(question);
     };
 
-    const handleEditClick = (question) => {
+    const handleEditClick = question => {
         setAddPage(false);
         setViewPage(false);
         setEditPage(true);
         setSelectedQuestion(question);
+    }
+
+    const handleDeleteClick = question => {
+        if (window.confirm(`Are you sure you want to delete Question ${question.id}? This is an irreversible action!`)) {
+            deleteQuestion(question);
+        }
     }
 
     return (
@@ -78,6 +85,7 @@ export default function Orders(props) {
                         <IconButton
                             color="secondary"
                             aria-label="Delete"
+                            onClick={() => handleDeleteClick(question)}
                         >
                             <DeleteIcon />
                         </IconButton>

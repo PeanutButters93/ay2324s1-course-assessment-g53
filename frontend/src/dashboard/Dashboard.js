@@ -136,7 +136,17 @@ export default function Dashboard() {
         const question = { id, title, description, categories, complexity };
         setQuestions([...questions, question]);
         return question;
-    }
+    };
+
+    const deleteQuestion = question => {
+        const index = questions.indexOf(question);
+        const questionRemoved = questions.filter(q => q != question);
+        setQuestions(questionRemoved);
+        for (let i = index; i < questions.length; i++) {
+            // Update the id of the questions after the deleted question
+            questions[i].id = questions[i].id - 1;
+        }
+    };
 
     // const checkDuplicates = (title, setDuplicateTitleMessage, description, setDuplicateDescriptionMessage) => {
     //     if (checkDuplicateTitle(title)) {
@@ -260,7 +270,8 @@ export default function Dashboard() {
                                     setViewPage={ setViewPage } 
                                     setEditPage={ setEditPage } 
                                     setSelectedQuestion={ setSelectedQuestion } 
-                                    selectedQuestion={ selectedQuestion } />
+                                    selectedQuestion={ selectedQuestion } 
+                                    deleteQuestion={ deleteQuestion }/>
                             </Paper>
                         </Grid>
 
