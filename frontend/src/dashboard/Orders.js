@@ -24,7 +24,6 @@ export default function Orders(props) {
         setAddPage(true);
         setViewPage(false);
         setEditPage(false);
-        setSelectedQuestion(null);
     }
     
     const handleViewClick = question => {

@@ -291,6 +291,7 @@ export default function Dashboard() {
                                   setViewPage={ setViewPage }
                                   checkEmpty={ checkEmpty } 
                                   addQuestion={ addQuestion }
+                                  selectedQuestion={ selectedQuestion }
                                   setSelectedQuestion={ setSelectedQuestion }
                                 />
                             </Paper>

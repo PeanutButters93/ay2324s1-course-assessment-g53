@@ -14,6 +14,7 @@ const AddQuestion = (props) => {
     const setViewPage = props.setViewPage;
     const checkEmpty = props.checkEmpty;
     const addQuestion = props.addQuestion;
+    const selectedQuestion = props.selectedQuestion;
     const setSelectedQuestion = props.setSelectedQuestion;
     // const checkDuplicates = props.checkDuplicates;
     // const checkDuplicateTitle = props.checkDuplicateTitle;
@@ -56,9 +57,16 @@ const AddQuestion = (props) => {
         setViewPage(true);
     };
 
+    const handleCancel = () => {
+        setAddPage(false);
+        if (selectedQuestion != null) {
+            setViewPage(true);
+        }
+    };
+
     return (
         <div>
-            <Title>Add Question</Title>
+            <Title>Add A New Question</Title>
             <TextField 
               fullWidth
               label={'Title'} 
@@ -116,9 +124,15 @@ const AddQuestion = (props) => {
             <Button
                 variant="contained"
                 color="primary"
-                sx={{ marginTop: 2 }}
+                sx={{ marginTop: 2, marginRight: 2 }}
                 onClick={handleAdd}
             >Add Question</Button>
+            <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: 2 }}
+                onClick={handleCancel}
+            >Cancel</Button>
         </div>
     )
 };
