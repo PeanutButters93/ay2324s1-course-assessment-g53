@@ -72,7 +72,6 @@ export default function Orders(props) {
                         <IconButton
                             color="secondary"
                             aria-label="Delete"
-                            // onClick={() => handleActionClick('delete', question.id)}
                         >
                             <DeleteIcon />
                         </IconButton>
