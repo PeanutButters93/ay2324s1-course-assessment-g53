@@ -11,7 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
 
-export default function Orders(props) {
+export default function Question(props) {
   const questions = props.questions;
   const setAddPage = props.setAddPage;
   const setViewPage = props.setViewPage;
