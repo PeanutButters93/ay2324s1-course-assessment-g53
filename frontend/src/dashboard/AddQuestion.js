@@ -6,59 +6,36 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Title from './Title';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const AddQuestion = (props) => {
-    const question = props.question;
     const COMPLEXITY = props.COMPLEXITY;
+    const setAddPage = props.setAddPage;
     const setViewPage = props.setViewPage;
-    const setEditPage = props.setEditPage;
     const checkEmpty = props.checkEmpty;
-    const checkDuplicates = props.checkDuplicates;
-    const checkDuplicateTitle = props.checkDuplicateTitle;
-    const checkDuplicateDescription = props.checkDuplicateDescription;
+    const addQuestion = props.addQuestion;
+    const setSelectedQuestion = props.setSelectedQuestion;
+    // const checkDuplicates = props.checkDuplicates;
+    // const checkDuplicateTitle = props.checkDuplicateTitle;
+    // const checkDuplicateDescription = props.checkDuplicateDescription;
 
-    const [title, setTitle] = useState(question.title);
-    const [categories, setCategories] = useState(question.categories);
-    const [complexity, setComplexity] = useState(question.complexity);
-    const [description, setDescription] = useState(question.description);
+    const [title, setTitle] = useState("");
+    const [categories, setCategories] = useState("");
+    const [complexity, setComplexity] = useState("");
+    const [description, setDescription] = useState("");
 
     const [emptyTitleMessage, setEmptyTitleMessage] = useState('');
     const [emptyDescriptionMessage, setEmptyDescriptionMessage] = useState('');
     const [emptyCategoryMessage, setEmptyCategoryMessage] = useState('');
     const [emptyComplexityMessage, setEmptyComplexityMessage] = useState('');
 
-    const [originalTitle, setOriginalTitle] = useState(question.title);
-    const [originalDescription, setOriginalDescription] = useState(question.description);
     // const [duplicateTitleMessage, setDuplicateTitleMessage] = useState('');
     // const [duplicateDescriptionMessage, setDuplicateDescriptionMessage] = useState('');
 
-    // Use useEffect to update state when the question prop changes
-    useEffect(() => {
-        setTitle(question.title);
-        setCategories(question.categories);
-        setComplexity(question.complexity);
-        setDescription(question.description);
-        setEmptyTitleMessage("");
-        setEmptyDescriptionMessage("");
-        setEmptyCategoryMessage("");
-        setEmptyComplexityMessage("");
-        setOriginalTitle(question.title);
-        setOriginalDescription(question.description);
-        // setDuplicateTitleMessage("");
-        // setDuplicateDescriptionMessage("");
-    }, [question]);
-
-    const handleUpdate = () => {
+    const handleAdd = () => {
         checkEmpty(title, setEmptyTitleMessage, description, setEmptyDescriptionMessage, categories, setEmptyCategoryMessage, complexity, setEmptyComplexityMessage);
 
         if (!title || !description || !categories || !complexity) {
-            return;
-        }
-
-        if (originalTitle === title && originalDescription === description) {
-            setEditPage(false);
-            setViewPage(true);
             return;
         }
 
@@ -71,17 +48,17 @@ const AddQuestion = (props) => {
         //     return;
         // }
 
-        question.title = title;
-        question.categories = categories;
-        question.complexity = complexity;
-        question.description = description;
-        setEditPage(false);
+        //
+
+        const question = addQuestion(title, description, categories, complexity);
+        setSelectedQuestion(question);
+        setAddPage(false);
         setViewPage(true);
     };
 
     return (
         <div>
-            <Title>Edit Question</Title>
+            <Title>Add Question</Title>
             <TextField 
               fullWidth
               label={'Title'} 
@@ -140,8 +117,8 @@ const AddQuestion = (props) => {
                 variant="contained"
                 color="primary"
                 sx={{ marginTop: 2 }}
-                onClick={handleUpdate}
-            >Update Question</Button>
+                onClick={handleAdd}
+            >Add Question</Button>
         </div>
     )
 };

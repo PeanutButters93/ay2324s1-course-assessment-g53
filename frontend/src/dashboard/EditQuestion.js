@@ -14,9 +14,9 @@ const EditQuestion = (props) => {
     const setViewPage = props.setViewPage;
     const setEditPage = props.setEditPage;
     const checkEmpty = props.checkEmpty;
-    const checkDuplicates = props.checkDuplicates;
-    const checkDuplicateTitle = props.checkDuplicateTitle;
-    const checkDuplicateDescription = props.checkDuplicateDescription;
+    // const checkDuplicates = props.checkDuplicates;
+    // const checkDuplicateTitle = props.checkDuplicateTitle;
+    // const checkDuplicateDescription = props.checkDuplicateDescription;
 
     const [title, setTitle] = useState(question.title);
     const [categories, setCategories] = useState(question.categories);
@@ -81,7 +81,7 @@ const EditQuestion = (props) => {
 
     return (
         <div>
-            <Title>Edit Question</Title>
+            <Title>Edit Question {question.id}</Title>
             <TextField 
               fullWidth
               label={'Title'} 

@@ -21,6 +21,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Orders from './Orders';
 import ViewQuestion from './ViewQuestion';
 import EditQuestion from './EditQuestion';
+import AddQuestion from './AddQuestion';
 
 const drawerWidth = 240;
 
@@ -129,6 +130,13 @@ export default function Dashboard() {
     const toggleDrawer = () => {
         setOpen(!open);
     };
+
+    const addQuestion = (title, description, category, complexity) => {
+        const id = questions.length + 1;
+        const question = { id, title, description, category, complexity };
+        setQuestions([...questions, question]);
+        return question;
+    }
 
     // const checkDuplicates = (title, setDuplicateTitleMessage, description, setDuplicateDescriptionMessage) => {
     //     if (checkDuplicateTitle(title)) {
@@ -264,6 +272,18 @@ export default function Dashboard() {
                         </Grid>}
 
                         {/* Add Question */}
+                        {addPage && <Grid item xs={12} md={6}>
+                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', width:'110%' }}>
+                                <AddQuestion 
+                                  COMPLEXITY={ COMPLEXITY }
+                                  setAddPage={ setAddPage }
+                                  setViewPage={ setViewPage }
+                                  checkEmpty={ checkEmpty } 
+                                  addQuestion={ addQuestion }
+                                  setSelectedQuestion={ setSelectedQuestion }
+                                />
+                            </Paper>
+                        </Grid>}
 
                         {/* Edit Question */}
                         {editPage && <Grid item xs={12} md={6}>
