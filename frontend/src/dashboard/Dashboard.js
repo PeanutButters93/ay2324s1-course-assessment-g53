@@ -328,9 +328,9 @@ export default function Dashboard() {
                       setViewPage={setViewPage}
                       setEditPage={setEditPage}
                       checkEmpty={checkEmpty}
-                      //   checkDuplicates={ checkDuplicates }
-                      //   checkDuplicateTitle={ checkDuplicateTitle }
-                      //   checkDuplicateDescription={ checkDuplicateDescription }
+                      questions={questions}
+                      duplicateCheckers={duplicateCheckers}
+                      duplicateMessages={duplicateMessages}
                     />
                   </Paper>
                 </Grid>

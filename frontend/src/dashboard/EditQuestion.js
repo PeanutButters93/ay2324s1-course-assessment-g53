@@ -16,9 +16,9 @@ const EditQuestion = (props) => {
     const setViewPage = props.setViewPage;
     const setEditPage = props.setEditPage;
     const checkEmpty = props.checkEmpty;
-    // const checkDuplicates = props.checkDuplicates;
-    // const checkDuplicateTitle = props.checkDuplicateTitle;
-    // const checkDuplicateDescription = props.checkDuplicateDescription;
+    const questions = props.questions.filter(x => x.id !== question.id);
+    const duplicateCheckers = props.duplicateCheckers;
+    const duplicateMessages = props.duplicateMessages;
 
     const [title, setTitle] = useState(question.title);
     const [categories, setCategories] = useState(question.categories);
@@ -34,8 +34,8 @@ const EditQuestion = (props) => {
     const [originalDescription, setOriginalDescription] = useState(question.description);
     const [originalCategories, setOriginalCategories] = useState(question.categories);
     const [originalComplexity, setOriginalComplexity] = useState(question.complexity);
-    // const [duplicateTitleMessage, setDuplicateTitleMessage] = useState('');
-    // const [duplicateDescriptionMessage, setDuplicateDescriptionMessage] = useState('');
+    const [hasDuplicateTitle, setHasDuplicateTitle] = useState('');
+    const [hasDuplicateDescription, setHasDuplicateDescription] = useState('');
 
     // Use useEffect to update state when the question prop changes
     useEffect(() => {
@@ -51,9 +51,19 @@ const EditQuestion = (props) => {
         setOriginalDescription(question.description);
         setOriginalCategories(question.categories);
         setOriginalComplexity(question.complexity);
-        // setDuplicateTitleMessage("");
-        // setDuplicateDescriptionMessage("");
     }, [question]);
+
+    useEffect(() => {
+        setHasDuplicateDescription(
+          duplicateCheckers.checkDuplicateDescription(description, questions)
+        );
+      }, [description, questions, duplicateCheckers]);
+    
+      useEffect(() => {
+        setHasDuplicateTitle(
+          duplicateCheckers.checkDuplicateTitle(title, questions)
+        );
+      }, [title, questions, duplicateCheckers]);
 
     const handleUpdate = () => {
         checkEmpty(title, setEmptyTitleMessage, description, setEmptyDescriptionMessage, categories, setEmptyCategoryMessage, complexity, setEmptyComplexityMessage);
@@ -62,20 +72,15 @@ const EditQuestion = (props) => {
             return;
         }
 
+        if (hasDuplicateTitle || hasDuplicateDescription) {
+            return;
+        }
+
         if (originalTitle === title && originalDescription === description) {
             setEditPage(false);
             setViewPage(true);
             return;
         }
-
-        // checkDuplicates(title, setDuplicateTitleMessage, description, setDuplicateDescriptionMessage);
-
-        // checkDuplicateTitle(title, setDuplicateTitleMessage, duplicateTitleMessage);
-        // checkDuplicateDescription(description, setDuplicateDescriptionMessage);
-
-        // if (duplicateTitleMessage || duplicateDescriptionMessage) {
-        //     return;
-        // }
 
         question.title = title;
         question.categories = categories;
@@ -92,6 +97,8 @@ const EditQuestion = (props) => {
         }
     }
 
+    const duplicateTitleMessage = hasDuplicateTitle ? duplicateMessages.title : "";
+    const duplicateDescriptionMessage = hasDuplicateDescription ? duplicateMessages.description : ""; 
     return (
         <div>
             <Title>Edit Question {question.id}</Title>
@@ -102,10 +109,10 @@ const EditQuestion = (props) => {
               margin="normal" 
               value = {title} 
               onChange={event => setTitle(event.target.value)}
-              error = {!!emptyTitleMessage}
-              helperText={emptyTitleMessage}
-            //   error = {!!emptyTitleMessage || !!duplicateTitleMessage}
-            //   helperText={emptyTitleMessage || duplicateTitleMessage}
+            //   error = {!!emptyTitleMessage}
+            //   helperText={emptyTitleMessage}
+              error = {!!emptyTitleMessage || !!duplicateTitleMessage}
+              helperText={emptyTitleMessage || duplicateTitleMessage}
             />
             <TextField 
               fullWidth 
@@ -144,10 +151,10 @@ const EditQuestion = (props) => {
                 sx={{ marginTop: 2 }}
                 value={description}
                 onChange={event => setDescription(event.target.value)}
-                error={!!emptyDescriptionMessage}
-                helperText={emptyDescriptionMessage}
-                // error={emptyDescriptionMessage || duplicateDescriptionMessage}
-                // helperText={emptyDescriptionMessage || duplicateDescriptionMessage}
+                // error={!!emptyDescriptionMessage}
+                // helperText={emptyDescriptionMessage}
+                error={emptyDescriptionMessage || duplicateDescriptionMessage}
+                helperText={emptyDescriptionMessage || duplicateDescriptionMessage}
                 />
             <Button
                 variant="contained"
