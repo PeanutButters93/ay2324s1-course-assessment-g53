@@ -7,10 +7,18 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
 
 
 const QuestionTable = (props) => {
-  const questions = props.questions;
+  const { questions, setQuestions } = props;
+
+  const handleDelete = (questionId) => {
+    const updatedQuestions = questions.filter(qn => qn.id !== questionId)
+    setQuestions(updatedQuestions);
+    saveQuestionsToLocalStorage(updatedQuestions);
+  }
+
   return (
     <>
       <table>
@@ -26,6 +34,7 @@ const QuestionTable = (props) => {
           {questions.map((qn) => (
             <tr key={qn.id}>
               <Question question_data={qn} />
+              <button className="delete-button" onClick={() => handleDelete(qn.id)}>x</button>
             </tr>
           ))}
         </tbody>
