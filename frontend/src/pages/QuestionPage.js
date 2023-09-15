@@ -22,6 +22,7 @@ import Question from "../components/question/Question";
 import ViewQuestion from "../components/question/ViewQuestion";
 import EditQuestion from "../components/question/EditQuestion";
 import AddQuestion from "../components/question/AddQuestion";
+import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
 
 const drawerWidth = 240;
 
@@ -145,7 +146,10 @@ export default function QuestionPage() {
   const addQuestion = (title, description, categories, complexity) => {
     const id = questions.length + 1;
     const question = { id, title, description, categories, complexity };
-    setQuestions([...questions, question]);
+    const updated_qns = [...questions, question]
+    setQuestions(updated_qns);
+    saveQuestionsToLocalStorage(updated_qns)
+    
     return question;
   };
 
@@ -157,6 +161,7 @@ export default function QuestionPage() {
       // Update the id of the questions after the deleted question
       questions[i].id = questions[i].id - 1;
     }
+    saveQuestionsToLocalStorage(questions);
   };
 
   const checkDuplicateTitle = (title, questions) => {
@@ -171,8 +176,12 @@ export default function QuestionPage() {
     checkDuplicateDescription: checkDuplicateDescription,
     checkDuplicateTitle: checkDuplicateTitle,
   };
-
-  const [questions, setQuestions] = useState(DEFAULT_QNS);
+  let localStorage = getQuestionsFromLocalStorage()
+  if (localStorage.length < 1) {
+    saveQuestionsToLocalStorage(DEFAULT_QNS);
+    localStorage = DEFAULT_QNS;
+  }
+  const [questions, setQuestions] = useState(localStorage.length > 0 ? localStorage : DEFAULT_QNS);
   const [viewPage, setViewPage] = useState(false);
   const [addPage, setAddPage] = useState(false);
   const [editPage, setEditPage] = useState(false);
