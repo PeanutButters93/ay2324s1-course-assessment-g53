@@ -8,6 +8,8 @@ import TextField from '@mui/material/TextField';
 import Title from './Title';
 import { useState, useEffect } from 'react';
 
+const cancelMessage = "Are you sure you want to cancel? All changes will be lost.";
+
 const EditQuestion = (props) => {
     const question = props.question;
     const COMPLEXITY = props.COMPLEXITY;
@@ -30,6 +32,8 @@ const EditQuestion = (props) => {
 
     const [originalTitle, setOriginalTitle] = useState(question.title);
     const [originalDescription, setOriginalDescription] = useState(question.description);
+    const [originalCategories, setOriginalCategories] = useState(question.categories);
+    const [originalComplexity, setOriginalComplexity] = useState(question.complexity);
     // const [duplicateTitleMessage, setDuplicateTitleMessage] = useState('');
     // const [duplicateDescriptionMessage, setDuplicateDescriptionMessage] = useState('');
 
@@ -45,6 +49,8 @@ const EditQuestion = (props) => {
         setEmptyComplexityMessage("");
         setOriginalTitle(question.title);
         setOriginalDescription(question.description);
+        setOriginalCategories(question.categories);
+        setOriginalComplexity(question.complexity);
         // setDuplicateTitleMessage("");
         // setDuplicateDescriptionMessage("");
     }, [question]);
@@ -78,6 +84,13 @@ const EditQuestion = (props) => {
         setEditPage(false);
         setViewPage(true);
     };
+
+    const handleCancel = () => {
+        if (window.confirm(cancelMessage)) {
+            setEditPage(false);
+            setViewPage(true);
+        }
+    }
 
     return (
         <div>
@@ -139,9 +152,15 @@ const EditQuestion = (props) => {
             <Button
                 variant="contained"
                 color="primary"
-                sx={{ marginTop: 2 }}
+                sx={{ marginTop: 2 , marginRight:2 }}
                 onClick={handleUpdate}
             >Update Question</Button>
+            <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: 2 }}
+                onClick={handleCancel}
+            >Cancel</Button>
         </div>
     )
 };
