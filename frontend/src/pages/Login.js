@@ -69,7 +69,7 @@ function Login() {
         } else {
           setPasswordError('');  // Clear the error
         }
-        
+
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
@@ -93,9 +93,27 @@ function Login() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h4">
-                        PeerPrep
-          </Typography>
+<Typography 
+    component="h1" 
+    variant="h4"
+    sx={{
+        fontWeight: 'bold',
+        marginTop: 2,
+        marginBottom: 2,
+        letterSpacing: '0.1rem',
+        textAlign: 'center', 
+        color: 'primary.main',
+        textShadow: '1px 1px 2px gray',
+        transition: 'color 0.3s, transform 0.3s',  // smooth transition for color and transform
+        cursor: 'pointer',  // make it look interactive
+        '&:hover': {
+            color: 'secondary.main',  // change color on hover
+            transform: 'scale(1.05)'  // slightly increase size on hover
+        }
+    }}
+>
+    ~Welcome Back~
+</Typography>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
