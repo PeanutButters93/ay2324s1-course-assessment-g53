@@ -154,14 +154,17 @@ export default function QuestionPage() {
   };
 
   const deleteQuestion = (question) => {
+    console.log(question)
     const index = questions.indexOf(question);
     const questionRemoved = questions.filter((q) => q !== question);
-    setQuestions(questionRemoved);
-    for (let i = index; i < questions.length; i++) {
+    
+    for (let i = index; i < questions.length-1; i++) {
       // Update the id of the questions after the deleted question
-      questions[i].id = questions[i].id - 1;
+      questionRemoved[i].id = questionRemoved[i].id - 1;
     }
-    saveQuestionsToLocalStorage(questions);
+    setQuestions(questionRemoved);
+    
+    saveQuestionsToLocalStorage(questionRemoved);
   };
 
   const checkDuplicateTitle = (title, questions) => {
@@ -177,7 +180,7 @@ export default function QuestionPage() {
     checkDuplicateTitle: checkDuplicateTitle,
   };
   let localStorage = getQuestionsFromLocalStorage()
-  if (localStorage.length < 1) {
+  if (localStorage === null) {
     saveQuestionsToLocalStorage(DEFAULT_QNS);
     localStorage = DEFAULT_QNS;
   }
