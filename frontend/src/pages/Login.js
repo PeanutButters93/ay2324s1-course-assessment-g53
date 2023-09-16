@@ -12,13 +12,19 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link as RouterLink } from "react-router-dom";
+import MUILink from '@mui/material/Link';
+import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+
+
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Peerprep
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -33,13 +39,43 @@ const darkTheme = createTheme({
 });
 
 function Login() {
+  const navigate = useNavigate();
+  const [userIdentifier, setUserIdentifier] = useState('');  // This replaces the email state
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const isValidPassword = (password) => {
+    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}|:"<>?])(?=.*[0-9]).{8,}$/;
+    return regex.test(password);
+  };
+
+  const isValidEmailOrUsername = (input) => {
+    // Simple check to see if it contains '@'. 
+    // If you want more complex validation for email, you can expand this function.
+    return input.includes('@') || input.length >= 3;  // Assuming a minimum username length of 3
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+        // Additional validation here
+        if (!isValidEmailOrUsername(userIdentifier)) {
+          alert('Please enter a valid email or username.');
+          return;
+        }
+
+        if (!isValidPassword(password)) {
+          setPasswordError('Password does not meet the requirements.');
+          return;
+        } else {
+          setPasswordError('');  // Clear the error
+        }
+        
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
+    navigate('/questionpage')
   };
 
   return (
@@ -57,34 +93,39 @@ function Login() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
+          <Typography component="h1" variant="h4">
+                        PeerPrep
+          </Typography>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+          <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="userIdentifier"
+          label="Email Address or Username" // Updated label
+          name="userIdentifier"
+          autoComplete="email"
+          value={userIdentifier}
+          onChange={e => setUserIdentifier(e.target.value)}  // Use the new state variable here
+          autoFocus
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+          value={password}
+        onChange={e => setPassword(e.target.value)}
+        error={!!passwordError}  // If there's an error message, this will be true
+        helperText={passwordError}  // Display the error message
+      />
             <Button
               type="submit"
               fullWidth
@@ -94,20 +135,15 @@ function Login() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <MUILink to="/ " component={RouterLink} href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
-                </Link>
+                </MUILink>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

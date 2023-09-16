@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Layout from "./pages/Layout";
 import SignupPage from "./pages/SignupPage";
+import { Link } from "react-router-dom";
+
 
 
 const App = () => {
@@ -15,6 +17,7 @@ const App = () => {
         <Route index element={<SignupPage />} />
         <Route path="login" element={<Login />} />
         <Route path="logout" element={<Logout />} />
+        <Route path="questionpage" element={<QuestionPage />} />
       </Routes>
     </BrowserRouter>
   );
