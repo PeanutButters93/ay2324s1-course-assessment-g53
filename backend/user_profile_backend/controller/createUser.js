@@ -1,12 +1,12 @@
 const pool = require('../database/db.js')
 
 const createUser = (request, response) => {
-    const { username, email, password_hash, bio, date_of_birth } = request.body
+    const { username, email, password, bio, date_of_birth } = request.body
 
     // Create an array to hold the values and an array to hold the placeholders
-    const values = [username, email, password_hash]
+    const values = [username, email, password]
     const placeholders = ['$1', '$2', '$3']
-    const fields = ['username', 'email', 'password_hash']
+    const fields = ['username', 'email', 'password']
 
     // Check if bio is provided and add it to the values and placeholders arrays
     if (bio !== undefined) {
@@ -26,8 +26,16 @@ const createUser = (request, response) => {
 
     pool.query(query, values, (error, results) => {
         if (error) {
-            console.error('Error creating user:', error)
-            response.status(500).json({ error: 'Internal server error' })
+            if (error.code === '23505' && error.constraint === 'unique_username') {
+                // This error code (23505) corresponds to a unique constraint violation
+                response.status(400).json({ error: 'Username is already taken' })
+            } else if (error.constraint === 'check_password_complexity') {
+                // This error corresponds to the password complexity constraint
+                response.status(400).json({ error: 'Password does not meet complexity requirements' })
+            } else {
+                console.error('Error creating user:', error)
+                response.status(500).json({ error: 'Internal server error' })
+            }
         } else {
             response.status(201).json({ message: `User added with ID: ${results.rows[0].user_id}` })
         }

@@ -1,7 +1,7 @@
 const pool = require('../database/db.js')
 
 const updateUserInfo = (request, response) => {
-    const { user_id, new_username, new_email, new_password_hash, new_bio, new_date_of_birth } = request.body
+    const { user_id, new_username, new_email, new_password, new_bio, new_date_of_birth } = request.body
     // Check if user_id is provided
     if (!user_id) {
         response.status(400).json({ error: 'user_id is required.' })
@@ -22,9 +22,9 @@ const updateUserInfo = (request, response) => {
         values.push(new_email)
     }
 
-    if (new_password_hash !== undefined) {
-        updateFields.push('password_hash = $' + (values.length + 1))
-        values.push(new_password_hash)
+    if (new_password !== undefined) {
+        updateFields.push('password = $' + (values.length + 1))
+        values.push(new_password)
     }
 
     if (new_bio !== undefined) {
@@ -52,8 +52,16 @@ const updateUserInfo = (request, response) => {
 
     pool.query(query, values, (error, results) => {
         if (error) {
-            console.error('Error updating user information:', error)
-            response.status(500).json({ error: 'Internal server error' })
+            if (error.code === '23505' && error.constraint === 'unique_username') {
+                // This error code (23505) corresponds to a unique constraint violation
+                response.status(400).json({ error: 'Username is already taken' })
+            } else if (error.constraint === 'check_password_complexity') {
+                // This error corresponds to the password complexity constraint
+                response.status(400).json({ error: 'Password does not meet complexity requirements' })
+            } else {
+                console.error('Error updating user information:', error)
+                response.status(500).json({ error: 'Internal server error' })
+            }
         } else if (results.rowCount === 0) {
             response.status(404).json({ error: 'User not found.' })
         } else {
