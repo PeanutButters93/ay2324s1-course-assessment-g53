@@ -46,7 +46,6 @@ const QuestionForm = (props) => {
 
     // Save the new questions to local storage
     saveQuestionsToLocalStorage([...questions, question]);
-
     setTitle("");
     setDescription("");
     setCategory("");
