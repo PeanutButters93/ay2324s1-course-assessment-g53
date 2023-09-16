@@ -15,6 +15,6 @@ const deleteUserByUserID = (request, response) => {
     })
 }
 
-modules.exports = {
+module.exports = {
     deleteUserByUserID
 }

@@ -35,7 +35,7 @@ const getUserByName = (request, response) => {
     })
 }
 
-modules.exports = {
+module.exports = {
     getUsers,
     getUserById,
     getUserByName

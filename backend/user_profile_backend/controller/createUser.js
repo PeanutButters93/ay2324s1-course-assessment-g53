@@ -34,4 +34,4 @@ const createUser = (request, response) => {
     })
 }
 
-module.exports = createUser
+module.exports = { createUser }

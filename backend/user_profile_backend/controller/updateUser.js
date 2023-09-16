@@ -62,4 +62,4 @@ const updateUserInfo = (request, response) => {
     })
 }
 
-module.exports = updateUserInfo
+module.exports = { updateUserInfo }
