@@ -1,4 +1,4 @@
-td {
+/* td {
     height: auto;
     background-color: #1084a1;
     color: black;
@@ -6,17 +6,17 @@ td {
     font-size: 1.2em;
     padding-left: 5px;
     padding-right: 5px;
-}
+} */
 
 /* Tooltip Solution adapted from https://www.w3schools.com/css/css_tooltip.asp */
 
-.tooltip .tooltiptext {
+/* .tooltip .tooltiptext {
     visibility: hidden;
     width: 500px;
     background-color: #87C1D0;
     color: black;
     text-align: left;
-    /* Position the tooltip */
+    Position the tooltip
     position: absolute;
     z-index: 1;
 }
@@ -24,4 +24,4 @@ td {
     visibility: visible;
     margin-top: 30px;
     margin-left: -200px;
-}
+} */
