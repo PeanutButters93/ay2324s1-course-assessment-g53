@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
+import PersonIcon from '@mui/icons-material/Person';
 import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -20,14 +20,16 @@ export default function UserProfile() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
+
       <AppBar position="relative">
         <Toolbar>
-          <CameraIcon sx={{ mr: 2 }} />
+          <PersonIcon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
-            Album layout
+            User Profle
           </Typography>
         </Toolbar>
       </AppBar>
+
       <main>
         {/* Hero unit */}
         <Box
