@@ -136,8 +136,7 @@ function checkEmpty(
   }
   return;
 }
-
-export default function QuestionPage() {
+function QuestionPage() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -351,3 +350,5 @@ export default function QuestionPage() {
     </ThemeProvider>
   );
 }
+
+export default QuestionPage;
