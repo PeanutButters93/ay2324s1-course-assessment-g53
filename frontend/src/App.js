@@ -4,6 +4,7 @@ import QuestionPage from "./pages/QuestionPage";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Layout from "./pages/Layout";
+import UserProfile from "./pages/UserProfile";
 
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
         <Route index element={<QuestionPage />} />
         <Route path="login" element={<Login />} />
         <Route path="logout" element={<Logout />} />
+        <Route path="profile" element={<UserProfile />} />
       </Routes>
     </BrowserRouter>
   );
