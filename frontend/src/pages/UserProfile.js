@@ -4,11 +4,9 @@ import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import PersonIcon from '@mui/icons-material/Person';
 import CssBaseline from '@mui/material/CssBaseline';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 
@@ -32,6 +30,8 @@ export default function UserProfile() {
   const [lastName, setLastName] = useState(DEFAULT_LASTNAME);
   const [email, setEmail] = useState(DEFAULT_EMAIL);
 
+
+  const [fullName, setFullName] = useState(firstName + " " + lastName);
   const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = (event) => {
@@ -39,6 +39,7 @@ export default function UserProfile() {
 
     setPasswordError(false)
 
+    setFullName(firstName + " " + lastName)
     alert("Personal information updated (wip)")
     
   }
@@ -47,6 +48,7 @@ export default function UserProfile() {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
 
+      <Box>
       <AppBar position="relative">
         <Toolbar>
           <PersonIcon sx={{ mr: 2 }} />
@@ -65,93 +67,92 @@ export default function UserProfile() {
             pb: 6,
           }}
         >
-          <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="text.primary"
-              gutterBottom
-            >
-              Album layout
-            </Typography>
-            <Typography variant="h5" align="center" color="text.secondary" paragraph>
-              Something short and leading about the collection below—its contents,
-              the creator, etc. Make it short and sweet, but not too short so folks
-              don&apos;t simply skip over it entirely.
-            </Typography>
-            <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
-            >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
-            </Stack>
-          </Container>
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            {username}
+          </Typography>
+          <Typography variant="h5" align="center" color="text.secondary" paragraph>
+            Welcome, {fullName}.
+          </Typography>
         </Box>
       </main>
 
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <h2>Personal Information</h2>
-        <TextField
-          disabled
-          label="Username"
-          value={username}
-          required
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          sx={{ mb: 3 }}
-        />
-        <TextField
-          label="Password"
-          onChange={e => setPassword(e.target.value)}
-          value={password}
-          error={passwordError}
-          type="password"
-          required
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          sx={{ mb: 3 }}
-        />
-        <TextField
-          label="First Name"
-          onChange={e => setFirstName(e.target.value)}
-          value={firstName}
-          required
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          sx={{ mb: 3 }}
-        />
-        <TextField
-          label="Last Name"
-          onChange={e => setLastName(e.target.value)}
-          value={lastName}
-          required
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          sx={{ mb: 3 }}
-        />
-        <TextField
-          label="Email"
-          onChange={e => setEmail(e.target.value)}
-          value={email}
-          type="email"
-          required
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          sx={{ mb: 3 }}
-        />
+      <Box
+        display="flex"
+        justifyContent="center"
+        >
 
-        <Button variant="outlined" color="secondary" type="submit">Update</Button>
+        <form autoComplete="off" onSubmit={handleSubmit} >
+          <h2>Personal Information</h2>
+          <TextField
+            disabled
+            label="Username"
+            value={username}
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="Password"
+            onChange={e => setPassword(e.target.value)}
+            value={password}
+            error={passwordError}
+            type="password"
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="First Name"
+            onChange={e => setFirstName(e.target.value)}
+            value={firstName}
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="Last Name"
+            onChange={e => setLastName(e.target.value)}
+            value={lastName}
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="Email"
+            onChange={e => setEmail(e.target.value)}
+            value={email}
+            type="email"
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+            />
+            <Box textAlign='center'>
+              <Button variant="outlined" color="secondary" type="submit" sx={{ mb: 3 }}>Update</Button>
+            </Box>
+        </form>
+      </Box>
+        <Box textAlign='center'>
+          <Button variant="outlined" color="secondary" type="submit">delete account (wip)</Button>
+        </Box>
+      </Box>
 
-      </form>
+
       {/* Footer */}
       {/* End footer */}
     </ThemeProvider>
