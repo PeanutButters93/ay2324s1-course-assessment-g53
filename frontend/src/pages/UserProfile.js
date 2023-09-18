@@ -75,7 +75,7 @@ export default function UserProfile() {
             sx={{ mb: 3 }}
           />
           <TextField
-            label="Email"
+            label="New Email"
             onChange={e => setEmail(e.target.value)}
             value={email}
             type="email"
@@ -86,7 +86,7 @@ export default function UserProfile() {
             sx={{ mb: 3 }}
           />
           <TextField
-            label="Password"
+            label="New Password"
             onChange={e => setPassword(e.target.value)}
             value={password}
             type="password"
@@ -97,7 +97,7 @@ export default function UserProfile() {
             sx={{ mb: 3 }}
           />
           <TextField
-            label="Bio"
+            label="New Bio"
             onChange={e => setBio(e.target.value)}
             value={bio}
             required
@@ -107,7 +107,7 @@ export default function UserProfile() {
             sx={{ mb: 3 }}
           />
           <TextField
-            label="Date of Birth"
+            label="New Date of Birth"
             onChange={e => setDate_of_birth(e.target.value)}
             value={date_of_birth}
             required
@@ -117,7 +117,7 @@ export default function UserProfile() {
             sx={{ mb: 3 }}
           />
           <TextField
-            label="First Name"
+            label="New First Name"
             onChange={e => setFirstName(e.target.value)}
             value={firstName}
             required
@@ -127,7 +127,7 @@ export default function UserProfile() {
             sx={{ mb: 3 }}
           />
           <TextField
-            label="Last Name"
+            label="New Last Name"
             onChange={e => setLastName(e.target.value)}
             value={lastName}
             required
