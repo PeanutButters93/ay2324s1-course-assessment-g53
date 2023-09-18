@@ -4,10 +4,10 @@ import { getQuestions } from "../controller/getQuestions.js";
 import { addQuestion } from "../controller/addQuestion.js";
 import { updateQuestion } from "../controller/updateQuestion.js";
 const router = express.Router();
-router.get("/questions", getQuestions);
+router.get("/", getQuestions);
 
-router.post("/questions", addQuestion);
+router.post("/", addQuestion);
 
-router.put("/questions", updateQuestion);
+router.put("/", updateQuestion);
 
 export default router;
