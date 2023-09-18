@@ -183,12 +183,16 @@ function QuestionPage() {
     saveQuestionsToLocalStorage(DEFAULT_QNS);
     localStorage = DEFAULT_QNS;
   }
-  const [questions, setQuestions] = useState(localStorage.length > 0 ? localStorage : DEFAULT_QNS);
+  const [questions, setQuestions] = useState(null)
   const [viewPage, setViewPage] = useState(false);
   const [addPage, setAddPage] = useState(false);
   const [editPage, setEditPage] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
+  React.useEffect(() => {
+    const questions = fetch("http://localhost:8000/api/questions")
+    setQuestions()
+  })
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
