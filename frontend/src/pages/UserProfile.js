@@ -53,7 +53,7 @@ export default function UserProfile() {
         <Toolbar>
           <PersonIcon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
-            User Profle
+            User Profile
           </Typography>
         </Toolbar>
       </AppBar>
