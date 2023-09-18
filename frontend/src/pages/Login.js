@@ -57,25 +57,37 @@ function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-        // Additional validation here
-        if (!isValidEmailOrUsername(userIdentifier)) {
-          alert('Please enter a valid email or username.');
-          return;
-        }
+    // Additional validation here
+    if (!isValidEmailOrUsername(userIdentifier)) {
+      alert('Please enter a valid email or username.');
+      return;
+    }
 
-        if (!isValidPassword(password)) {
-          setPasswordError('Password does not meet the requirements.');
-          return;
-        } else {
-          setPasswordError('');  // Clear the error
-        }
+    if (!isValidPassword(password)) {
+      setPasswordError('Password does not meet the requirements.');
+      return;
+    } else {
+      setPasswordError('');  // Clear the error
+    }
 
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate('/questionpage')
+    fetch('http://localhost:3000/api/users/getUser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userIdentifier: userIdentifier,  // Use the userIdentifier state variable
+        password: password,              // Use the password state variable
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response from the backend. Maybe store a token or show a success message.
+        navigate('/questionpage');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -93,57 +105,57 @@ function Login() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-<Typography 
-    component="h1" 
-    variant="h4"
-    sx={{
-        fontWeight: 'bold',
-        marginTop: 2,
-        marginBottom: 2,
-        letterSpacing: '0.1rem',
-        textAlign: 'center', 
-        color: 'primary.main',
-        textShadow: '1px 1px 2px gray',
-        transition: 'color 0.3s, transform 0.3s',  // smooth transition for color and transform
-        cursor: 'pointer',  // make it look interactive
-        '&:hover': {
-            color: 'secondary.main',  // change color on hover
-            transform: 'scale(1.05)'  // slightly increase size on hover
-        }
-    }}
->
-    ~Welcome Back~
-</Typography>
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{
+              fontWeight: 'bold',
+              marginTop: 2,
+              marginBottom: 2,
+              letterSpacing: '0.1rem',
+              textAlign: 'center',
+              color: 'primary.main',
+              textShadow: '1px 1px 2px gray',
+              transition: 'color 0.3s, transform 0.3s',  // smooth transition for color and transform
+              cursor: 'pointer',  // make it look interactive
+              '&:hover': {
+                color: 'secondary.main',  // change color on hover
+                transform: 'scale(1.05)'  // slightly increase size on hover
+              }
+            }}
+          >
+            ~Welcome Back~
+          </Typography>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="userIdentifier"
-          label="Email Address or Username" // Updated label
-          name="userIdentifier"
-          autoComplete="email"
-          value={userIdentifier}
-          onChange={e => setUserIdentifier(e.target.value)}  // Use the new state variable here
-          autoFocus
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-        onChange={e => setPassword(e.target.value)}
-        error={!!passwordError}  // If there's an error message, this will be true
-        helperText={passwordError}  // Display the error message
-      />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="userIdentifier"
+              label="Email Address or Username" // Updated label
+              name="userIdentifier"
+              autoComplete="email"
+              value={userIdentifier}
+              onChange={e => setUserIdentifier(e.target.value)}  // Use the new state variable here
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              error={!!passwordError}  // If there's an error message, this will be true
+              helperText={passwordError}  // Display the error message
+            />
             <Button
               type="submit"
               fullWidth
