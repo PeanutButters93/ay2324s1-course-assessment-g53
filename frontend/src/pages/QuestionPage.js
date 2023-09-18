@@ -142,15 +142,6 @@ function QuestionPage() {
     setOpen(!open);
   };
 
-  const addQuestion = (title, description, categories, complexity) => {
-    const id = questions.length + 1;
-    const question = { id, title, description, categories, complexity };
-    const updated_qns = [...questions, question]
-    setQuestions(updated_qns);
-    saveQuestionsToLocalStorage(updated_qns)
-    
-    return question;
-  };
 
   const deleteQuestion = (question) => {
     console.log(question)
@@ -183,6 +174,28 @@ function QuestionPage() {
     saveQuestionsToLocalStorage(DEFAULT_QNS);
     localStorage = DEFAULT_QNS;
   }
+
+  async function addQuestion(title, description, categories, complexity, questions) {
+    const id = questions ? questions[questions.length -1].id + 1 : 1;
+    const question = { id, title, description, categories, complexity };
+    fetch("http://localhost:8000/api/questions", {
+      method: "POST", 
+      headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(question)
+    }).catch(error => {
+      console.error('Error:', error);
+      return;
+  })
+    console.log(question)
+    console.log(questions)
+    const updated_qns = [...questions, question]
+    setQuestions(updated_qns);
+    saveQuestionsToLocalStorage(updated_qns)
+    return question;
+  };
+
   const [questions, setQuestions] = useState(DEFAULT_QNS)
   const [viewPage, setViewPage] = useState(false);
   const [addPage, setAddPage] = useState(false);
@@ -194,7 +207,11 @@ function QuestionPage() {
     const response = await fetch("http://localhost:8000/api/questions", {method: "GET"})
     const data = await response.json()
     console.log(data)
-    setQuestions(data)
+    const questions = []
+    for (var i in data) {
+      questions.push(data[i])
+    }
+    setQuestions(questions)
     }
     fetchQuestions()
   }, [])
@@ -327,6 +344,7 @@ function QuestionPage() {
                       setSelectedQuestion={setSelectedQuestion}
                       questions={questions}
                       duplicateMessages={duplicateMessages}
+                      setQuestions={setQuestions}
                     />
                   </Paper>
                 </Grid>

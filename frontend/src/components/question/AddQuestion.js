@@ -8,6 +8,8 @@ import TextField from "@mui/material/TextField";
 import Title from "./Title";
 import { useEffect, useState } from "react";
 
+
+
 const AddQuestion = (props) => {
   const COMPLEXITY = props.COMPLEXITY;
   const setAddPage = props.setAddPage;
@@ -64,8 +66,8 @@ const AddQuestion = (props) => {
     if (hasDuplicateDescription || hasDuplicateTitle) {
       return;
     }
+    const question = addQuestion(title, description, categories, complexity, questions);
 
-    const question = addQuestion(title, description, categories, complexity);
     setSelectedQuestion(question);
     setAddPage(false);
     setViewPage(true);
@@ -142,7 +144,7 @@ const AddQuestion = (props) => {
         onChange={(event) => setDescription(event.target.value)}
         // error={!!emptyDescriptionMessage}
         // helperText={emptyDescriptionMessage}
-        error={emptyDescriptionMessage || duplicateDescriptionMessage}
+        error={!!emptyDescriptionMessage || !!duplicateDescriptionMessage}
         helperText={emptyDescriptionMessage || duplicateDescriptionMessage}
       />
       <Button
