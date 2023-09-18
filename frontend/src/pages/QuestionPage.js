@@ -177,6 +177,7 @@ function QuestionPage() {
 
   async function addQuestion(title, description, categories, complexity, questions) {
     const id = questions ? questions[questions.length -1].id + 1 : 1;
+    console.log(id)
     const question = { id, title, description, categories, complexity };
     fetch("http://localhost:8000/api/questions", {
       method: "POST", 
