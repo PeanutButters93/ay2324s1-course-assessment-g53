@@ -34,13 +34,20 @@ export default function UserProfile() {
 
 
   //const [fullName, setFullName] = useState(firstName + " " + lastName);
-  //const [passwordError, setPasswordError] = useState(false);
+  //const [passwordError, setPasswordError] = useState("");
+  //const [passwordErrorText, setPasswordErrorText] = useState("");
+
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
+    //.then(alert("Personal information updated!"))
 
-    alert("Personal information updated (wip)")
+  }
+
+  const handleDelete = (event) => {
+
+      //.then(alert("Successfully Deleted"))
     
   }
 
@@ -142,7 +149,7 @@ export default function UserProfile() {
         </form>
       </Box>
         <Box textAlign='center'>
-          <Button variant="outlined" color="secondary" type="submit">delete account (wip)</Button>
+          <Button variant="outlined" color="secondary" type="submit" onClick={handleDelete} disabled={username == ""}>Delete Account</Button>
         </Box>
       </Box>
 
