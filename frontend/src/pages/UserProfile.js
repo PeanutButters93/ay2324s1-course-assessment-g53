@@ -58,30 +58,6 @@ export default function UserProfile() {
         </Toolbar>
       </AppBar>
 
-      <main>
-        {/* Hero unit */}
-        <Box
-          sx={{
-            bgcolor: 'background.paper',
-            pt: 8,
-            pb: 6,
-          }}
-        >
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="text.primary"
-            gutterBottom
-          >
-            {username}
-          </Typography>
-          <Typography variant="h5" align="center" color="text.secondary" paragraph>
-            Welcome, {fullName}.
-          </Typography>
-        </Box>
-      </main>
-
       <Box
         display="flex"
         justifyContent="center"
