@@ -10,8 +10,4 @@ router.post("/questions", addQuestion);
 
 router.put("/questions", updateQuestion);
 
-router.post("/questionPage", function (req, res) {
-  res.send("You are sending a post request to the question page!");
-});
-
 export default router;
