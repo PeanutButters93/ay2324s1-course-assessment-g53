@@ -70,7 +70,7 @@ function Login() {
       setPasswordError('');  // Clear the error
     }
 
-    fetch('http://localhost:3000/api/users/getUser', {
+    fetch('http://localhost:3000/api/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,13 +80,30 @@ function Login() {
         password: password,              // Use the password state variable
       }),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (response.status === 403) {
+          // Handle the forbidden error
+          return response.json().then(err => { throw err; });
+        }
+        return response.json();
+      })
       .then(data => {
-        // Handle the response from the backend. Maybe store a token or show a success message.
-        navigate('/questionpage');
+        if (data.token) {
+          // Save JWT token to localStorage or context or wherever you store it
+          localStorage.setItem('jwt', data.token);
+          navigate('/questionpage');
+        }
       })
       .catch(error => {
-        console.error('Error:', error);
+        // Handle different types of errors here
+        if (error.error === 'Incorrect password') {
+          alert('Incorrect password. Please try again.');
+        } else if (error.error === 'User not found') {
+          alert('User not found. Please try again or register.');
+        } else {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        }
       });
   };
 
