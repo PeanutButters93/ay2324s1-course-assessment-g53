@@ -10,11 +10,11 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 
-const DEFAULT_USERNAME = "USERNAME"
-const DEFAULT_PASSWORD = "PASSWORDa1!"
-const DEFAULT_FIRSTNAME = "BOB"
-const DEFAULT_LASTNAME = "TAN"
-const DEFAULT_EMAIL = "eg@example.com"
+const DEFAULT_USERNAME = ""
+const DEFAULT_PASSWORD = ""
+const DEFAULT_FIRSTNAME = ""
+const DEFAULT_LASTNAME = ""
+const DEFAULT_EMAIL = ""
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme({
@@ -25,21 +25,21 @@ const defaultTheme = createTheme({
 
 export default function UserProfile() {
   const [username, setUsername] = useState(DEFAULT_USERNAME);
+  const [email, setEmail] = useState(DEFAULT_EMAIL);
   const [password, setPassword] = useState(DEFAULT_PASSWORD);
+  const [bio, setBio] = useState("");
+  const [date_of_birth, setDate_of_birth] = useState("");
   const [firstName, setFirstName] = useState(DEFAULT_FIRSTNAME);
   const [lastName, setLastName] = useState(DEFAULT_LASTNAME);
-  const [email, setEmail] = useState(DEFAULT_EMAIL);
 
 
-  const [fullName, setFullName] = useState(firstName + " " + lastName);
-  const [passwordError, setPasswordError] = useState(false);
+  //const [fullName, setFullName] = useState(firstName + " " + lastName);
+  //const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    setPasswordError(false)
 
-    setFullName(firstName + " " + lastName)
     alert("Personal information updated (wip)")
     
   }
@@ -62,13 +62,23 @@ export default function UserProfile() {
         display="flex"
         justifyContent="center"
         >
-
         <form autoComplete="off" onSubmit={handleSubmit} >
-          <h2>Personal Information</h2>
+          <h2>Edit Personal Information</h2>
           <TextField
-            disabled
             label="Username"
+            onChange={e => setUsername(e.target.value)}
             value={username}
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="Email"
+            onChange={e => setEmail(e.target.value)}
+            value={email}
+            type="email"
             required
             variant="outlined"
             color="secondary"
@@ -79,8 +89,27 @@ export default function UserProfile() {
             label="Password"
             onChange={e => setPassword(e.target.value)}
             value={password}
-            error={passwordError}
             type="password"
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="Bio"
+            onChange={e => setBio(e.target.value)}
+            value={bio}
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="Date of Birth"
+            onChange={e => setDate_of_birth(e.target.value)}
+            value={date_of_birth}
             required
             variant="outlined"
             color="secondary"
@@ -107,17 +136,6 @@ export default function UserProfile() {
             fullWidth
             sx={{ mb: 3 }}
           />
-          <TextField
-            label="Email"
-            onChange={e => setEmail(e.target.value)}
-            value={email}
-            type="email"
-            required
-            variant="outlined"
-            color="secondary"
-            fullWidth
-            sx={{ mb: 3 }}
-            />
             <Box textAlign='center'>
               <Button variant="outlined" color="secondary" type="submit" sx={{ mb: 3 }}>Update</Button>
             </Box>
