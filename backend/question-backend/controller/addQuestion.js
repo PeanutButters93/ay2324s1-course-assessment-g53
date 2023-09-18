@@ -2,7 +2,6 @@ import Question from "../model/Question.js";
 export async function addQuestion(req, res) {
   try {
     //console.log(req.body);
-    const questions = await Question.find();
     const question = new Question({
       id: req.body.id,
       title: req.body.title,

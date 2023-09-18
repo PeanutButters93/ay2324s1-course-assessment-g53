@@ -177,7 +177,6 @@ function QuestionPage() {
 
   async function addQuestion(title, description, categories, complexity, questions) {
     const id = questions ? questions[questions.length -1].id + 1 : 1;
-    console.log(id)
     const question = { id, title, description, categories, complexity };
     fetch("http://localhost:8000/api/questions", {
       method: "POST", 
@@ -189,13 +188,30 @@ function QuestionPage() {
       console.error('Error:', error);
       return;
   })
-    console.log(question)
-    console.log(questions)
     const updated_qns = [...questions, question]
     setQuestions(updated_qns);
-    saveQuestionsToLocalStorage(updated_qns)
     return question;
   };
+
+  async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
+    const id = questionToEdit.id;
+    const info = {id, title, desc: description, categories, complexity}
+    console.log(info)
+    await fetch("http://localhost:8000/api/questions", {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application.json'
+      }, 
+      body: JSON.stringify(info)
+    }).then(question => {
+      const updated_qns = [...questions, question]
+      setQuestions(updated_qns)
+    }).catch(error => {
+      console.error('Error:', error);
+      return;
+  })
+
+  }
 
   const [questions, setQuestions] = useState(DEFAULT_QNS)
   const [viewPage, setViewPage] = useState(false);
@@ -370,6 +386,7 @@ function QuestionPage() {
                       questions={questions}
                       duplicateCheckers={duplicateCheckers}
                       duplicateMessages={duplicateMessages}
+                      editQuestion={editQuestion}
                     />
                   </Paper>
                 </Grid>
