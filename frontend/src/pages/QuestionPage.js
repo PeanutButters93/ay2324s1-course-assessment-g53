@@ -23,6 +23,7 @@ import ViewQuestion from "../components/question/ViewQuestion";
 import EditQuestion from "../components/question/EditQuestion";
 import AddQuestion from "../components/question/AddQuestion";
 import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -165,12 +166,10 @@ function QuestionPage() {
   async function addQuestion(title, description, categories, complexity, questions) {
     const id = questions ? questions[questions.length -1].id + 1 : 1;
     const question = { id, title, description, categories, complexity };
-    fetch("http://localhost:8000/api/questions", {
-      method: "POST", 
+    axios.post("http://localhost:8000/api/questions", question, {
       headers: {
         'Content-Type': 'application/json',
     },
-    body: JSON.stringify(question)
     }).catch(error => {
       console.error('Error:', error);
       return;
@@ -183,12 +182,10 @@ function QuestionPage() {
   async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
     const id = questionToEdit.id;
     const question = {id, title, desc: description, categories, complexity}
-    await fetch("http://localhost:8000/api/questions", {
-      method: "PUT",
+    await axios.put("http://localhost:8000/api/questions", question, {
       headers: {
         'Content-Type': 'application/json'
-      }, 
-      body: JSON.stringify(question)
+      },
     }).catch(error => {
       console.error('Error:', error);
       return;
@@ -198,12 +195,8 @@ function QuestionPage() {
   }
 
   async function deleteQuestion(questionToDelete, questions) {
-    await fetch("http://localhost:8000/api/questions", {
-      method: "DELETE", 
-      headers: {
-        'Content-Type': 'application/json'
-      }, 
-      body: JSON.stringify(questionToDelete)
+    console.log(questionToDelete);
+    await axios.delete(`http://localhost:8000/api/questions/${questionToDelete.id}`, {
     }).catch(error => {
       console.error('Error:', error);
       return;
@@ -219,8 +212,8 @@ function QuestionPage() {
 
   React.useEffect(() => {
     async function fetchQuestions() {
-    const response = await fetch("http://localhost:8000/api/questions", {method: "GET"})
-    const data = await response.json()
+    const response = await axios.get('http://localhost:8000/api/questions')
+    const data = response.data
     const questions = []
     for (var i in data) {
       questions.push(data[i])

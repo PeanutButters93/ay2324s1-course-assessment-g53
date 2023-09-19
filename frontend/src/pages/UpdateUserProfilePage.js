@@ -9,6 +9,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { TextField } from "@mui/material"
+import axios from 'axios'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme({
@@ -61,17 +62,14 @@ export default function UpdateUserProfilePage () {
     )
 
     console.log(JSON.stringify(filteredFormData))
-    fetch('http://localhost:4000/api/users/updateUser', {
-      method: 'PUT',
+    axios.put('http://localhost:4000/api/users/updateUser', filteredFormData, {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(filteredFormData)
     })
-      .then((response) => response.json())
-      .then((data) => {
+      .then((response) => {
         alert('User information updated successfully.')
-        console.log(data)
+        console.log(response.data)
       })
       .catch((error) => {
         console.error('Error:', error)
@@ -88,9 +86,7 @@ export default function UpdateUserProfilePage () {
 
     const deleteUserUrl = `http://localhost:4000/api/users/deleteUser/${formData.user_id}`
 
-    fetch(deleteUserUrl, {
-      method: 'DELETE',
-    })
+    axios.delete(deleteUserUrl)
       .then((response) => {
         if (response.ok) {
           alert('User deleted successfully.')
