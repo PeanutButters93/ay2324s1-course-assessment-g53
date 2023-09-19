@@ -158,12 +158,10 @@ function QuestionPage() {
   };
 
   const checkDuplicateTitle = (title, questions) => {
-    console.log(questions)
     return questions.some((question) => question.title === title);
   };
 
   const checkDuplicateDescription = (description, questions) => {
-    console.log(questions)
     return questions.some((question) => question.desc === description);
   };
 
