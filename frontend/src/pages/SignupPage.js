@@ -1,25 +1,25 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Link as RouterLink } from "react-router-dom";
-import MUILink from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Login from './Login';
-import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import { Link as RouterLink } from "react-router-dom"
+import MUILink from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Login from './Login'
+import { useNavigate } from "react-router-dom"
+import { useState } from 'react'
 
 
 
-function Copyright(props) {
+function Copyright (props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
@@ -29,40 +29,40 @@ function Copyright(props) {
             {new Date().getFullYear()}
             {'.'}
         </Typography>
-    );
+    )
 }
 
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',  // This switches the theme mode to dark
     },
-});
+})
 
 
 const isValidPassword = (password) => {
-    const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    return re.test(password);
+    const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+    return re.test(password)
 }
 
 const isValidEmail = (email) => {
-    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return re.test(email);
+    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+    return re.test(email)
 }
-function SignupPage() {
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
-    const [isValid, setIsValid] = useState(true);
-    const navigate = useNavigate();
+function SignupPage () {
+    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [username, setUsername] = useState('')
+    const [isValid, setIsValid] = useState(true)
+    const navigate = useNavigate()
 
     const handleSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
         if (!isValidPassword(password) || !isValidEmail(email) || !firstName || !lastName || !username) {
-            setIsValid(false);
-            return; // Don't proceed further
+            setIsValid(false)
+            return // Don't proceed further
         }
 
         // Construct the user data
@@ -72,10 +72,10 @@ function SignupPage() {
             password: password,
             firstName: firstName,
             lastName: lastName
-        };
+        }
 
         // Send the user data to the backend
-        fetch('http://localhost:3000/api/users/createUser', {
+        fetch('http://localhost:4000/api/users/createUser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,15 +85,15 @@ function SignupPage() {
             .then(response => response.json())
             .then(data => {
                 // Handle the response from the backend. Maybe show a success message or store some data.
-                navigate('/questionpage');
+                navigate('/questionpage')
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error:', error)
                 // Maybe show an error message to the user
-            });
-    };
+            })
+    }
 
-  
+
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -219,7 +219,7 @@ function SignupPage() {
                 <Copyright sx={{ mt: 5 }} />
             </Container>
         </ThemeProvider>
-    );
+    )
 }
 
 export default SignupPage;

@@ -1,6 +1,6 @@
 # **_User Profile Backend_**
 
-## api main route: http://localhost:3000/api/users
+## api main route: http://localhost:4000/api/users
 
 1. ## update User
 
@@ -45,12 +45,12 @@
    - /userByName/:name
    - **"username"** is compulsory
    - Pass in user name as http query parameter
-   - http://localhost:3000/api/users/userByName?username=adam_lu
+   - http://localhost:4000/api/users/userByName?username=adam_lu
    - ![alt](images/getUserByName.png)
 5. ## get User by id
    - **Get user by user_id**
    - Use http get
    - **"user_id"** is compulsory
    - Pass in user_id as http query parameter
-   - http://localhost:3000/api/users/userById?user_id=1
+   - http://localhost:4000/api/users/userById?user_id=1
    - -![alt](images/getUserById.png)

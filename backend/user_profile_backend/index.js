@@ -1,11 +1,11 @@
-const cors = require('cors');
+const cors = require('cors')
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 4000
 
 // Middleware for parsing JSON requests
 app.use(express.json())
-app.use(cors());
+app.use(cors())
 
 // Import and use your user-profile-router
 const userRouter = require('./routes/user-profile-router')
