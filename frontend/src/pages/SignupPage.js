@@ -16,6 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Login from './Login'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
+import axios from 'axios'
 
 
 
@@ -75,14 +76,11 @@ function SignupPage () {
         }
 
         // Send the user data to the backend
-        fetch('http://localhost:4000/api/users/createUser', {
-            method: 'POST',
+        axios.post('http://localhost:4000/api/users/createUser', userData, {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userData),
         })
-            .then(response => response.json())
             .then(data => {
                 // Handle the response from the backend. Maybe show a success message or store some data.
                 navigate('/questionpage')

@@ -10,6 +10,6 @@ router.post("/", addQuestion);
 
 router.put("/", updateQuestion);
 
-router.delete("/", deleteQuestion);
+router.delete("/:id", deleteQuestion);
 
 export default router;

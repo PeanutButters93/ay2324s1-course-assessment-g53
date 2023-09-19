@@ -16,6 +16,7 @@ import { Link as RouterLink } from "react-router-dom"
 import MUILink from '@mui/material/Link'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
+import axios from 'axios'
 
 
 
@@ -70,22 +71,19 @@ function Login () {
       setPasswordError('')  // Clear the error
     }
 
-    fetch('http://localhost:4000/api/users/login', {
-      method: 'POST',
+    axios.post('http://localhost:4000/api/users/login', {
+      userIdentifier: userIdentifier,  // Use the userIdentifier state variable
+      password: password,              // Use the password state variable
+    }, {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        userIdentifier: userIdentifier,  // Use the userIdentifier state variable
-        password: password,              // Use the password state variable
-      }),
-    })
-      .then(response => {
+    }).then(response => {
         if (response.status === 403) {
           // Handle the forbidden error
-          return response.json().then(err => { throw err })
+          return response.then(err => { throw err })
         }
-        return response.json()
+        return response.data
       })
       .then(data => {
         if (data.token) {
