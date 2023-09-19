@@ -1,9 +1,11 @@
 import Question from "../model/Question.js";
 
 export async function updateQuestion(req, res) {
+  console.log(req.body)
   try {
     const id = req.body.id;
     const question_to_change = await Question.findOne({ id: id });
+    console.log(question_to_change)
     const new_title = req.body.title
       ? req.body.title
       : question_to_change.title;
@@ -14,11 +16,16 @@ export async function updateQuestion(req, res) {
     const new_complexity = req.body.complexity
       ? req.body.complexity
       : question_to_change.complexity;
-
-    const duplicate_title = await Question.find({ title: new_title });
+    let duplicate_title = [];
+    let duplicate_desc = [];
+    if (new_title !== question_to_change.title) {
+      duplicate_title = await Question.find({ title: new_title });
+    }
     // console.log("Duplicate title:");
     // console.log(duplicate_title);
-    const duplicate_desc = await Question.find({ desc: new_desc });
+    if (new_desc !== question_to_change.desc) {
+      duplicate_desc = await Question.find({ desc: new_desc });
+    }
     // console.log("Duplicate desc:");
     // console.log(duplicate_desc);
     if (duplicate_title.length !== 0 || duplicate_desc.length !== 0) {
@@ -36,7 +43,8 @@ export async function updateQuestion(req, res) {
     question_to_change.complexity = new_complexity;
 
     await question_to_change.save();
-    res.send("Success");
+    res.send(question_to_change.toJSON());
+    
   } catch (error) {
     console.log(error);
     res.status(400).send("ERROR");

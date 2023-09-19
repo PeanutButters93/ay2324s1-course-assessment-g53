@@ -142,33 +142,14 @@ function QuestionPage() {
     setOpen(!open);
   };
 
-  const addQuestion = (title, description, categories, complexity) => {
-    const id = questions.length + 1;
-    const question = { id, title, description, categories, complexity };
-    const updated_qns = [...questions, question]
-    setQuestions(updated_qns);
-    saveQuestionsToLocalStorage(updated_qns)
-    
-    return question;
-  };
 
-  const deleteQuestion = (question) => {
-    const index = questions.indexOf(question);
-    const questionRemoved = questions.filter((q) => q !== question);
-    setQuestions(questionRemoved);
-    for (let i = index; i < questions.length; i++) {
-      // Update the id of the questions after the deleted question
-      questions[i].id = questions[i].id - 1;
-    }
-    saveQuestionsToLocalStorage(questions);
-  };
 
   const checkDuplicateTitle = (title, questions) => {
     return questions.some((question) => question.title === title);
   };
 
   const checkDuplicateDescription = (description, questions) => {
-    return questions.some((question) => question.description === description);
+    return questions.some((question) => question.desc === description);
   };
 
   const duplicateCheckers = {
@@ -176,16 +157,77 @@ function QuestionPage() {
     checkDuplicateTitle: checkDuplicateTitle,
   };
   let localStorage = getQuestionsFromLocalStorage()
-  // if (localStorage.length < 1) {
+  if (localStorage === null) {
     saveQuestionsToLocalStorage(DEFAULT_QNS);
     localStorage = DEFAULT_QNS;
-  // }
-  const [questions, setQuestions] = useState(localStorage.length > 0 ? localStorage : DEFAULT_QNS);
+  }
+
+  async function addQuestion(title, description, categories, complexity, questions) {
+    const id = questions ? questions[questions.length -1].id + 1 : 1;
+    const question = { id, title, description, categories, complexity };
+    fetch("http://localhost:8000/api/questions", {
+      method: "POST", 
+      headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(question)
+    }).catch(error => {
+      console.error('Error:', error);
+      return;
+  })
+    const updated_qns = [...questions, question]
+    setQuestions(updated_qns);
+    return question;
+  };
+
+  async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
+    const id = questionToEdit.id;
+    const question = {id, title, desc: description, categories, complexity}
+    await fetch("http://localhost:8000/api/questions", {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify(question)
+    }).catch(error => {
+      console.error('Error:', error);
+      return;
+  })
+    setQuestions([...questions, question]);
+  }
+
+  async function deleteQuestion(questionToDelete, questions) {
+    await fetch("http://localhost:8000/api/questions", {
+      method: "DELETE", 
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify(questionToDelete)
+    }).catch(error => {
+      console.error('Error:', error);
+      return;
+  })
+  setQuestions(questions.filter(x => x.id !== questionToDelete.id));
+  }
+
+  const [questions, setQuestions] = useState(DEFAULT_QNS)
   const [viewPage, setViewPage] = useState(false);
   const [addPage, setAddPage] = useState(false);
   const [editPage, setEditPage] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
+  React.useEffect(() => {
+    async function fetchQuestions() {
+    const response = await fetch("http://localhost:8000/api/questions", {method: "GET"})
+    const data = await response.json()
+    const questions = []
+    for (var i in data) {
+      questions.push(data[i])
+    }
+    setQuestions(questions)
+    }
+    fetchQuestions()
+  }, [])
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
@@ -315,6 +357,7 @@ function QuestionPage() {
                       setSelectedQuestion={setSelectedQuestion}
                       questions={questions}
                       duplicateMessages={duplicateMessages}
+                      setQuestions={setQuestions}
                     />
                   </Paper>
                 </Grid>
@@ -339,6 +382,7 @@ function QuestionPage() {
                       questions={questions}
                       duplicateCheckers={duplicateCheckers}
                       duplicateMessages={duplicateMessages}
+                      editQuestion={editQuestion}
                     />
                   </Paper>
                 </Grid>

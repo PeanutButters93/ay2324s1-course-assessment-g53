@@ -19,6 +19,7 @@ const EditQuestion = (props) => {
     const questions = props.questions.filter(x => x.id !== question.id);
     const duplicateCheckers = props.duplicateCheckers;
     const duplicateMessages = props.duplicateMessages;
+    const editQuestion = props.editQuestion
 
     const [title, setTitle] = useState(question.title);
     const [categories, setCategories] = useState(question.categories);
@@ -30,12 +31,12 @@ const EditQuestion = (props) => {
     const [emptyCategoryMessage, setEmptyCategoryMessage] = useState('');
     const [emptyComplexityMessage, setEmptyComplexityMessage] = useState('');
 
-    const [originalTitle, setOriginalTitle] = useState(question.title);
-    const [originalDescription, setOriginalDescription] = useState(question.description);
-    const [originalCategories, setOriginalCategories] = useState(question.categories);
-    const [originalComplexity, setOriginalComplexity] = useState(question.complexity);
-    const [hasDuplicateTitle, setHasDuplicateTitle] = useState('');
-    const [hasDuplicateDescription, setHasDuplicateDescription] = useState('');
+    // const [originalTitle, setOriginalTitle] = useState(question.title);
+    // const [originalDescription, setOriginalDescription] = useState(question.description);
+    // const [originalCategories, setOriginalCategories] = useState(question.categories);
+    // const [originalComplexity, setOriginalComplexity] = useState(question.complexity);
+    const [hasDuplicateTitle, setHasDuplicateTitle] = useState(false);
+    const [hasDuplicateDescription, setHasDuplicateDescription] = useState(false);
 
     // Use useEffect to update state when the question prop changes
     useEffect(() => {
@@ -47,10 +48,10 @@ const EditQuestion = (props) => {
         setEmptyDescriptionMessage("");
         setEmptyCategoryMessage("");
         setEmptyComplexityMessage("");
-        setOriginalTitle(question.title);
-        setOriginalDescription(question.description);
-        setOriginalCategories(question.categories);
-        setOriginalComplexity(question.complexity);
+        // setOriginalTitle(question.title);
+        // setOriginalDescription(question.description);
+        // setOriginalCategories(question.categories);
+        // setOriginalComplexity(question.complexity);
     }, [question]);
 
     useEffect(() => {
@@ -76,16 +77,8 @@ const EditQuestion = (props) => {
             return;
         }
 
-        if (originalTitle === title && originalDescription === description) {
-            setEditPage(false);
-            setViewPage(true);
-            return;
-        }
 
-        question.title = title;
-        question.categories = categories;
-        question.complexity = complexity;
-        question.description = description;
+        editQuestion(question, title, description, categories, complexity, questions)
         setEditPage(false);
         setViewPage(true);
     };
@@ -151,9 +144,7 @@ const EditQuestion = (props) => {
                 sx={{ marginTop: 2 }}
                 value={description}
                 onChange={event => setDescription(event.target.value)}
-                // error={!!emptyDescriptionMessage}
-                // helperText={emptyDescriptionMessage}
-                error={emptyDescriptionMessage || duplicateDescriptionMessage}
+                error={!!emptyDescriptionMessage || !!duplicateDescriptionMessage}
                 helperText={emptyDescriptionMessage || duplicateDescriptionMessage}
                 />
             <Button

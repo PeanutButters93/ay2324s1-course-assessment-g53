@@ -1,13 +1,14 @@
 import Question from "../model/Question.js";
 export async function addQuestion(req, res) {
+  const existingTitle = await Question.findOne({title: req.body.title})
+  if (existingTitle) {
+    res.status(400).send("A Question with given title already exists")
+    return;
+  }
   try {
-    //console.log(req.body);
-    const questions = await Question.find();
-    const id =
-      questions.length > 0 ? questions[questions.length - 1].id + 1 : 1;
-
+    
     const question = new Question({
-      id: id,
+      id: req.body.id,
       title: req.body.title,
       desc: req.body.desc,
       categories: req.body.categories,

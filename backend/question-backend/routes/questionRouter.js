@@ -1,17 +1,15 @@
 import express from "express";
-import Question from "../model/Question.js";
 import { getQuestions } from "../controller/getQuestions.js";
 import { addQuestion } from "../controller/addQuestion.js";
 import { updateQuestion } from "../controller/updateQuestion.js";
+import { deleteQuestion } from "../controller/deleteQuestion.js";
 const router = express.Router();
-router.get("/questions", getQuestions);
+router.get("/", getQuestions);
 
-router.post("/questions", addQuestion);
+router.post("/", addQuestion);
 
-router.put("/questions", updateQuestion);
+router.put("/", updateQuestion);
 
-router.post("/questionPage", function (req, res) {
-  res.send("You are sending a post request to the question page!");
-});
+router.delete("/", deleteQuestion);
 
 export default router;
