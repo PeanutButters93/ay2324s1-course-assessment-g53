@@ -7,7 +7,7 @@ import Layout from "./pages/Layout"
 import UpdateUserProfilePage from "./pages/UpdateUserProfilePage"
 import SignupPage from "./pages/SignupPage"
 import { Link } from "react-router-dom"
-
+import RouteProtector from "./components/RouteProtector"
 
 
 
@@ -19,9 +19,8 @@ const App = () => {
         <Route index element={<SignupPage />} />
         <Route path="login" element={<Login />} />
         <Route path="logout" element={<Logout />} />
-        <Route path="profile" element={<UpdateUserProfilePage />} />
-        <Route path="questionpage" element={<QuestionPage />} />
-
+        <Route path="profile" element={<RouteProtector isLoggedIn={false}><UpdateUserProfilePage /></RouteProtector>} />
+        <Route path="questionpage" element={<RouteProtector isLoggedIn={false}><QuestionPage /></RouteProtector>} />
       </Routes>
     </BrowserRouter>
   )
