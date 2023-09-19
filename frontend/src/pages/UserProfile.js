@@ -10,11 +10,11 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 
-const DEFAULT_USERNAME = "USERNAME"
-const DEFAULT_PASSWORD = "PASSWORDa1!"
-const DEFAULT_FIRSTNAME = "BOB"
-const DEFAULT_LASTNAME = "TAN"
-const DEFAULT_EMAIL = "eg@example.com"
+const DEFAULT_USERNAME = ""
+const DEFAULT_PASSWORD = ""
+const DEFAULT_FIRSTNAME = ""
+const DEFAULT_LASTNAME = ""
+const DEFAULT_EMAIL = ""
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme({
@@ -25,22 +25,29 @@ const defaultTheme = createTheme({
 
 export default function UserProfile() {
   const [username, setUsername] = useState(DEFAULT_USERNAME);
+  const [email, setEmail] = useState(DEFAULT_EMAIL);
   const [password, setPassword] = useState(DEFAULT_PASSWORD);
+  const [bio, setBio] = useState("");
+  const [date_of_birth, setDate_of_birth] = useState("");
   const [firstName, setFirstName] = useState(DEFAULT_FIRSTNAME);
   const [lastName, setLastName] = useState(DEFAULT_LASTNAME);
-  const [email, setEmail] = useState(DEFAULT_EMAIL);
 
 
-  const [fullName, setFullName] = useState(firstName + " " + lastName);
-  const [passwordError, setPasswordError] = useState(false);
+  //const [fullName, setFullName] = useState(firstName + " " + lastName);
+  //const [passwordError, setPasswordError] = useState("");
+  //const [passwordErrorText, setPasswordErrorText] = useState("");
+
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    setPasswordError(false)
+    //.then(alert("Personal information updated!"))
 
-    setFullName(firstName + " " + lastName)
-    alert("Personal information updated (wip)")
+  }
+
+  const handleDelete = (event) => {
+
+      //.then(alert("Successfully Deleted"))
     
   }
 
@@ -53,45 +60,20 @@ export default function UserProfile() {
         <Toolbar>
           <PersonIcon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
-            User Profle
+            User Profile
           </Typography>
         </Toolbar>
       </AppBar>
-
-      <main>
-        {/* Hero unit */}
-        <Box
-          sx={{
-            bgcolor: 'background.paper',
-            pt: 8,
-            pb: 6,
-          }}
-        >
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="text.primary"
-            gutterBottom
-          >
-            {username}
-          </Typography>
-          <Typography variant="h5" align="center" color="text.secondary" paragraph>
-            Welcome, {fullName}.
-          </Typography>
-        </Box>
-      </main>
 
       <Box
         display="flex"
         justifyContent="center"
         >
-
         <form autoComplete="off" onSubmit={handleSubmit} >
-          <h2>Personal Information</h2>
+          <h2>Edit Personal Information</h2>
           <TextField
-            disabled
             label="Username"
+            onChange={e => setUsername(e.target.value)}
             value={username}
             required
             variant="outlined"
@@ -100,10 +82,20 @@ export default function UserProfile() {
             sx={{ mb: 3 }}
           />
           <TextField
-            label="Password"
+            label="New Email"
+            onChange={e => setEmail(e.target.value)}
+            value={email}
+            type="email"
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="New Password"
             onChange={e => setPassword(e.target.value)}
             value={password}
-            error={passwordError}
             type="password"
             required
             variant="outlined"
@@ -112,7 +104,27 @@ export default function UserProfile() {
             sx={{ mb: 3 }}
           />
           <TextField
-            label="First Name"
+            label="New Bio"
+            onChange={e => setBio(e.target.value)}
+            value={bio}
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="New Date of Birth"
+            onChange={e => setDate_of_birth(e.target.value)}
+            value={date_of_birth}
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="New First Name"
             onChange={e => setFirstName(e.target.value)}
             value={firstName}
             required
@@ -122,7 +134,7 @@ export default function UserProfile() {
             sx={{ mb: 3 }}
           />
           <TextField
-            label="Last Name"
+            label="New Last Name"
             onChange={e => setLastName(e.target.value)}
             value={lastName}
             required
@@ -131,24 +143,13 @@ export default function UserProfile() {
             fullWidth
             sx={{ mb: 3 }}
           />
-          <TextField
-            label="Email"
-            onChange={e => setEmail(e.target.value)}
-            value={email}
-            type="email"
-            required
-            variant="outlined"
-            color="secondary"
-            fullWidth
-            sx={{ mb: 3 }}
-            />
             <Box textAlign='center'>
               <Button variant="outlined" color="secondary" type="submit" sx={{ mb: 3 }}>Update</Button>
             </Box>
         </form>
       </Box>
         <Box textAlign='center'>
-          <Button variant="outlined" color="secondary" type="submit">delete account (wip)</Button>
+          <Button variant="outlined" color="secondary" type="submit" onClick={handleDelete} disabled={username == ""}>Delete Account</Button>
         </Box>
       </Box>
 
