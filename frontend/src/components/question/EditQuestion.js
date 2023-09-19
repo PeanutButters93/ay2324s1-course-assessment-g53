@@ -43,7 +43,7 @@ const EditQuestion = (props) => {
         setTitle(question.title);
         setCategories(question.categories);
         setComplexity(question.complexity);
-        setDescription(question.description);
+        setDescription(question.desc);
         setEmptyTitleMessage("");
         setEmptyDescriptionMessage("");
         setEmptyCategoryMessage("");
@@ -134,6 +134,7 @@ const EditQuestion = (props) => {
                 </Select>
                 <FormHelperText error>{emptyComplexityMessage}</FormHelperText>
             </FormControl>
+            
             <TextField
                 id="description"
                 label={"Description"}
