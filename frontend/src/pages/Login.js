@@ -39,7 +39,8 @@ const darkTheme = createTheme({
   },
 })
 
-function Login () {
+function Login (props) {
+  const setLoggedIn = props.setLoggedIn;
   const navigate = useNavigate()
   const [userIdentifier, setUserIdentifier] = useState('')  // This replaces the email state
   const [password, setPassword] = useState('')
@@ -89,6 +90,7 @@ function Login () {
         if (data.token) {
           // Save JWT token to localStorage or context or wherever you store it
           localStorage.setItem('jwt', data.token)
+          setLoggedIn(true)
           navigate('/questionpage')
         }
       })

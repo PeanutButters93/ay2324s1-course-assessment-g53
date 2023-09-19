@@ -1,4 +1,4 @@
-import { ReactDOM } from "react"
+import { ReactDOM, useEffect, useState } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import QuestionPage from "./pages/QuestionPage"
 import Login from "./pages/Login"
@@ -8,19 +8,22 @@ import UpdateUserProfilePage from "./pages/UpdateUserProfilePage"
 import SignupPage from "./pages/SignupPage"
 import { Link } from "react-router-dom"
 import RouteProtector from "./components/RouteProtector"
+import { getTokenFromLocalStorage } from "./LocalStorage"
 
 
 
 const App = () => {
+  const token = getTokenFromLocalStorage()
+  const [isLoggedIn, setLoggedIn] = useState(token ? true : false);
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />} />
         <Route index element={<SignupPage />} />
-        <Route path="login" element={<Login />} />
-        <Route path="logout" element={<Logout />} />
-        <Route path="profile" element={<RouteProtector isLoggedIn={false}><UpdateUserProfilePage /></RouteProtector>} />
-        <Route path="questionpage" element={<RouteProtector isLoggedIn={false}><QuestionPage /></RouteProtector>} />
+        <Route path="login" element={<Login setLoggedIn={setLoggedIn}/>} />
+        <Route path="logout" element={<Logout setLoggedIn={setLoggedIn}/>} />
+        <Route path="profile" element={<RouteProtector isLoggedIn={isLoggedIn}><UpdateUserProfilePage /></RouteProtector>} />
+        <Route path="questionpage" element={<RouteProtector isLoggedIn={isLoggedIn}><QuestionPage /></RouteProtector>} />
       </Routes>
     </BrowserRouter>
   )
