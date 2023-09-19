@@ -51,7 +51,7 @@ export default function Question(props) {
         setEditPage(false);
         setSelectedQuestion(null);
       }
-      deleteQuestion(question);
+      deleteQuestion(question, questions);
     }
   };
 

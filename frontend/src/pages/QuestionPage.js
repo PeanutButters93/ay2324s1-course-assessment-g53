@@ -143,19 +143,6 @@ function QuestionPage() {
   };
 
 
-  const deleteQuestion = (question) => {
-    console.log(question)
-    const index = questions.indexOf(question);
-    const questionRemoved = questions.filter((q) => q !== question);
-    
-    for (let i = index; i < questions.length-1; i++) {
-      // Update the id of the questions after the deleted question
-      questionRemoved[i].id = questionRemoved[i].id - 1;
-    }
-    setQuestions(questionRemoved);
-    
-    saveQuestionsToLocalStorage(questionRemoved);
-  };
 
   const checkDuplicateTitle = (title, questions) => {
     return questions.some((question) => question.title === title);
@@ -207,6 +194,20 @@ function QuestionPage() {
       return;
   })
     setQuestions([...questions, question]);
+  }
+
+  async function deleteQuestion(questionToDelete, questions) {
+    await fetch("http://localhost:8000/api/questions", {
+      method: "DELETE", 
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify(questionToDelete)
+    }).catch(error => {
+      console.error('Error:', error);
+      return;
+  })
+  setQuestions(questions.filter(x => x.id !== questionToDelete.id));
   }
 
   const [questions, setQuestions] = useState(DEFAULT_QNS)
