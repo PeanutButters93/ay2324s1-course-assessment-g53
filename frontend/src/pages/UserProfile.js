@@ -17,6 +17,11 @@ const defaultTheme = createTheme({
   },
 });
 
+const isValidPassword = (password) => {
+  const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  return re.test(password);
+}
+
 export default function UserProfile() {
   const [userid, setUserid] = useState("");
   const [username, setUsername] = useState("");
@@ -70,6 +75,7 @@ export default function UserProfile() {
             label="userid"
             onChange={e => setUserid(e.target.value)}
             value={userid}
+            type = "number" 
             required
             variant="outlined"
             color="secondary"
@@ -100,6 +106,10 @@ export default function UserProfile() {
             onChange={e => setPassword(e.target.value)}
             value={password}
             type="password"
+            error={password.length != 0 && !isValidPassword(password)}
+              helperText={
+                (password.length != 0 && !isValidPassword(password)) ? "Password not strong enough" : ""
+              }
             variant="outlined"
             color="secondary"
             fullWidth
