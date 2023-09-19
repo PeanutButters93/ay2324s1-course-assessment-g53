@@ -10,8 +10,6 @@ import { Link } from "react-router-dom"
 import AdminView from "./pages/AdminView"
 import { AuthProvider, RequireAuth } from 'react-auth-kit'
 
-
-
 const App = () => {
   return (
     <AuthProvider
@@ -26,14 +24,30 @@ const App = () => {
           <Route index element={<SignupPage />} />
           <Route path="login" element={<Login />} />
           <Route path="logout" element={<Logout />} />
-          <Route path="updateProfile" element={<UpdateUserProfilePage />} />
-          {/* <Route path="questionpage" element={<QuestionPage />} /> */}
+        
+          <Route
+            path="updateProfile"
+            element={<RequireAuth loginPath="/login">
+            <UpdateUserProfilePage />
+          </RequireAuth>} />
           <Route
             path="questionpage"
             element={<RequireAuth loginPath="/login">
             <QuestionPage />
           </RequireAuth>} />
-          <Route path="adminview" element={<AdminView />} />
+          
+          <Route
+            path="questionpage"
+            element={<RequireAuth loginPath="/login">
+            <QuestionPage />
+          </RequireAuth>} />
+
+          <Route
+            path="adminview"
+            element={<RequireAuth loginPath="/login">
+            <AdminView />
+          </RequireAuth>} />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>
