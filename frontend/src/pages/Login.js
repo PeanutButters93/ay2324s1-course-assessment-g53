@@ -93,11 +93,12 @@ function Login () {
           navigate('/questionpage')
 
           signIn({
-            token: data.token,
+            token: data.token.token,
             expiresIn:3600,
             tokenType: "Bearer",
-            authState: {user_id:userIdentifier},
+            authState: data.token.claims,
           })
+          
         }
       })
       .catch(error => {
