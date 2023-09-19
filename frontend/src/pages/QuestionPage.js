@@ -193,7 +193,8 @@ function QuestionPage() {
       console.error('Error:', error);
       return;
   })
-    setQuestions([...questions, question]);
+    const res = [...questions, question].sort((a,b) => a.id - b.id)
+    setQuestions(res);
   }
 
   async function deleteQuestion(questionToDelete, questions) {
