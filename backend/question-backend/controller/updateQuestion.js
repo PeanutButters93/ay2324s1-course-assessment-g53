@@ -1,6 +1,7 @@
 import Question from "../model/Question.js";
 
 export async function updateQuestion(req, res) {
+  console.log(req.body)
   try {
     const id = req.body.id;
     const question_to_change = await Question.findOne({ id: id });

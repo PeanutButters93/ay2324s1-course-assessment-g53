@@ -196,21 +196,17 @@ function QuestionPage() {
   async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
     const id = questionToEdit.id;
     const info = {id, title, desc: description, categories, complexity}
-    console.log(info)
-    await fetch("http://localhost:8000/api/questions", {
+    const updated = await fetch("http://localhost:8000/api/questions", {
       method: "PUT",
       headers: {
-        'Content-Type': 'application.json'
+        'Content-Type': 'application/json'
       }, 
       body: JSON.stringify(info)
-    }).then(question => {
-      const updated_qns = [...questions, question]
-      setQuestions(updated_qns)
     }).catch(error => {
       console.error('Error:', error);
       return;
   })
-
+    setQuestions([...questions, updated]);
   }
 
   const [questions, setQuestions] = useState(DEFAULT_QNS)
@@ -223,7 +219,6 @@ function QuestionPage() {
     async function fetchQuestions() {
     const response = await fetch("http://localhost:8000/api/questions", {method: "GET"})
     const data = await response.json()
-    console.log(data)
     const questions = []
     for (var i in data) {
       questions.push(data[i])

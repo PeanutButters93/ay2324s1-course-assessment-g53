@@ -19,7 +19,6 @@ const EditQuestion = (props) => {
     const questions = props.questions.filter(x => x.id !== question.id);
     const duplicateCheckers = props.duplicateCheckers;
     const duplicateMessages = props.duplicateMessages;
-    const editQuestion = props.editQuestion;
 
     const [title, setTitle] = useState(question.title);
     const [categories, setCategories] = useState(question.categories);
@@ -76,12 +75,17 @@ const EditQuestion = (props) => {
         if (hasDuplicateTitle || hasDuplicateDescription) {
             return;
         }
-        // console.log(title);
-        // console.log(description);
-        // console.log(categories);
-        // console.log(complexity);
-        editQuestion(question, title, description, categories, complexity, questions)
 
+        if (originalTitle === title && originalDescription === description) {
+            setEditPage(false);
+            setViewPage(true);
+            return;
+        }
+
+        question.title = title;
+        question.categories = categories;
+        question.complexity = complexity;
+        question.description = description;
         setEditPage(false);
         setViewPage(true);
     };
