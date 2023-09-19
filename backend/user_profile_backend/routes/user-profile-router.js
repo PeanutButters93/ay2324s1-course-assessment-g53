@@ -12,7 +12,7 @@ const deleteUserByUserID = require('../controller/deleteUser').deleteUserByUserI
 
 const updateUserInfo = require('../controller/updateUser').updateUserInfo
 
-const loginUser = require('../controller/getUser').loginUser; 
+const loginUser = require('../controller/getUser').loginUser
 
 
 
@@ -22,12 +22,12 @@ const router = express.Router()
 router.use(express.json())
 
 // Define your routes
-router.post('/login', loginUser);
+router.post('/login', loginUser)
 router.post('/createUser', createUser)
 router.get('/users', getUsers)
-router.get('/user/:id', getUserById)
-router.get('/userByName/:name', getUserByName)
-router.put('/updateUser/:id', updateUserInfo)
+router.get('/userById', getUserById)
+router.get('/userByName', getUserByName)
+router.put('/updateUser', updateUserInfo)
 router.delete('/deleteUser/:id', deleteUserByUserID)
 
 
