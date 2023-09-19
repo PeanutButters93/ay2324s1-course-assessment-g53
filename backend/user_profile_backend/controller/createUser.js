@@ -1,28 +1,30 @@
 const pool = require('../database/db.js')
 
-const createUser = (request, response) => {
-    const { username, email, password, bio, date_of_birth } = request.body
+const createUser = async(request, response) => {
+    const { username, email, password, bio, date_of_birth, firstName, lastName } = request.body
 
-    // Create an array to hold the values and an array to hold the placeholders
-    const values = [username, email, password]
-    const placeholders = ['$1', '$2', '$3']
-    const fields = ['username', 'email', 'password']
+    const bcrypt = require('bcrypt');
 
-    // Check if bio is provided and add it to the values and placeholders arrays
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const fields = ['username', 'email', 'password', 'first_name', 'last_name'];
+    const values = [username, email, hashedPassword, firstName, lastName];
+    const placeholders = values.map((_, index) => `$${index + 1}`);
+
     if (bio !== undefined) {
-        values.push(bio)
-        fields.push('bio')
-        placeholders.push('$' + (values.length))
+        values.push(bio);
+        fields.push('bio');
+        placeholders.push(`$${values.length}`);
     }
 
-    // Check if date_of_birth is provided and add it to the values and placeholders arrays
     if (date_of_birth !== undefined) {
-        values.push(date_of_birth)
-        fields.push('date_of_birth')
-        placeholders.push('$' + (values.length))
+        values.push(date_of_birth);
+        fields.push('date_of_birth');
+        placeholders.push(`$${values.length}`);
     }
 
-    const query = `INSERT INTO users (${fields.join(', ')}) VALUES (${placeholders.join(', ')}) RETURNING user_id`
+    const query = `INSERT INTO users (${fields.join(', ')}) VALUES (${placeholders.join(', ')}) RETURNING user_id`;
 
     pool.query(query, values, (error, results) => {
         if (error) {
@@ -33,6 +35,7 @@ const createUser = (request, response) => {
                 // This error corresponds to the password complexity constraint
                 response.status(400).json({ error: 'Password does not meet complexity requirements' })
             } else {
+                console.log(error)
                 console.error('Error creating user:', error)
                 response.status(500).json({ error: 'Internal server error' })
             }

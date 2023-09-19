@@ -176,10 +176,10 @@ function QuestionPage() {
     checkDuplicateTitle: checkDuplicateTitle,
   };
   let localStorage = getQuestionsFromLocalStorage()
-  if (localStorage.length < 1) {
+  // if (localStorage.length < 1) {
     saveQuestionsToLocalStorage(DEFAULT_QNS);
     localStorage = DEFAULT_QNS;
-  }
+  // }
   const [questions, setQuestions] = useState(localStorage.length > 0 ? localStorage : DEFAULT_QNS);
   const [viewPage, setViewPage] = useState(false);
   const [addPage, setAddPage] = useState(false);
