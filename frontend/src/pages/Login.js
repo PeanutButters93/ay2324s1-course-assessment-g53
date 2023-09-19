@@ -1,25 +1,25 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink } from "react-router-dom";
-import MUILink from '@mui/material/Link';
-import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { Link as RouterLink } from "react-router-dom"
+import MUILink from '@mui/material/Link'
+import { useNavigate } from "react-router-dom"
+import { useState } from 'react'
 
 
 
-function Copyright(props) {
+function Copyright (props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -29,48 +29,48 @@ function Copyright(props) {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  );
+  )
 }
 
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',  // This switches the theme mode to dark
   },
-});
+})
 
-function Login() {
-  const navigate = useNavigate();
-  const [userIdentifier, setUserIdentifier] = useState('');  // This replaces the email state
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+function Login () {
+  const navigate = useNavigate()
+  const [userIdentifier, setUserIdentifier] = useState('')  // This replaces the email state
+  const [password, setPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
 
   const isValidPassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}|:"<>?])(?=.*[0-9]).{8,}$/;
-    return regex.test(password);
-  };
+    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}|:"<>?])(?=.*[0-9]).{8,}$/
+    return regex.test(password)
+  }
 
   const isValidEmailOrUsername = (input) => {
     // Simple check to see if it contains '@'. 
     // If you want more complex validation for email, you can expand this function.
-    return input.includes('@') || input.length >= 3;  // Assuming a minimum username length of 3
-  };
+    return input.includes('@') || input.length >= 3  // Assuming a minimum username length of 3
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     // Additional validation here
     if (!isValidEmailOrUsername(userIdentifier)) {
-      alert('Please enter a valid email or username.');
-      return;
+      alert('Please enter a valid email or username.')
+      return
     }
 
     if (!isValidPassword(password)) {
-      setPasswordError('Password does not meet the requirements.');
-      return;
+      setPasswordError('Password does not meet the requirements.')
+      return
     } else {
-      setPasswordError('');  // Clear the error
+      setPasswordError('')  // Clear the error
     }
 
-    fetch('http://localhost:3000/api/users/login', {
+    fetch('http://localhost:4000/api/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,29 +83,29 @@ function Login() {
       .then(response => {
         if (response.status === 403) {
           // Handle the forbidden error
-          return response.json().then(err => { throw err; });
+          return response.json().then(err => { throw err })
         }
-        return response.json();
+        return response.json()
       })
       .then(data => {
         if (data.token) {
           // Save JWT token to localStorage or context or wherever you store it
-          localStorage.setItem('jwt', data.token);
-          navigate('/questionpage');
+          localStorage.setItem('jwt', data.token)
+          navigate('/questionpage')
         }
       })
       .catch(error => {
         // Handle different types of errors here
         if (error.error === 'Incorrect password') {
-          alert('Incorrect password. Please try again.');
+          alert('Incorrect password. Please try again.')
         } else if (error.error === 'User not found') {
-          alert('User not found. Please try again or register.');
+          alert('User not found. Please try again or register.')
         } else {
-          console.error('Error:', error);
-          alert('An error occurred. Please try again.');
+          console.error('Error:', error)
+          alert('An error occurred. Please try again.')
         }
-      });
-  };
+      })
+  }
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -193,6 +193,6 @@ function Login() {
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
-  );
+  )
 }
-export default Login;
+export default Login
