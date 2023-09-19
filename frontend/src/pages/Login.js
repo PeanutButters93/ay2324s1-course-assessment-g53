@@ -17,8 +17,9 @@ import MUILink from '@mui/material/Link'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
+import { useSignIn } from "react-auth-kit"
 
-
+import {withAuthHeader} from 'react-auth-kit'
 
 function Copyright (props) {
   return (
@@ -90,6 +91,13 @@ function Login () {
           // Save JWT token to localStorage or context or wherever you store it
           localStorage.setItem('jwt', data.token)
           navigate('/questionpage')
+
+          signIn({
+            token: data.token,
+            expiresIn:3600,
+            tokenType: "Bearer",
+            authState: {user_id:userIdentifier},
+          })
         }
       })
       .catch(error => {
@@ -104,6 +112,9 @@ function Login () {
         }
       })
   }
+
+
+  const signIn = useSignIn();
 
   return (
     <ThemeProvider theme={darkTheme}>
