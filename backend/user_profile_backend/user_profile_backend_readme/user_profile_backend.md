@@ -4,7 +4,7 @@
 
 1. ## update User
 
-   - Use http put
+   - Use http **put**
    - /updateUser
    - **"user_id"** is compulsory
    - ```json
@@ -19,7 +19,7 @@
    - ![alt](images/updateUser.png)
 
 2. ## Create User
-   - Use http post
+   - Use http **post**
    - /createUser
    - **"username", "password", "email"** is compulsory
    - ```json
@@ -38,10 +38,11 @@
    - **Get all users**
    - Use http get
    - /users
+   - http://localhost:4000/api/users/users
 
 4. ## get User by name
    - **Get user by username**
-   - Use http get
+   - Use http **get**
    - /userByName/:name
    - **"username"** is compulsory
    - Pass in user name as http query parameter
@@ -49,8 +50,21 @@
    - ![alt](images/getUserByName.png)
 5. ## get User by id
    - **Get user by user_id**
-   - Use http get
+   - Use http **get**
    - **"user_id"** is compulsory
    - Pass in user_id as http query parameter
    - http://localhost:4000/api/users/userById?user_id=1
    - -![alt](images/getUserById.png)
+6. ## check if user is admin
+   - /checkUserAdmin
+   - Use http **get**
+   - Pass in username as http query parameter
+   - http://localhost:4000/api/users/checkUserAdmin?username=adam_lu
+   - -![alt](images/checkUserAdmin.png)
+7. ## Set user to be admin
+   - **Need to be admin authenticated**
+   - /setUserAdmin
+   - use http **put**
+   - Pass in username as http query parameter
+   - http://localhost:4000/api/users/setUserAdmin?username=rugatugtuck
+   -
