@@ -7,32 +7,33 @@ const updateUserInfo = (request, response) => {
         response.status(400).json({ error: 'user_id is required.' })
         return
     }
+    const parsedUserId = parseInt(user_id)
 
     // Construct the SQL query based on which fields are provided for update
     const updateFields = []
-    const values = [user_id]
+    const values = [parsedUserId]
 
-    if (new_username !== undefined) {
+    if (new_username !== undefined && new_username !== "") {
         updateFields.push('username = $' + (values.length + 1))
         values.push(new_username)
     }
 
-    if (new_email !== undefined) {
+    if (new_email !== undefined && new_email !== "") {
         updateFields.push('email = $' + (values.length + 1))
         values.push(new_email)
     }
 
-    if (new_password !== undefined) {
+    if (new_password !== undefined && new_password !== "") {
         updateFields.push('password = $' + (values.length + 1))
         values.push(new_password)
     }
 
-    if (new_bio !== undefined) {
+    if (new_bio !== undefined && new_bio != "") {
         updateFields.push('bio = $' + (values.length + 1))
         values.push(new_bio)
     }
 
-    if (new_date_of_birth !== undefined) {
+    if (new_date_of_birth !== undefined && new_date_of_birth !== undefined) {
         updateFields.push('date_of_birth = $' + (values.length + 1))
         values.push(new_date_of_birth)
     }
