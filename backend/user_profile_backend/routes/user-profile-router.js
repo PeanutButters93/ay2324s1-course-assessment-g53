@@ -14,6 +14,8 @@ const updateUserInfo = require('../controller/updateUser').updateUserInfo
 
 const loginUser = require('../controller/getUser').loginUser
 
+const checkUSerAdmin = require('../controller/checkUserAdmin').checkUSerAdmin
+const setUserAdmin = require('../controller/setUserAdmin').setUserAdmin
 
 
 const app = express()
@@ -29,6 +31,8 @@ router.get('/userById', getUserById)
 router.get('/userByName', getUserByName)
 router.put('/updateUser', updateUserInfo)
 router.delete('/deleteUser/:id', deleteUserByUserID)
+router.get('/checkUserAdmin', checkUSerAdmin)
+router.put('/setUserAdmin', setUserAdmin)
 
 
 module.exports = router

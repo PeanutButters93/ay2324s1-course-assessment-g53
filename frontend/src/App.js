@@ -7,7 +7,7 @@ import Layout from "./pages/Layout"
 import UpdateUserProfilePage from "./pages/UpdateUserProfilePage"
 import SignupPage from "./pages/SignupPage"
 import { Link } from "react-router-dom"
-
+import AdminView from "./pages/AdminView"
 
 
 
@@ -19,9 +19,9 @@ const App = () => {
         <Route index element={<SignupPage />} />
         <Route path="login" element={<Login />} />
         <Route path="logout" element={<Logout />} />
-        <Route path="profile" element={<UpdateUserProfilePage />} />
+        <Route path="updateProfile" element={<UpdateUserProfilePage />} />
         <Route path="questionpage" element={<QuestionPage />} />
-
+        <Route path="adminview" element={<AdminView />} />
       </Routes>
     </BrowserRouter>
   )

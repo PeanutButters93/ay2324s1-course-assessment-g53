@@ -9,6 +9,12 @@ const updateUserInfo = (request, response) => {
     }
     const parsedUserId = parseInt(user_id)
 
+    // Check if user_id is a valid integer
+    if (isNaN(user_id)) {
+        response.status(400).json({ error: 'Invalid user_id format' })
+        return
+    }
+
     // Construct the SQL query based on which fields are provided for update
     const updateFields = []
     const values = [parsedUserId]
