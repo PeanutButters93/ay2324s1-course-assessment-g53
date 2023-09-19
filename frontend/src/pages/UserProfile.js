@@ -10,12 +10,6 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 
-const DEFAULT_USERNAME = ""
-const DEFAULT_PASSWORD = ""
-const DEFAULT_FIRSTNAME = ""
-const DEFAULT_LASTNAME = ""
-const DEFAULT_EMAIL = ""
-
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme({
   palette: {
@@ -24,13 +18,14 @@ const defaultTheme = createTheme({
 });
 
 export default function UserProfile() {
-  const [username, setUsername] = useState(DEFAULT_USERNAME);
-  const [email, setEmail] = useState(DEFAULT_EMAIL);
-  const [password, setPassword] = useState(DEFAULT_PASSWORD);
+  const [userid, setUserid] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [bio, setBio] = useState("");
   const [date_of_birth, setDate_of_birth] = useState("");
-  const [firstName, setFirstName] = useState(DEFAULT_FIRSTNAME);
-  const [lastName, setLastName] = useState(DEFAULT_LASTNAME);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
 
   //const [fullName, setFullName] = useState(firstName + " " + lastName);
@@ -72,10 +67,19 @@ export default function UserProfile() {
         <form autoComplete="off" onSubmit={handleSubmit} >
           <h2>Edit Personal Information</h2>
           <TextField
+            label="userid"
+            onChange={e => setUserid(e.target.value)}
+            value={userid}
+            required
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ mb: 3 }}
+          />
+          <TextField
             label="Username"
             onChange={e => setUsername(e.target.value)}
             value={username}
-            required
             variant="outlined"
             color="secondary"
             fullWidth
@@ -86,7 +90,6 @@ export default function UserProfile() {
             onChange={e => setEmail(e.target.value)}
             value={email}
             type="email"
-            required
             variant="outlined"
             color="secondary"
             fullWidth
@@ -97,7 +100,6 @@ export default function UserProfile() {
             onChange={e => setPassword(e.target.value)}
             value={password}
             type="password"
-            required
             variant="outlined"
             color="secondary"
             fullWidth
@@ -107,7 +109,6 @@ export default function UserProfile() {
             label="New Bio"
             onChange={e => setBio(e.target.value)}
             value={bio}
-            required
             variant="outlined"
             color="secondary"
             fullWidth
@@ -117,7 +118,6 @@ export default function UserProfile() {
             label="New Date of Birth"
             onChange={e => setDate_of_birth(e.target.value)}
             value={date_of_birth}
-            required
             variant="outlined"
             color="secondary"
             fullWidth
@@ -127,7 +127,6 @@ export default function UserProfile() {
             label="New First Name"
             onChange={e => setFirstName(e.target.value)}
             value={firstName}
-            required
             variant="outlined"
             color="secondary"
             fullWidth
@@ -137,7 +136,6 @@ export default function UserProfile() {
             label="New Last Name"
             onChange={e => setLastName(e.target.value)}
             value={lastName}
-            required
             variant="outlined"
             color="secondary"
             fullWidth
@@ -149,7 +147,7 @@ export default function UserProfile() {
         </form>
       </Box>
         <Box textAlign='center'>
-          <Button variant="outlined" color="secondary" type="submit" onClick={handleDelete} disabled={username == ""}>Delete Account</Button>
+          <Button variant="outlined" color="secondary" type="submit" onClick={handleDelete} disabled={userid == ""}>Delete Account</Button>
         </Box>
       </Box>
 
