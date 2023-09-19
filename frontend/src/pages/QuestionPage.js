@@ -158,11 +158,13 @@ function QuestionPage() {
   };
 
   const checkDuplicateTitle = (title, questions) => {
+    console.log(questions)
     return questions.some((question) => question.title === title);
   };
 
   const checkDuplicateDescription = (description, questions) => {
-    return questions.some((question) => question.description === description);
+    console.log(questions)
+    return questions.some((question) => question.desc === description);
   };
 
   const duplicateCheckers = {
@@ -195,18 +197,18 @@ function QuestionPage() {
 
   async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
     const id = questionToEdit.id;
-    const info = {id, title, desc: description, categories, complexity}
-    const updated = await fetch("http://localhost:8000/api/questions", {
+    const question = {id, title, desc: description, categories, complexity}
+    await fetch("http://localhost:8000/api/questions", {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json'
       }, 
-      body: JSON.stringify(info)
+      body: JSON.stringify(question)
     }).catch(error => {
       console.error('Error:', error);
       return;
   })
-    setQuestions([...questions, updated]);
+    setQuestions([...questions, question]);
   }
 
   const [questions, setQuestions] = useState(DEFAULT_QNS)
