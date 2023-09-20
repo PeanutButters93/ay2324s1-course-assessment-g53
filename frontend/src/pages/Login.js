@@ -17,8 +17,7 @@ import MUILink from '@mui/material/Link'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
-
-
+import useCookie from '../components/useCookie'
 
 function Copyright (props) {
   return (
@@ -38,6 +37,7 @@ const darkTheme = createTheme({
     mode: 'dark',  // This switches the theme mode to dark
   },
 })
+
 
 function Login (props) {
   const setLoggedIn = props.setLoggedIn;
@@ -71,7 +71,6 @@ function Login (props) {
     } else {
       setPasswordError('')  // Clear the error
     }
-
     axios.post('http://localhost:4000/api/users/login', {
       userIdentifier: userIdentifier,  // Use the userIdentifier state variable
       password: password,              // Use the password state variable
@@ -88,6 +87,8 @@ function Login (props) {
       })
       .then(data => {
         if (data.token) {
+          
+          updateCookies(data.token)
           // Save JWT token to localStorage or context or wherever you store it
           localStorage.setItem('jwt', data.token)
           setLoggedIn(true)
@@ -106,6 +107,7 @@ function Login (props) {
         }
       })
   }
+const {updateCookies} = useCookie()
 
   return (
     <ThemeProvider theme={darkTheme}>
