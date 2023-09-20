@@ -52,7 +52,8 @@ const loginUser = async (request, response) => {
             const user = results.rows[0]
             const isMatch = await bcrypt.compare(password, user.password)  // assuming the password column is named 'password'
             if (isMatch) {
-                const token = jwt.sign({ userId: user.id }, 'yourSecretKey', { expiresIn: '1h' })
+                delete user["password"]
+                const token = jwt.sign({ "userdata": user }, 'yourSecretKey', { expiresIn: '1h' })
                 response.json({ token })
             } else {
                 response.status(403).json({ error: 'Incorrect password' })
@@ -65,7 +66,8 @@ const loginUser = async (request, response) => {
                     const user = results.rows[0]
                     const isMatch = await bcrypt.compare(password, user.password)
                     if (isMatch) {
-                        const token = jwt.sign({ userId: user.id }, 'yourSecretKey', { expiresIn: '1h' })
+                        delete user["password"]
+                        const token = jwt.sign({ "userdata": user }, 'yourSecretKey', { expiresIn: '1h' })
                         response.json({ token })
                     } else {
                         response.status(403).json({ error: 'Incorrect password' })
