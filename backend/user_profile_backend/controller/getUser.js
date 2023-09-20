@@ -1,4 +1,5 @@
 const pool = require('../database/db.js')
+const { verifyJsonWebToken } = require('../middleware/tokenUtils')
 
 const getUsers = (request, response) => {
     pool.query('SELECT * FROM users ORDER BY user_id ASC', (error, results) => {
@@ -10,8 +11,15 @@ const getUsers = (request, response) => {
 }
 
 const getUserById = (request, response) => {
-    console.log(request.query.user_id)
-    const id = parseInt(request.query.user_id)
+    const token = request.headers.authorization;
+    let id;
+
+    try {
+        id = verifyJsonWebToken(token).userId;
+    } catch(error) {
+        console.log(error.message);
+        return response.status(401).json({ error: 'Unauthorised' });
+    }
     // Check if user_id is a valid integer
     if (isNaN(id)) {
         return response.status(400).json({ error: 'Invalid user_id format' })

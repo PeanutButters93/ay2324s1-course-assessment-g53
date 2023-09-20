@@ -1,8 +1,6 @@
 const axios = require('axios');
 const { verifyJsonWebToken } = require('./tokenUtils');
 
-const user_backend_url = "http://localhost:4000/api/users"
-
 async function validateUser(request, response, next) {
     const token = request.headers.authorization;
     let user_id;
@@ -14,7 +12,7 @@ async function validateUser(request, response, next) {
         return response.status(401).json({ error: 'Unauthorised' });
     }
 
-    const userById_url = user_backend_url + "/userById?user_id=" + user_id;
+    const userById_url = "http://localhost:4000/api/users/userById";
 
     try {
         const user = await axios.get(userById_url, { headers : { Authorization: token } });
@@ -25,6 +23,7 @@ async function validateUser(request, response, next) {
         console.log(error.message);
         return response.status(401).json({ error: 'Unauthorised' });
     }
+    request.body.user_id = user_id;
 
     next();
 }
