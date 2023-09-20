@@ -14,8 +14,7 @@ const getUserById = (request, response) => {
     const id = parseInt(request.query.user_id)
     // Check if user_id is a valid integer
     if (isNaN(id)) {
-        response.status(400).json({ error: 'Invalid user_id format' })
-        return
+        return response.status(400).json({ error: 'Invalid user_id format' })
     }
     pool.query('SELECT * FROM users WHERE user_id = $1', [id], (error, results) => {
         if (error) {

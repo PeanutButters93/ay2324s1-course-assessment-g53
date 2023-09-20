@@ -1,11 +1,13 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
 const secretKey = "yourSecretKey"
 
-export const signJsonWebToken = (user) => {
+const signJsonWebToken = (user) => {
   return jwt.sign(user, secretKey);
 };
 
-export const verifyJsonWebToken = (token) => {
-  return jwt.verify(token, secretKey);
+const verifyJsonWebToken = (token) => {
+    return jwt.verify(token, secretKey);
 };
+
+module.exports = { signJsonWebToken, verifyJsonWebToken }; // for testing
