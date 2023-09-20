@@ -8,3 +8,8 @@ export const getQuestionsFromLocalStorage = () => {
   const storedQuestions = localStorage.getItem("questions");
   return storedQuestions ? JSON.parse(storedQuestions) : null;
 };
+
+export const getTokenFromLocalStorage = () => {
+  const storedToken = localStorage.getItem("jwt");
+  return storedToken ? storedToken : null
+}
