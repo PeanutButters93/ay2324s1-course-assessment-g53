@@ -11,8 +11,9 @@ const getUsers = (request, response) => {
 
 const getUserById = (request, response) => {
     const id = parseInt(request.query.user_id)
+    console.log(id)
     // Check if user_id is a valid integer
-    if (isNaN(user_id)) {
+    if (isNaN(id)) {
         response.status(400).json({ error: 'Invalid user_id format' })
         return
     }
