@@ -10,14 +10,12 @@ const getUsers = (request, response) => {
 }
 
 const getUserById = (request, response) => {
-    const id = parseInt(request.query.user_id)
-    console.log(id)
+    const id = 55 // hardcoded value for now
     // Check if user_id is a valid integer
     if (isNaN(id)) {
         response.status(400).json({ error: 'Invalid user_id format' })
         return
     }
-    console.log(id)
     pool.query('SELECT * FROM users WHERE user_id = $1', [id], (error, results) => {
         if (error) {
             throw error
@@ -51,10 +49,12 @@ const loginUser = async (request, response) => {
             response.status(500).json({ error: 'Internal server error' })
         } else if (results.rows.length > 0) {
             const user = results.rows[0]
+            // console.log(user)
             const isMatch = await bcrypt.compare(password, user.password)  // assuming the password column is named 'password'
             if (isMatch) {
                 const token = jwt.sign({ userId: user.id }, 'yourSecretKey', { expiresIn: '1h' })
-                response.json({ token })
+                const isAdmin = user.is_admin
+                response.json({ token , isAdmin})
             } else {
                 response.status(403).json({ error: 'Incorrect password' })
             }
@@ -67,7 +67,8 @@ const loginUser = async (request, response) => {
                     const isMatch = await bcrypt.compare(password, user.password)
                     if (isMatch) {
                         const token = jwt.sign({ userId: user.id }, 'yourSecretKey', { expiresIn: '1h' })
-                        response.json({ token })
+                        const isAdmin = user.is_admin
+                        response.json({ token, isAdmin})
                     } else {
                         response.status(403).json({ error: 'Incorrect password' })
                     }

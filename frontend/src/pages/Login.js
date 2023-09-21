@@ -17,6 +17,8 @@ import MUILink from '@mui/material/Link'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
+import { authActions } from '../store'
+import {useSelector, useDispatch} from 'react-redux'
 
 
 
@@ -40,6 +42,7 @@ const darkTheme = createTheme({
 })
 
 function Login (props) {
+  const dispatch = useDispatch()
   const setLoggedIn = props.setLoggedIn;
   const updateAdminStatus = props.updateAdminStatus
   const navigate = useNavigate()
@@ -88,15 +91,16 @@ function Login (props) {
         return response.data
       })
       .then(data => {
+        console.log("Hello")
         console.log(data)
         if (data.isAdmin) {
-          console.log("Setting admin here")
-          updateAdminStatus(true)
+          dispatch(authActions.setAdmin(true))
         }
         if (data.token) {
           // Save JWT token to localStorage or context or wherever you store it
           localStorage.setItem('jwt', data.token)
-          setLoggedIn(true)
+          dispatch(authActions.setLogin(true))
+          //setLoggedIn(true)
           navigate('/questionpage')
         }
       })

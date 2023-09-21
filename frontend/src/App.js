@@ -1,5 +1,5 @@
 import { ReactDOM, useEffect, useState } from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import QuestionPage from "./pages/QuestionPage"
 import Login from "./pages/Login"
 import Logout from "./pages/Logout"
@@ -9,26 +9,43 @@ import SignupPage from "./pages/SignupPage"
 import RouteProtector from "./components/RouteProtector"
 import { getTokenFromLocalStorage } from "./LocalStorage"
 import AdminView from "./pages/AdminView"
+import { useDispatch, useSelector } from "react-redux"
+import { authActions } from "./store"
+
+// const canRenderOnlyLogin = (isLoggedIn, route) => {
+//   return isLoggedIn ? route : null
+// }
 
 const App = () => {
-  const token = getTokenFromLocalStorage()
-  const [isLoggedIn, setLoggedIn] = useState(token ? true : false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const updateAdminStatus = (status) => {
-    setIsAdmin(status)
-    console.log("status updated")
-    console.log(status)
-  }
+
+  const isLogin = useSelector((state) => state.auth.isLoggedIn)
+  const isAdministrator = useSelector((state) => state.auth.isAdmin)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const token = getTokenFromLocalStorage()
+    if (token) {
+      dispatch(authActions.setLogin(true))
+      const tokenBody = token.split('.')[1]
+      let buffer = JSON.parse(atob(tokenBody))
+      console.log(buffer)
+      if (buffer.isAdmin) {
+        dispatch(authActions.setAdmin(true))
+      }
+    }
+  }, [])
+  console.log(isLogin, isAdministrator)
+  // console.log(isLogin, isAdministrator, isAdministrator ? <Route path="adminview" element={<AdminView/>}/> : null)
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />} />
         <Route index element={<SignupPage />} />
-        <Route path="login" element={<Login setLoggedIn={setLoggedIn} updateAdminStatus={updateAdminStatus}/>} />
-        <Route path="logout" element={<Logout setLoggedIn={setLoggedIn}/>} />
-        <Route path="profile" element={<RouteProtector permission={isLoggedIn} link={"/login"}><UpdateUserProfilePage /></RouteProtector>} />
-        <Route path="questionpage" element={<RouteProtector permission={isLoggedIn} link={"/login"}><QuestionPage /></RouteProtector>} />
-        <Route path="adminview" element={<RouteProtector permission={isAdmin} link={"/questionpage"}><AdminView /></RouteProtector>} />
+        <Route path="login" element={<Login/>} />
+        <Route path="logout" element={<Logout />} />
+        {isLogin ? <Route path="profile" element={<UpdateUserProfilePage />}/> : null}
+        {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
+        {isAdministrator ? <Route path="adminview" element={<AdminView/>}/> : null}
       </Routes>
     </BrowserRouter>
   )
