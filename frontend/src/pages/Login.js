@@ -98,7 +98,8 @@ function Login (props) {
         }
         if (data.token) {
           // Save JWT token to localStorage or context or wherever you store it
-          localStorage.setItem('jwt', data.token)
+          console.log(data.token)
+          localStorage.setItem('jwt', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc19hZG1pbiI6dHJ1ZX0.wldE4kYw8WXq3SvZyRNcugit9bkuRzDUV_aAdVKDs1U')
           dispatch(authActions.setLogin(true))
           //setLoggedIn(true)
           navigate('/questionpage')

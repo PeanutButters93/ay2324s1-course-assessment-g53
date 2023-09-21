@@ -29,7 +29,7 @@ const App = () => {
       const tokenBody = token.split('.')[1]
       let buffer = JSON.parse(atob(tokenBody))
       console.log(buffer)
-      if (buffer.isAdmin) {
+      if (buffer.is_admin) {
         dispatch(authActions.setAdmin(true))
       }
     }
