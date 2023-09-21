@@ -24,6 +24,7 @@ import EditQuestion from "../components/question/EditQuestion";
 import AddQuestion from "../components/question/AddQuestion";
 import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
 import axios from 'axios';
+import useCookie from "../components/useCookie";
 
 const drawerWidth = 240;
 
@@ -138,255 +139,263 @@ function checkEmpty(
   return;
 }
 function QuestionPage() {
-  const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
+    const [open, setOpen] = React.useState(true);
+    const toggleDrawer = () => {
+        setOpen(!open);
+    };
+    const {getAuthCookie} = useCookie();
 
+    const checkDuplicateTitle = (title, questions) => {
+        return questions.some((question) => question.title === title);
+    };
 
+    const checkDuplicateDescription = (description, questions) => {
+        return questions.some((question) => question.desc === description);
+    };
 
-  const checkDuplicateTitle = (title, questions) => {
-    return questions.some((question) => question.title === title);
-  };
-
-  const checkDuplicateDescription = (description, questions) => {
-    return questions.some((question) => question.desc === description);
-  };
-
-  const duplicateCheckers = {
-    checkDuplicateDescription: checkDuplicateDescription,
-    checkDuplicateTitle: checkDuplicateTitle,
-  };
-  let localStorage = getQuestionsFromLocalStorage()
-  if (localStorage === null) {
-    saveQuestionsToLocalStorage(DEFAULT_QNS);
-    localStorage = DEFAULT_QNS;
-  }
-
-  async function addQuestion(title, description, categories, complexity, questions) {
-    const id = questions ? questions[questions.length -1].id + 1 : 1;
-    const question = { id, title, description, categories, complexity };
-    axios.post("http://localhost:8000/api/questions", question, {
-      headers: {
-        'Content-Type': 'application/json',
-    },
-    }).catch(error => {
-      console.error('Error:', error);
-      return;
-  })
-    const updated_qns = [...questions, question]
-    setQuestions(updated_qns);
-    return question;
-  };
-
-  async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
-    const id = questionToEdit.id;
-    const question = {id, title, desc: description, categories, complexity}
-    await axios.put("http://localhost:8000/api/questions", question, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    }).catch(error => {
-      console.error('Error:', error);
-      return;
-  })
-    const res = [...questions, question].sort((a,b) => a.id - b.id)
-    setQuestions(res);
-  }
-
-  async function deleteQuestion(questionToDelete, questions) {
-    console.log(questionToDelete);
-    await axios.delete(`http://localhost:8000/api/questions/${questionToDelete.id}`, {
-    }).catch(error => {
-      console.error('Error:', error);
-      return;
-  })
-  setQuestions(questions.filter(x => x.id !== questionToDelete.id));
-  }
-
-  const [questions, setQuestions] = useState(DEFAULT_QNS)
-  const [viewPage, setViewPage] = useState(false);
-  const [addPage, setAddPage] = useState(false);
-  const [editPage, setEditPage] = useState(false);
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-
-  React.useEffect(() => {
-    async function fetchQuestions() {
-    const response = await axios.get('http://localhost:8000/api/questions')
-    const data = response.data
-    const questions = []
-    for (var i in data) {
-      questions.push(data[i])
+    const duplicateCheckers = {
+        checkDuplicateDescription: checkDuplicateDescription,
+        checkDuplicateTitle: checkDuplicateTitle,
+    };
+    let localStorage = getQuestionsFromLocalStorage()
+    if (localStorage === null) {
+        saveQuestionsToLocalStorage(DEFAULT_QNS);
+        localStorage = DEFAULT_QNS;
     }
-    setQuestions(questions)
+
+    async function addQuestion(title, description, categories, complexity, questions) {
+        const id = questions ? questions[questions.length -1].id + 1 : 1;
+        const question = { id, title, description, categories, complexity };
+        axios.post("http://localhost:8000/api/questions", question, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': getAuthCookie()
+        },
+        }).catch(error => {
+        console.error('Error:', error);
+        return;
+    })
+        const updated_qns = [...questions, question]
+        setQuestions(updated_qns);
+        return question;
+    };
+
+    async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
+        const id = questionToEdit.id;
+        const question = {id, title, desc: description, categories, complexity}
+        await axios.put("http://localhost:8000/api/questions", question, {
+        headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': getAuthCookie()
+        },
+        }).catch(error => {
+        console.error('Error:', error);
+        return;
+    })
+        const res = [...questions, question].sort((a,b) => a.id - b.id)
+        setQuestions(res);
     }
-    fetchQuestions()
-  }, [])
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: "24px", // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: "36px",
-                ...(open && { display: "none" }),
-              }}
+
+    async function deleteQuestion(questionToDelete, questions) {
+        console.log(questionToDelete);
+        await axios.delete(`http://localhost:8000/api/questions/${questionToDelete.id}`, {
+            headers: {
+                'Authorization': getAuthCookie()
+            }
+        }).catch(error => {
+        console.error('Error:', error);
+        return;
+    })
+    setQuestions(questions.filter(x => x.id !== questionToDelete.id));
+    }
+
+    const [questions, setQuestions] = useState(DEFAULT_QNS)
+    const [viewPage, setViewPage] = useState(false);
+    const [addPage, setAddPage] = useState(false);
+    const [editPage, setEditPage] = useState(false);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
+
+    React.useEffect(() => {
+        async function fetchQuestions() {
+        const response = await axios.get('http://localhost:8000/api/questions', {
+            headers: {
+                'Authorization': getAuthCookie()
+            }
+        })
+        const data = response.data
+        const questions = []
+        for (var i in data) {
+        questions.push(data[i])
+        }
+        setQuestions(questions)
+        }
+        fetchQuestions()
+    }, [])
+    return (
+        <ThemeProvider theme={defaultTheme}>
+        <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <AppBar position="absolute" open={open}>
+            <Toolbar
+                sx={{
+                pr: "24px", // keep right padding when drawer closed
+                }}
             >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
+                <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={toggleDrawer}
+                sx={{
+                    marginRight: "36px",
+                    ...(open && { display: "none" }),
+                }}
+                >
+                <MenuIcon />
+                </IconButton>
+                <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}
+                >
+                QUESTIONS
+                </Typography>
+                <IconButton color="inherit">
+                <Badge badgeContent={4} color="secondary">
+                    <NotificationsIcon />
+                </Badge>
+                </IconButton>
+            </Toolbar>
+            </AppBar>
+            <Drawer variant="permanent" open={open}>
+            <Toolbar
+                sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                px: [1],
+                }}
             >
-              QUESTIONS
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
+                <IconButton onClick={toggleDrawer}>
+                <ChevronLeftIcon />
+                </IconButton>
+            </Toolbar>
+            <Divider />
+            <List component="nav">
+                {mainListItems}
+                <Divider sx={{ my: 1 }} />
+                {secondaryListItems}
+            </List>
+            </Drawer>
+            <Box
+            component="main"
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
+                backgroundColor: (theme) =>
+                theme.palette.mode === "light"
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[900],
+                flexGrow: 1,
+                height: "100vh",
+                overflow: "auto",
             }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List>
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {" "}
-              {/* Set spacing to 0 */}
-              {/* Questions */}
-              <Grid item xs={12} md={6}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <Question
-                    questions={questions}
-                    setAddPage={setAddPage}
-                    setViewPage={setViewPage}
-                    setEditPage={setEditPage}
-                    setSelectedQuestion={setSelectedQuestion}
-                    selectedQuestion={selectedQuestion}
-                    deleteQuestion={deleteQuestion}
-                  />
-                </Paper>
-              </Grid>
-              {/* View Question */}
-              {viewPage && (
+            >
+            <Toolbar />
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                <Grid container spacing={3}>
+                {" "}
+                {/* Set spacing to 0 */}
+                {/* Questions */}
                 <Grid item xs={12} md={6}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "110%",
-                    }}
-                  >
-                    <ViewQuestion
-                      question={selectedQuestion}
-                      addPage={setAddPage}
+                    <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                    <Question
+                        questions={questions}
+                        setAddPage={setAddPage}
+                        setViewPage={setViewPage}
+                        setEditPage={setEditPage}
+                        setSelectedQuestion={setSelectedQuestion}
+                        selectedQuestion={selectedQuestion}
+                        deleteQuestion={deleteQuestion}
                     />
-                  </Paper>
+                    </Paper>
                 </Grid>
-              )}
-              {/* Add Question */}
-              {addPage && (
-                <Grid item xs={12} md={6}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "110%",
-                    }}
-                  >
-                    <AddQuestion
-                      COMPLEXITY={COMPLEXITY}
-                      setAddPage={setAddPage}
-                      setViewPage={setViewPage}
-                      checkEmpty={checkEmpty}
-                      addQuestion={addQuestion}
-                      duplicateCheckers={duplicateCheckers}
-                      selectedQuestion={selectedQuestion}
-                      setSelectedQuestion={setSelectedQuestion}
-                      questions={questions}
-                      duplicateMessages={duplicateMessages}
-                      setQuestions={setQuestions}
-                    />
-                  </Paper>
+                {/* View Question */}
+                {viewPage && (
+                    <Grid item xs={12} md={6}>
+                    <Paper
+                        sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "110%",
+                        }}
+                    >
+                        <ViewQuestion
+                        question={selectedQuestion}
+                        addPage={setAddPage}
+                        />
+                    </Paper>
+                    </Grid>
+                )}
+                {/* Add Question */}
+                {addPage && (
+                    <Grid item xs={12} md={6}>
+                    <Paper
+                        sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "110%",
+                        }}
+                    >
+                        <AddQuestion
+                        COMPLEXITY={COMPLEXITY}
+                        setAddPage={setAddPage}
+                        setViewPage={setViewPage}
+                        checkEmpty={checkEmpty}
+                        addQuestion={addQuestion}
+                        duplicateCheckers={duplicateCheckers}
+                        selectedQuestion={selectedQuestion}
+                        setSelectedQuestion={setSelectedQuestion}
+                        questions={questions}
+                        duplicateMessages={duplicateMessages}
+                        setQuestions={setQuestions}
+                        />
+                    </Paper>
+                    </Grid>
+                )}
+                {/* Edit Question */}
+                {editPage && (
+                    <Grid item xs={12} md={6}>
+                    <Paper
+                        sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "110%",
+                        }}
+                    >
+                        <EditQuestion
+                        question={selectedQuestion}
+                        COMPLEXITY={COMPLEXITY}
+                        setViewPage={setViewPage}
+                        setEditPage={setEditPage}
+                        checkEmpty={checkEmpty}
+                        questions={questions}
+                        duplicateCheckers={duplicateCheckers}
+                        duplicateMessages={duplicateMessages}
+                        editQuestion={editQuestion}
+                        />
+                    </Paper>
+                    </Grid>
+                )}
                 </Grid>
-              )}
-              {/* Edit Question */}
-              {editPage && (
-                <Grid item xs={12} md={6}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "110%",
-                    }}
-                  >
-                    <EditQuestion
-                      question={selectedQuestion}
-                      COMPLEXITY={COMPLEXITY}
-                      setViewPage={setViewPage}
-                      setEditPage={setEditPage}
-                      checkEmpty={checkEmpty}
-                      questions={questions}
-                      duplicateCheckers={duplicateCheckers}
-                      duplicateMessages={duplicateMessages}
-                      editQuestion={editQuestion}
-                    />
-                  </Paper>
-                </Grid>
-              )}
-            </Grid>
-          </Container>
+            </Container>
+            </Box>
         </Box>
-      </Box>
-    </ThemeProvider>
-  );
+        </ThemeProvider>
+    );
 }
 
 export default QuestionPage;

@@ -1,6 +1,7 @@
 const express = require('express')
 
 const bodyParser = require('body-parser')
+const { validateUser } = require('../middleware/validateUser')
 
 const getUserById = require('../controller/getUser').getUserById
 const getUserByName = require('../controller/getUser').getUserByName
@@ -26,13 +27,13 @@ router.use(express.json())
 // Define your routes
 router.post('/login', loginUser)
 router.post('/createUser', createUser)
-router.get('/users', getUsers)
+router.get('/users', [validateUser], getUsers)
 router.get('/userById', getUserById)
-router.get('/userByName', getUserByName)
-router.put('/updateUser', updateUserInfo)
-router.delete('/deleteUser/:id', deleteUserByUserID)
-router.get('/checkUserAdmin', checkUSerAdmin)
-router.put('/setUserAdmin', setUserAdmin)
+router.get('/userByName', [validateUser], getUserByName)
+router.put('/updateUser', [validateUser], updateUserInfo)
+router.delete('/deleteUser', [validateUser], deleteUserByUserID)
+router.get('/checkUserAdmin', [validateUser], checkUSerAdmin)
+router.put('/setUserAdmin', [validateUser], setUserAdmin)
 
 
 module.exports = router

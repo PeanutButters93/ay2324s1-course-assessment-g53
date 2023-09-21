@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import cookie from 'react-cookies'
 import jwt_decode from "jwt-decode";
 
+function getAuthCookie() {
+  return cookie.load('_auth');
+}
+
 function updateCookies(newJwt) {
   cookie.save(
     '_auth',
@@ -23,7 +27,7 @@ function clearCookies() {
 
 const useCookie = () => {
   const [jwt, setJwt] = useState("")
-    return {updateCookies, clearCookies};
+    return {getAuthCookie, updateCookies, clearCookies};
 }
 
 export default useCookie;
