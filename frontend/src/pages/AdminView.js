@@ -20,7 +20,7 @@ export default function AdminView () {
 
     useEffect(() => {
         // Fetch user data from your backend API
-        axios.get('http://localhost:4000/api/users/users')
+        axios.get('http://localhost:4000/api/users/users', {headers: {'Authorization': getAuthCookie()}})
             .then(response => setUsers(response.data))
             .catch((error) => console.error('Error fetching user data:', error))
     }, [])
