@@ -17,6 +17,7 @@ import Login from './Login'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
+import useCookie from '../components/useCookie'
 
 
 
@@ -83,6 +84,7 @@ function SignupPage () {
         })
             .then(data => {
                 // Handle the response from the backend. Maybe show a success message or store some data.
+                updateCookies(data.data.token)
                 navigate('/questionpage')
             })
             .catch(error => {
@@ -91,7 +93,7 @@ function SignupPage () {
             })
     }
 
-
+    const {updateCookies} = useCookie()
 
     return (
         <ThemeProvider theme={darkTheme}>
