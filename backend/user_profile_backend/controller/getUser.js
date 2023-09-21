@@ -27,6 +27,8 @@ const getUserById = (request, response) => {
     pool.query('SELECT * FROM users WHERE user_id = $1', [id], (error, results) => {
         if (error) {
             throw error
+        } else if (results.rows.length === 0) {
+            return response.status(404).json({ error: 'No users found' })
         }
         response.status(200).json(results.rows)
     })

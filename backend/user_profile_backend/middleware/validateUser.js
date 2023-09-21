@@ -15,10 +15,11 @@ async function validateUser(request, response, next) {
     const userById_url = "http://localhost:4000/api/users/userById";
 
     try {
-        const user = await axios.get(userById_url, { headers : { Authorization: token } });
-        if (!user) {
-            return response.status(401).json({ error: 'Unauthorised' });
+        const res = await axios.get(userById_url, { headers : { Authorization: token } });
+        if (res.status !== 200) {
+            return response.status(401).json({ error: 'User not found' });
         }
+        
     } catch(error) {
         console.log(error.message);
         return response.status(401).json({ error: 'Unauthorised' });
