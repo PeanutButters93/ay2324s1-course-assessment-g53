@@ -12,19 +12,19 @@ const getUsers = (request, response) => {
 
 const getUserById = (request, response) => {
     const token = request.headers.authorization;
-    let id;
+    let user_id;
 
     try {
-        id = verifyJsonWebToken(token).userId;
+        user_id = verifyJsonWebToken(token).userId;
     } catch(error) {
         console.log(error.message);
         return response.status(401).json({ error: 'Unauthorised' });
     }
     // Check if user_id is a valid integer
-    if (isNaN(id)) {
+    if (isNaN(user_id)) {
         return response.status(400).json({ error: 'Invalid user_id format' })
     }
-    pool.query('SELECT * FROM users WHERE user_id = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM users WHERE user_id = $1', [user_id], (error, results) => {
         if (error) {
             throw error
         } else if (results.rows.length === 0) {
