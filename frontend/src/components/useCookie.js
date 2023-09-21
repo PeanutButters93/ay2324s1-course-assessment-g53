@@ -8,7 +8,7 @@ function updateCookies(newJwt) {
     newJwt
   );
 
-  var decoded = jwt_decode(newJwt)["userdata"];
+  var decoded = jwt_decode(newJwt)["user_data"];
   cookie.save(
     'user_data',
     decoded

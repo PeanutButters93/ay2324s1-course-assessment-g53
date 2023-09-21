@@ -90,7 +90,6 @@ function Login (props) {
           
           updateCookies(data.token)
           // Save JWT token to localStorage or context or wherever you store it
-          localStorage.setItem('jwt', data.token)
           setLoggedIn(true)
           navigate('/questionpage')
         }
