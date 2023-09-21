@@ -1,4 +1,5 @@
 const pool = require('../database/db.js')
+const { verifyJsonWebToken } = require('../middleware/tokenUtils')
 
 const getUsers = (request, response) => {
     pool.query('SELECT * FROM users ORDER BY user_id ASC', (error, results) => {
@@ -10,15 +11,25 @@ const getUsers = (request, response) => {
 }
 
 const getUserById = (request, response) => {
-    const id = 55 // hardcoded value for now
-    // Check if user_id is a valid integer
-    if (isNaN(id)) {
-        response.status(400).json({ error: 'Invalid user_id format' })
-        return
+
+    const token = request.headers.authorization;
+    let user_id;
+
+    try {
+        user_id = verifyJsonWebToken(token).user_data.user_id;
+    } catch(error) {
+        console.log(error.message);
+        return response.status(401).json({ error: 'Unauthorised' });
     }
-    pool.query('SELECT * FROM users WHERE user_id = $1', [id], (error, results) => {
+    // Check if user_id is a valid integer
+    if (isNaN(user_id)) {
+        return response.status(400).json({ error: 'Invalid user_id format' })
+    }
+    pool.query('SELECT * FROM users WHERE user_id = $1', [user_id], (error, results) => {
         if (error) {
             throw error
+        } else if (results.rows.length === 0) {
+            return response.status(404).json({ error: 'No users found' })
         }
         response.status(200).json(results.rows)
     })
@@ -53,9 +64,12 @@ const loginUser = async (request, response) => {
             // console.log(user)
             const isMatch = await bcrypt.compare(password, user.password)  // assuming the password column is named 'password'
             if (isMatch) {
-                const token = jwt.sign({ userId: user.id }, 'yourSecretKey', { expiresIn: '1h' })
-                const is_admin = user.is_admin
-                response.json({ token , is_admin})
+                const claims = {
+                    "user_id":results.rows[0].user_id,
+                    "is_admin":results.rows[0].is_admin,
+                }
+                const token = jwt.sign({ "user_data": claims }, 'yourSecretKey', { expiresIn: '1h' })
+                response.json({ token })
             } else {
                 response.status(403).json({ error: 'Incorrect password' })
             }
@@ -67,9 +81,12 @@ const loginUser = async (request, response) => {
                     const user = results.rows[0]
                     const isMatch = await bcrypt.compare(password, user.password)
                     if (isMatch) {
-                        const token = jwt.sign({ userId: user.id }, 'yourSecretKey', { expiresIn: '1h' })
-                        const is_admin = user.is_admin
-                        response.json({ token, is_admin})
+                        const claims = {
+                            "user_id":results.rows[0].user_id,
+                            "is_admin":results.rows[0].is_admin,
+                        }
+                        const token = jwt.sign({ "user_data": claims }, 'yourSecretKey', { expiresIn: '1h' })
+                        response.json({ token })
                     } else {
                         response.status(403).json({ error: 'Incorrect password' })
                     }

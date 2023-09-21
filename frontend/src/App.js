@@ -7,10 +7,11 @@ import Layout from "./pages/Layout"
 import UpdateUserProfilePage from "./pages/UpdateUserProfilePage"
 import SignupPage from "./pages/SignupPage"
 import RouteProtector from "./components/RouteProtector"
-import { getTokenFromLocalStorage } from "./LocalStorage"
 import AdminView from "./pages/AdminView"
 import { useDispatch, useSelector } from "react-redux"
 import { authActions } from "./store"
+import useCookie from "./components/useCookie"
+
 
 // const canRenderOnlyLogin = (isLoggedIn, route) => {
 //   return isLoggedIn ? route : null
@@ -23,7 +24,8 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const token = getTokenFromLocalStorage()
+    const {getAuthCookie} = useCookie();
+    const token = getAuthCookie();
     if (token) {
       dispatch(authActions.setLogin(true))
       const tokenBody = token.split('.')[1]
@@ -49,6 +51,7 @@ const App = () => {
       </Routes>
     </BrowserRouter>
   )
+
 }
 
 export default App

@@ -3,6 +3,7 @@ const pool = require('../database/db.js')
 const createUser = async(request, response) => {
     const { username, email, password, bio, date_of_birth, firstName, lastName } = request.body
 
+    const jwt = require('jsonwebtoken')
     const bcrypt = require('bcrypt');
 
     const saltRounds = 10;
@@ -40,7 +41,15 @@ const createUser = async(request, response) => {
                 response.status(500).json({ error: 'Internal server error' })
             }
         } else {
-            response.status(201).json({ message: `User added with ID: ${results.rows[0].user_id}` })
+            const claims = {
+                "user_id":results.rows[0].user_id,
+                "is_admin":false,
+            }
+            const token = jwt.sign({ "user_data": claims }, 'yourSecretKey', { expiresIn: '1h' })
+            response.status(201).json({
+                message: `User added with ID: ${results.rows[0].user_id}` ,
+                token
+            })
         }
     })
 }

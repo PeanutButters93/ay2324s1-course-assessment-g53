@@ -17,10 +17,14 @@ import MUILink from '@mui/material/Link'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
+<<<<<<< HEAD
 import { authActions } from '../store'
 import {useSelector, useDispatch} from 'react-redux'
 
 
+=======
+import useCookie from '../components/useCookie'
+>>>>>>> master
 
 function Copyright (props) {
   return (
@@ -40,6 +44,7 @@ const darkTheme = createTheme({
     mode: 'dark',  // This switches the theme mode to dark
   },
 })
+
 
 function Login (props) {
   const dispatch = useDispatch()
@@ -75,7 +80,6 @@ function Login (props) {
     } else {
       setPasswordError('')  // Clear the error
     }
-
     axios.post('http://localhost:4000/api/users/login', {
       userIdentifier: userIdentifier,  // Use the userIdentifier state variable
       password: password,              // Use the password state variable
@@ -91,25 +95,21 @@ function Login (props) {
         return response.data
       })
       .then(data => {
-        console.log("Hello")
-        console.log(data)
-        if (data.is_admin) {
+        const token = data.token
+        const tokenBody = token.split('.')[1]
+        let buffer = JSON.parse(atob(tokenBody))
+        if (buffer.user_data.is_admin) {
           dispatch(authActions.setAdmin(true))
         } else {
           dispatch(authActions.setAdmin(false))
         }
-        if (data.token) {
+        
+        updateCookies(token)
           // Save JWT token to localStorage or context or wherever you store it
-          console.log(data.token)
-          //admin token
-          localStorage.setItem('jwt', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc19hZG1pbiI6dHJ1ZX0.wldE4kYw8WXq3SvZyRNcugit9bkuRzDUV_aAdVKDs1U')
-          //non admin token
-          // localStorage.setItem('jwt', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc19hZG1pbiI6ZmFsc2V9.iSULssAolUioOBE6qs2EyxW5ygZuxZEdgCbEndWWBeA')
-          dispatch(authActions.setLogin(true))
-          //setLoggedIn(true)
-          navigate('/questionpage')
-        }
-      })
+        dispatch(authActions.setLogin(true))
+
+        navigate('/questionpage')
+        })
       .catch(error => {
         // Handle different types of errors here
         if (error.error === 'Incorrect password') {
@@ -122,6 +122,7 @@ function Login (props) {
         }
       })
   }
+const {updateCookies} = useCookie()
 
   return (
     <ThemeProvider theme={darkTheme}>
