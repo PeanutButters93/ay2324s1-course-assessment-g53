@@ -15,7 +15,7 @@ const getUserById = (request, response) => {
     let user_id;
 
     try {
-        user_id = verifyJsonWebToken(token).userId;
+        user_id = verifyJsonWebToken(token).user_data.user_id;
     } catch(error) {
         console.log(error.message);
         return response.status(401).json({ error: 'Unauthorised' });
