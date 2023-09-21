@@ -17,14 +17,10 @@ import MUILink from '@mui/material/Link'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
-<<<<<<< HEAD
 import { authActions } from '../store'
 import {useSelector, useDispatch} from 'react-redux'
-
-
-=======
 import useCookie from '../components/useCookie'
->>>>>>> master
+
 
 function Copyright (props) {
   return (
@@ -97,7 +93,10 @@ function Login (props) {
       .then(data => {
         const token = data.token
         const tokenBody = token.split('.')[1]
+        console.log("Parsing token")
         let buffer = JSON.parse(atob(tokenBody))
+        console.log("Parsed token is: ")
+        console.log(buffer)
         if (buffer.user_data.is_admin) {
           dispatch(authActions.setAdmin(true))
         } else {

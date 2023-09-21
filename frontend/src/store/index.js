@@ -2,7 +2,7 @@ import {createStore} from 'redux';
 import {configureStore, createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
-    isAdmin: false,
+    is_admin: false,
     isLoggedIn: false
 }
 
@@ -14,7 +14,7 @@ const authSlice = createSlice({
             state.isLoggedIn = action.payload
         },
         setAdmin(state, action) {
-            state.isAdmin = action.payload
+            state.is_admin = action.payload
         }
     }
 })
