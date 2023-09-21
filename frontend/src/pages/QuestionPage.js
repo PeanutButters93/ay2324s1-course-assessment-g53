@@ -22,7 +22,7 @@ import Question from "../components/question/Question";
 import ViewQuestion from "../components/question/ViewQuestion";
 import EditQuestion from "../components/question/EditQuestion";
 import AddQuestion from "../components/question/AddQuestion";
-import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
+import { getQuestionsFromLocalStorage, getTokenFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
 import axios from 'axios';
 
 const drawerWidth = 240;
@@ -212,7 +212,10 @@ function QuestionPage() {
 
   React.useEffect(() => {
     async function fetchQuestions() {
-    const response = await axios.get('http://localhost:8000/api/questions')
+
+    try{
+    const token = getTokenFromLocalStorage()
+    const response = await axios.get('http://localhost:8000/api/questions', {headers:{Authorization: token}})
     const data = response.data
     const questions = []
     for (var i in data) {
@@ -220,6 +223,9 @@ function QuestionPage() {
     }
     setQuestions(questions)
     }
+    catch (error) {
+      console.log(error.message)
+    }}
     fetchQuestions()
   }, [])
   return (

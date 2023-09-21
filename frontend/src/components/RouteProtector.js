@@ -1,7 +1,8 @@
 import { Navigate } from "react-router-dom";
-const RouteProtector = ({ isLoggedIn, children }) => {
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
+const RouteProtector = ({ permission, children, link }) => {
+  console.log(permission)
+  if (!permission) {
+    return <Navigate to={link} replace />;
   }
   return children;
 };

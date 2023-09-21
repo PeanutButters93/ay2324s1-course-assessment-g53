@@ -41,6 +41,7 @@ const darkTheme = createTheme({
 
 function Login (props) {
   const setLoggedIn = props.setLoggedIn;
+  const updateAdminStatus = props.updateAdminStatus
   const navigate = useNavigate()
   const [userIdentifier, setUserIdentifier] = useState('')  // This replaces the email state
   const [password, setPassword] = useState('')
@@ -87,6 +88,11 @@ function Login (props) {
         return response.data
       })
       .then(data => {
+        console.log(data)
+        if (data.isAdmin) {
+          console.log("Setting admin here")
+          updateAdminStatus(true)
+        }
         if (data.token) {
           // Save JWT token to localStorage or context or wherever you store it
           localStorage.setItem('jwt', data.token)
