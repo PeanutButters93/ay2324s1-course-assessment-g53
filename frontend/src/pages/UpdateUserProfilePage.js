@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { TextField } from "@mui/material"
 import axios from 'axios'
+import useCookie from '../components/useCookie'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme({
@@ -33,6 +34,8 @@ export default function UpdateUserProfilePage () {
     new_bio: '',
     new_date_of_birth: '',
   })
+
+  const { getAuthCookie } = useCookie();
 
   // const handleChange = (event) => {
   //   const { name, value } = event.target
@@ -61,10 +64,10 @@ export default function UpdateUserProfilePage () {
       {}
     )
 
-    console.log(JSON.stringify(filteredFormData))
     axios.put('http://localhost:4000/api/users/updateUser', filteredFormData, {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json', 
+        'Authorization': getAuthCookie()
       },
     })
       .then((response) => {
@@ -86,7 +89,11 @@ export default function UpdateUserProfilePage () {
 
     const deleteUserUrl = `http://localhost:4000/api/users/deleteUser/${formData.user_id}`
 
-    axios.delete(deleteUserUrl)
+    axios.delete(deleteUserUrl, {
+        headers: {
+            'Authorization': getAuthCookie()
+        }
+    })
       .then((response) => {
         if (response.ok) {
           alert('User deleted successfully.')
