@@ -43,17 +43,9 @@ const createUser = async(request, response) => {
         } else {
             const claims = {
                 "user_id":results.rows[0].user_id,
-                "username":username,
-                "email":email,
-                "bio":"NULL",
-                "date_of_birth":"NULL",
-                "registration_date":"NULL",
-                "question_history":"NULL",
                 "is_admin":false,
-                "first_name":firstName,
-                "last_name":lastName,
             }
-            const token = jwt.sign({ "userdata": claims }, 'yourSecretKey', { expiresIn: '1h' })
+            const token = jwt.sign({ "user_data": claims }, 'yourSecretKey', { expiresIn: '1h' })
             response.status(201).json({
                 message: `User added with ID: ${results.rows[0].user_id}` ,
                 token

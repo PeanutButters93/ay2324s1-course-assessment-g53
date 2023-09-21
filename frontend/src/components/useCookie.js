@@ -9,9 +9,8 @@ function updateCookies(newJwt) {
   );
 
   var decoded = jwt_decode(newJwt)["userdata"];
-  // #TODO filter out NULL
   cookie.save(
-    'userdata',
+    'user_data',
     decoded
   );
 
@@ -19,7 +18,7 @@ function updateCookies(newJwt) {
 
 function clearCookies() {
   cookie.remove('_auth')
-  cookie.remove('userdata')
+  cookie.remove('user_data')
 }
 
 const useCookie = () => {
