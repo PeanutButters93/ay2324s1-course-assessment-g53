@@ -10,11 +10,13 @@ import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { TextField } from "@mui/material"
 import './AdminView.css'
+import useCookie from '../components/useCookie'
 
 
 export default function AdminView () {
     const [users, setUsers] = useState([])
     const [searchQuery, setSearchQuery] = useState("")
+    const { getAuthCookie } = useCookie();
 
     useEffect(() => {
         // Fetch user data from your backend API
@@ -37,14 +39,18 @@ export default function AdminView () {
             apiUrl = `http://localhost:4000/api/users/userByName?username=${query}`
         }
 
-        axios.get(apiUrl)
+        axios.get(apiUrl, {headers: {'Authorization': getAuthCookie()}})
             .then(response => setUsers(response.data))
             .catch(error => console.error('Error fetching user data:', error))
     }
 
     const setUserAsAdmin = (username) => {
         // Make a PUT request to set the user as admin
-        axios.put(`http://localhost:4000/api/users/setUserAdmin?username=${username}`)
+        axios.put(`http://localhost:4000/api/users/setUserAdmin?username=${username}`, {
+            headers: {
+                'Authorization': getAuthCookie()
+            }
+        })
             .then(response => {
                 // Handle success, e.g., show a success message or update the user list
                 console.log(`User ${username} is now an admin`)
