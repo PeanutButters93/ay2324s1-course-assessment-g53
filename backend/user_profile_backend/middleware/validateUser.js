@@ -6,7 +6,10 @@ async function validateUser(request, response, next) {
     let user_id;
 
     try {
-        user_id = verifyJsonWebToken(token).userId;
+        user_id = verifyJsonWebToken(token).user_data.user_id;
+        if (!user_id) {
+            return response.status(401).json({ error: 'Invalid token' });
+        }
     } catch(error) {
         console.log(error.message);
         return response.status(401).json({ error: 'Unauthorised' });
