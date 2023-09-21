@@ -93,13 +93,18 @@ function Login (props) {
       .then(data => {
         console.log("Hello")
         console.log(data)
-        if (data.isAdmin) {
+        if (data.is_admin) {
           dispatch(authActions.setAdmin(true))
+        } else {
+          dispatch(authActions.setAdmin(false))
         }
         if (data.token) {
           // Save JWT token to localStorage or context or wherever you store it
           console.log(data.token)
+          //admin token
           localStorage.setItem('jwt', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc19hZG1pbiI6dHJ1ZX0.wldE4kYw8WXq3SvZyRNcugit9bkuRzDUV_aAdVKDs1U')
+          //non admin token
+          // localStorage.setItem('jwt', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc19hZG1pbiI6ZmFsc2V9.iSULssAolUioOBE6qs2EyxW5ygZuxZEdgCbEndWWBeA')
           dispatch(authActions.setLogin(true))
           //setLoggedIn(true)
           navigate('/questionpage')

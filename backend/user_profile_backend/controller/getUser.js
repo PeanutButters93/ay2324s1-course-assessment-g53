@@ -26,14 +26,15 @@ const getUserById = (request, response) => {
 
 const getUserByName = (request, response) => {
     const username = request.query.username
-    pool.query('SELECT * FROM users WHERE username ILIKE $1', [username], (error, results) => {
+    pool.query("SELECT * FROM users WHERE username ILIKE '%' || $1 || '%'", [username], (error, results) => {
         if (error) {
+            console.log(error);
             console.error('Error retrieving user:', error)
-            response.status(500).json({ error: 'Internal server error' })
+            return response.status(500).json({ error: 'Internal server error' })
         } else if (results.rows.length === 0) {
-            response.status(404).json({ error: 'User not found' })
+            return response.status(404).json({ error: 'User not found' })
         } else {
-            response.status(200).json(results.rows)
+            return response.status(200).json(results.rows)
         }
     })
 }
@@ -53,8 +54,8 @@ const loginUser = async (request, response) => {
             const isMatch = await bcrypt.compare(password, user.password)  // assuming the password column is named 'password'
             if (isMatch) {
                 const token = jwt.sign({ userId: user.id }, 'yourSecretKey', { expiresIn: '1h' })
-                const isAdmin = user.is_admin
-                response.json({ token , isAdmin})
+                const is_admin = user.is_admin
+                response.json({ token , is_admin})
             } else {
                 response.status(403).json({ error: 'Incorrect password' })
             }
@@ -67,8 +68,8 @@ const loginUser = async (request, response) => {
                     const isMatch = await bcrypt.compare(password, user.password)
                     if (isMatch) {
                         const token = jwt.sign({ userId: user.id }, 'yourSecretKey', { expiresIn: '1h' })
-                        const isAdmin = user.is_admin
-                        response.json({ token, isAdmin})
+                        const is_admin = user.is_admin
+                        response.json({ token, is_admin})
                     } else {
                         response.status(403).json({ error: 'Incorrect password' })
                     }
