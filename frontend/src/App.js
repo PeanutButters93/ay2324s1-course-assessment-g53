@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { authActions } from "./store"
 import useCookie from "./components/useCookie"
 
-
 // const canRenderOnlyLogin = (isLoggedIn, route) => {
 //   return isLoggedIn ? route : null
 // }
@@ -42,7 +41,7 @@ const App = () => {
         <Route index element={<Login />} />
         <Route path="signup" element={<SignupPage/>} />
         <Route path="logout" element={<Logout />} />
-        <Route path="/" element={<Layout title="QUESTIONS"/>}>
+        <Route path="/" element={<Layout />}>
           {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
         </Route>
         {isLogin ? <Route path="profile" element={<UpdateUserProfilePage />}/> : null}

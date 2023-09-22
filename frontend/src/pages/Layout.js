@@ -8,7 +8,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NavBarList from "../components/NavBarList";
@@ -67,12 +66,11 @@ const defaultTheme = createTheme({
   },
 });
 
-function Layout({title}) {
+function Layout() {
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
 
     return (
       <ThemeProvider theme={defaultTheme}>
@@ -103,7 +101,7 @@ function Layout({title}) {
             noWrap
             sx={{ flexGrow: 1 }}
             >
-          {title}
+          PeerPrep
           </Typography>
           </Toolbar>
           </AppBar>
