@@ -21,13 +21,10 @@ export async function updateQuestion(req, res) {
     if (new_title !== question_to_change.title) {
       duplicate_title = await Question.find({ title: new_title });
     }
-    // console.log("Duplicate title:");
-    // console.log(duplicate_title);
+
     if (new_desc !== question_to_change.desc) {
       duplicate_desc = await Question.find({ desc: new_desc });
     }
-    // console.log("Duplicate desc:");
-    // console.log(duplicate_desc);
     if (duplicate_title.length !== 0 || duplicate_desc.length !== 0) {
       res
         .status(400)

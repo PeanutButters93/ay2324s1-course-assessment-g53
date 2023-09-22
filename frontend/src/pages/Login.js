@@ -92,11 +92,13 @@ function Login (props) {
       })
       .then(data => {
         const token = data.token
+        console.log("Actual token:")
+        console.log(token)
         const tokenBody = token.split('.')[1]
-        console.log("Parsing token")
+        // console.log("Parsing token")
         let buffer = JSON.parse(atob(tokenBody))
-        console.log("Parsed token is: ")
-        console.log(buffer)
+        // console.log("Parsed token is: ")
+        // console.log(buffer)
         if (buffer.user_data.is_admin) {
           dispatch(authActions.setAdmin(true))
         } else {

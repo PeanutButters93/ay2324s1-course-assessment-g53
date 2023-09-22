@@ -11,9 +11,7 @@ export async function checkAdmin(req, res, next) {
         if (response.data == null) {
             return res.status(400).send("Token not recognised. Please login again")
         }
-        console.log(response.data);
-        if (response.data.isAdmin) {
-            req.body.isAdmin = true;
+        if (response.data.is_admin) {
             next();
         } else {
             return res.status(400).send("You are not an admin, you do not have access to this resource")

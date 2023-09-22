@@ -31,7 +31,7 @@ const getUserById = (request, response) => {
         } else if (results.rows.length === 0) {
             return response.status(404).json({ error: 'No users found' })
         }
-        response.status(200).json(results.rows)
+        return response.status(200).json(results.rows)
     })
 }
 

@@ -40,8 +40,8 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />} />
-        <Route index element={<SignupPage />} />
-        <Route path="login" element={<Login/>} />
+        <Route index element={<Login />} />
+        <Route path="signup" element={<SignupPage/>} />
         <Route path="logout" element={<Logout />} />
         {isLogin ? <Route path="profile" element={<UpdateUserProfilePage />}/> : null}
         {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
