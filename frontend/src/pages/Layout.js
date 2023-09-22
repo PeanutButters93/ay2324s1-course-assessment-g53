@@ -11,7 +11,6 @@ import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import NavBarList from "../components/NavBarList";
 import { Outlet } from "react-router";
 
@@ -106,11 +105,6 @@ function Layout({title}) {
             >
           {title}
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-            </Badge>
-          </IconButton>
           </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>
