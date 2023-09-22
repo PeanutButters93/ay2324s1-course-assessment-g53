@@ -39,12 +39,13 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />} />
         <Route index element={<Login />} />
         <Route path="signup" element={<SignupPage/>} />
         <Route path="logout" element={<Logout />} />
+        <Route path="/" element={<Layout title="QUESTIONS"/>}>
+          {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
+        </Route>
         {isLogin ? <Route path="profile" element={<UpdateUserProfilePage />}/> : null}
-        {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
         {is_admin ? <Route path="adminview" element={<AdminView/>}/> : null}
       </Routes>
     </BrowserRouter>
