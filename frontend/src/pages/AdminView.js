@@ -64,17 +64,8 @@ export default function AdminView () {
     }
 
     return (
-        <ThemeProvider theme={createTheme()}>
+        <Box>
             <CssBaseline />
-            <AppBar position="static">
-                <Toolbar>
-                    <PersonIcon />
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        User List
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
             <Box sx={{ padding: '16px' }}>
                 <TextField
                     label="Search"
@@ -114,6 +105,6 @@ export default function AdminView () {
                     </tbody>
                 </table>
             </Box>
-        </ThemeProvider>
+        </Box>
     )
 }

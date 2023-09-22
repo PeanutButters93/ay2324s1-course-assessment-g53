@@ -122,15 +122,6 @@ export default function UpdateUserProfilePage () {
       <CssBaseline />
 
       <Box>
-        <AppBar position="relative">
-          <Toolbar>
-            <PersonIcon sx={{ mr: 2 }} />
-            <Typography variant="h6" color="inherit" noWrap>
-              User Profile
-            </Typography>
-          </Toolbar>
-        </AppBar>
-
         <Box
           display="flex"
           justifyContent="center"
