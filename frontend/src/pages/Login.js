@@ -17,7 +17,10 @@ import MUILink from '@mui/material/Link'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
+import { authActions } from '../store'
+import {useSelector, useDispatch} from 'react-redux'
 import useCookie from '../components/useCookie'
+
 
 function Copyright (props) {
   return (
@@ -40,7 +43,9 @@ const darkTheme = createTheme({
 
 
 function Login (props) {
+  const dispatch = useDispatch()
   const setLoggedIn = props.setLoggedIn;
+  const updateAdminStatus = props.updateAdminStatus
   const navigate = useNavigate()
   const [userIdentifier, setUserIdentifier] = useState('')  // This replaces the email state
   const [password, setPassword] = useState('')
@@ -86,14 +91,26 @@ function Login (props) {
         return response.data
       })
       .then(data => {
-        if (data.token) {
-          
-          updateCookies(data.token)
-          // Save JWT token to localStorage or context or wherever you store it
-          setLoggedIn(true)
-          navigate('/questionpage')
+        const token = data.token
+        console.log("Actual token:")
+        console.log(token)
+        const tokenBody = token.split('.')[1]
+        // console.log("Parsing token")
+        let buffer = JSON.parse(atob(tokenBody))
+        // console.log("Parsed token is: ")
+        // console.log(buffer)
+        if (buffer.user_data.is_admin) {
+          dispatch(authActions.setAdmin(true))
+        } else {
+          dispatch(authActions.setAdmin(false))
         }
-      })
+        
+        updateCookies(token)
+          // Save JWT token to localStorage or context or wherever you store it
+        dispatch(authActions.setLogin(true))
+
+        navigate('/questionpage')
+        })
       .catch(error => {
         // Handle different types of errors here
         if (error.error === 'Incorrect password') {

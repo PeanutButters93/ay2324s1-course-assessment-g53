@@ -1,8 +1,6 @@
 import { Navigate } from "react-router-dom";
-const RouteProtector = ({ isLoggedIn, children }) => {
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
-  }
+const RouteProtector = ({children, link }) => {
+  
   return children;
 };
 export default RouteProtector;

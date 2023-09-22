@@ -22,7 +22,7 @@ import Question from "../components/question/Question";
 import ViewQuestion from "../components/question/ViewQuestion";
 import EditQuestion from "../components/question/EditQuestion";
 import AddQuestion from "../components/question/AddQuestion";
-import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
+import { getQuestionsFromLocalStorage, getTokenFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
 import axios from 'axios';
 import useCookie from "../components/useCookie";
 

@@ -11,6 +11,7 @@ const getUsers = (request, response) => {
 }
 
 const getUserById = (request, response) => {
+
     const token = request.headers.authorization;
     let user_id;
 
@@ -30,20 +31,21 @@ const getUserById = (request, response) => {
         } else if (results.rows.length === 0) {
             return response.status(404).json({ error: 'No users found' })
         }
-        response.status(200).json(results.rows)
+        return response.status(200).json(results.rows)
     })
 }
 
 const getUserByName = (request, response) => {
     const username = request.query.username
-    pool.query('SELECT * FROM users WHERE username ILIKE $1', [username], (error, results) => {
+    pool.query("SELECT * FROM users WHERE username ILIKE '%' || $1 || '%'", [username], (error, results) => {
         if (error) {
+            console.log(error);
             console.error('Error retrieving user:', error)
-            response.status(500).json({ error: 'Internal server error' })
+            return response.status(500).json({ error: 'Internal server error' })
         } else if (results.rows.length === 0) {
-            response.status(404).json({ error: 'User not found' })
+            return response.status(404).json({ error: 'User not found' })
         } else {
-            response.status(200).json(results.rows)
+            return response.status(200).json(results.rows)
         }
     })
 }
@@ -59,6 +61,7 @@ const loginUser = async (request, response) => {
             response.status(500).json({ error: 'Internal server error' })
         } else if (results.rows.length > 0) {
             const user = results.rows[0]
+            // console.log(user)
             const isMatch = await bcrypt.compare(password, user.password)  // assuming the password column is named 'password'
             if (isMatch) {
                 const claims = {
