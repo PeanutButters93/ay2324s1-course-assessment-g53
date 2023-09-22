@@ -8,15 +8,19 @@ const NavBar = () => {
   return <List>
 
       <NavComponent
+        text = "Questions"
         icon = {<DashboardIcon />}
+        href = "../questionpage"
       />
       <NavComponent
         text = "User Profile"
         icon = {<PersonIcon />}
+        href = "../profile"
       />
       <NavComponent
         text = "Admin View"
         icon = {<DataObjectIcon />}
+        href = "../adminview"
       />
 
   </List>;
