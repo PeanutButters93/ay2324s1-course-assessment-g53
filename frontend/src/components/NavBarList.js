@@ -3,32 +3,32 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
-import NavComponent from './NavComponent'
+import NavBarItem from './NavBarItem'
 import useCookie from './useCookie';
 
-const NavBar = () => {
+const NavBarList = () => {
 
   const {clearCookies} = useCookie();
 
   return <List>
 
-      <NavComponent
+      <NavBarItem
         text = "Questions"
         icon = {<DashboardIcon />}
         href = "../questionpage"
       />
-      <NavComponent
+      <NavBarItem
         text = "User Profile"
         icon = {<PersonIcon />}
         href = "../profile"
       />
-      <NavComponent
+      <NavBarItem
         text = "Admin View"
         icon = {<DataObjectIcon />}
         href = "../adminview"
       />
       
-      <NavComponent
+      <NavBarItem
         text = "Log Out"
         icon = {<LogoutIcon />}
         href = "../"
@@ -37,5 +37,5 @@ const NavBar = () => {
   </List>;
 }
 
-export default NavBar;
+export default NavBarList;
 

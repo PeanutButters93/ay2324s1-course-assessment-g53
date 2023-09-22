@@ -2,7 +2,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-const NavComponent = ({text, icon, href, onClick}) => {
+const NavBarItem = ({text, icon, href, onClick}) => {
   return <ListItemButton
     href={href}
     onClick ={onClick}
@@ -14,4 +14,4 @@ const NavComponent = ({text, icon, href, onClick}) => {
   </ListItemButton>;
 }
 
-export default NavComponent;
+export default NavBarItem;

@@ -17,7 +17,7 @@ import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import NavBar from "../components/NavBar";
+import NavBarList from "../components/NavBarList";
 import Question from "../components/question/Question";
 import ViewQuestion from "../components/question/ViewQuestion";
 import EditQuestion from "../components/question/EditQuestion";
@@ -283,7 +283,7 @@ function QuestionPage() {
                 </IconButton>
             </Toolbar>
             <Divider />
-            <NavBar/>
+            <NavBarList/>
             
             </Drawer>
             <Box
