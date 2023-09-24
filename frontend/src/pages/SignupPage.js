@@ -93,7 +93,7 @@ function SignupPage () {
             })
     }
 
-    const {updateCookies} = useCookie()
+    const { updateCookies } = useCookie()
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -209,7 +209,7 @@ function SignupPage () {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <MUILink to="/login" component={RouterLink} variant="body2">
+                                <MUILink to="/" component={RouterLink} variant="body2">
                                     Already have an account? Sign in
                                 </MUILink>
                             </Grid>
