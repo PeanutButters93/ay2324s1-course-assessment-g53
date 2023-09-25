@@ -1,0 +1,31 @@
+/* UserProfile.css */
+
+/* Style for the entire container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+/* Style for each row (Username, Email, Bio) */
+.row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Style for the Edit button */
+.button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style for the Edit button on hover */
+.button:hover {
+  background-color: #0056b3;
+}

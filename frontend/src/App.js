@@ -13,7 +13,6 @@ import { authActions } from "./store"
 import useCookie from "./components/useCookie"
 import UserProfile from "./pages/UserProfile"
 
-
 // const canRenderOnlyLogin = (isLoggedIn, route) => {
 //   return isLoggedIn ? route : null
 // }

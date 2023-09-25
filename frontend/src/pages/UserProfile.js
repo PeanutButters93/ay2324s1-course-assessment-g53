@@ -11,6 +11,7 @@ import axios from 'axios'
 import useCookie from '../components/useCookie'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
+import './UserProfile.css'
 
 const defaultTheme = createTheme({
   palette: {
@@ -27,10 +28,12 @@ export default function UserProfile () {
   const [editedUsername, setEditedUsername] = useState(user.username)
 
   const [isEditingEmail, setIsEditingEmail] = useState(false)
-  const [editedEmail, setEditedEmail] = useState(user.email)
 
   const [isEditingBio, setIsEditingBio] = useState(false)
-  const [editedBio, setEditedBio] = useState(user.bio)
+
+  const [isEditingDateOfBirth, setIsEditingDateOfBirth] = useState(false)
+  const [editedDateOfBirth, setEditedDateOfBirth] = useState(user.date_of_birth)
+
 
   const token = getAuthCookie()
   const tokenBody = token.split('.')[1]
@@ -67,19 +70,20 @@ export default function UserProfile () {
     setIsEditingUserName(true)
   }
 
-  const handleChangeUserName = (event) => {
-    setEditedUsername(event.target.value)
-    console.log(event.target.value)
+  const handleEnterPressUserName = (event) => {
+    if (event.key === 'Enter') {
+      handleBlurUserName(event) // Trigger the same logic as onBlur on Enter key press
+    }
   }
 
-  const handleBlurUserName = () => {
+  const handleBlurUserName = (event) => {
     setIsEditingUserName(false)
-    // Perform the update to the backend here with editedUsername
-    // You can use axios to send a PUT request to update the username
-    // After successful update, set isEditing to false
+
+    const updatedUsername = event.target.value
+
     const new_user = {
       user_id: user_id,
-      new_username: editedUsername,
+      new_username: updatedUsername,
     }
 
     axios.put('http://localhost:4000/api/users/updateUser', new_user, {
@@ -91,7 +95,7 @@ export default function UserProfile () {
       .then((response) => {
         setUser((prevUser) => ({
           ...prevUser,
-          username: editedUsername,
+          username: updatedUsername,
         }))
         alert('User information updated successfully.')
         console.log(response.data)
@@ -106,18 +110,19 @@ export default function UserProfile () {
     setIsEditingEmail(true)
   }
 
-  const handleChangeEmail = (event) => {
-    setEditedEmail(event.target.value)
+  const handleEnterPressEmail = (event) => {
+    if (event.key === 'Enter') {
+      handleBlurEmail(event) // Trigger the same logic as onBlur on Enter key press
+    }
   }
 
-  const handleBlurEmail = () => {
+  const handleBlurEmail = (event) => {
     setIsEditingEmail(false)
-    // Perform the update to the backend here with editedEmail
-    // You can use axios to send a PUT request to update the email
-    // After successful update, set isEditing to false
+    const updatedEmail = event.target.value
+
     const new_user = {
       user_id: user_id,
-      new_email: editedEmail,
+      new_email: updatedEmail,
     }
     axios.put('http://localhost:4000/api/users/updateUser', new_user, {
       headers: {
@@ -128,7 +133,7 @@ export default function UserProfile () {
       .then((response) => {
         setUser((prevUser) => ({
           ...prevUser,
-          email: editedEmail,
+          email: updatedEmail,
         }))
         alert('User information updated successfully.')
         console.log(response.data)
@@ -144,18 +149,19 @@ export default function UserProfile () {
     setIsEditingBio(true)
   }
 
-  const handleChangeBio = (event) => {
-    setEditedBio(event.target.value)
+  const handleEnterPressBio = (event) => {
+    if (event.key === 'Enter') {
+      handleBlurBio(event) // Trigger the same logic as onBlur on Enter key press
+    }
   }
 
-  const handleBlurBio = () => {
+
+  const handleBlurBio = (event) => {
     setIsEditingBio(false)
-    // Perform the update to the backend here with editedBio
-    // You can use axios to send a PUT request to update the bio
-    // After successful update, set isEditing to false
+    const updatedBio = event.target.value
     const new_user = {
       user_id: user_id,
-      new_bio: editedBio,
+      new_bio: updatedBio,
     }
     axios.put('http://localhost:4000/api/users/updateUser', new_user, {
       headers: {
@@ -166,7 +172,7 @@ export default function UserProfile () {
       .then((response) => {
         setUser((prevUser) => ({
           ...prevUser,
-          bio: editedBio,
+          bio: updatedBio,
         }))
         alert('User information updated successfully.')
         console.log(response.data)
@@ -177,9 +183,37 @@ export default function UserProfile () {
       })
   }
 
-  if (loading) {
-    return <div>Loading...</div>
+  const handleEditClickDateOfBirth = () => {
+    setIsEditingDateOfBirth(true)
   }
+
+  const handleBlurDateOfBirth = (event) => {
+    setIsEditingDateOfBirth(false)
+    const new_user = {
+      user_id: user_id,
+      new_date_of_birth: editedDateOfBirth,
+    }
+
+    axios.put('http://localhost:4000/api/users/updateUser', new_user, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': getAuthCookie()
+      },
+    })
+      .then((response) => {
+        setUser((prevUser) => ({
+          ...prevUser,
+          date_of_birth: editedDateOfBirth,
+        }))
+        alert('User information updated successfully.')
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+        alert('Error updating user information.')
+      })
+  }
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -187,7 +221,7 @@ export default function UserProfile () {
       <Box>
         <AppBar position="relative">
           <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography variant="h4" color="inherit" noWrap>
               User Profile
             </Typography>
           </Toolbar>
@@ -195,129 +229,81 @@ export default function UserProfile () {
 
         <Container>
           <Paper elevation={3} sx={{ p: 3, mt: 4 }}>
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h4" gutterBottom>
               User Information
             </Typography>
             {isEditingUserName ? (
-              <div>
-
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant="body1" style={{ marginRight: '10px' }}>
-                    Username:
-                  </Typography>
-                  <TextField
-                    TextField id="filled-basic" label="New Username" variant="filled"
-                    defaultValue={user.username}
-                    value={editedUsername}
-                    onChange={handleChangeUserName}
-                    onBlur={handleBlurUserName}
-                  />
-                  <div style={{ marginLeft: '10px' }}>
-                    <Button onClick={handleBlurUserName}>Finish Editing</Button>
-                  </div>
-                </div>
-                <div>
-                  <Typography variant="body1">
-                    Email: {user.email}
-                  </Typography>
-                  <Typography variant="body1">
-                    Bio: {user.bio}
-                  </Typography>
-
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="body1" style={{ marginRight: '10px' }}>
+                  Username:
+                </Typography>
+                <TextField
+                  TextField id="filled-basic" label="New Username" variant="filled"
+                  defaultValue={user.username}
+                  onBlur={handleBlurUserName}
+                  onKeyDown={handleEnterPressUserName}
+                />
               </div>
             ) : (
-              <></>
+              <div>
+                <Typography variant="body1">
+                  Username: {user.username} <Button className="button" onClick={handleEditClickUserName}>Edit</Button>
+                </Typography>
+              </div>
             )}
 
-
             {isEditingEmail ? (
-              <div>
-                <div>
-                  <Typography variant="body1">
-                    Username: {user.username}
-                  </Typography>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant="body1" style={{ marginRight: '10px' }}>
-                    Email:
-                  </Typography>
-                  <TextField
-                    TextField id="filled-basic" label="New Email" variant="filled"
-                    fullWidth
-                    defaultValue={user.email}
-                    value={editedEmail}
-                    onChange={handleChangeEmail}
-                    onBlur={handleBlurEmail}
-                  />
-                  <div style={{ marginLeft: '10px' }}>
-                    <Button onClick={handleBlurEmail}>Finish Editing</Button>
-                  </div>
-                </div>
-                <div>
-                  <Typography variant="body1">
-                    Bio: {user.bio}
-                  </Typography>
-                </div>
-
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="body1" style={{ marginRight: '10px' }}>
+                  Email:
+                </Typography>
+                <TextField
+                  TextField id="filled-basic" label="New Email" variant="filled"
+                  fullWidth
+                  defaultValue={user.email}
+                  onBlur={handleBlurEmail}
+                  onKeyDown={handleEnterPressEmail}
+                />
               </div>
             ) : (
-              <>
-              </>
+              <div>
+                <Typography variant="body1">
+                  Email: {user.email} <Button className="button" onClick={handleEditClickEmail}>Edit</Button>
+                </Typography>
+              </div>
             )}
 
             {isEditingBio ? (
-              <div>
-                <div>
-                  <Typography variant="body1">
-                    Username: {user.username}
-                  </Typography>
-                </div>
-                <div>
-                  <Typography variant="body1">
-                    Email: {user.email}
-                  </Typography>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant="body1" style={{ marginRight: '10px' }}>
-                    Bio:
-                  </Typography>
-                  <TextField
-                    TextField id="filled-basic" label="New Bio" variant="filled"
-                    fullWidth
-                    defaultValue={user.bio}
-                    value={editedBio}
-                    onChange={handleChangeBio}
-                    onBlur={handleBlurBio}
-                  />
-                  <div style={{ marginLeft: '10px' }}>
-                    <Button onClick={handleBlurBio}>Finish Editing</Button>
-                  </div>
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="body1" style={{ marginRight: '10px' }}>
+                  Bio:
+                </Typography>
+                <TextField
+                  TextField id="filled-basic" label="New Bio" variant="filled"
+                  fullWidth
+                  defaultValue={user.bio}
+                  onKeyDown={handleEnterPressBio}
+                  onBlur={handleBlurBio}
+                />
               </div>
             ) : (
-              <>
-              </>
+              <div>
+                <Typography variant="body1">
+                  Bio: {user.bio} <Button className="button" onClick={handleEditClickBio}>Edit</Button>
+                </Typography>
+              </div>
             )}
 
-            {!(isEditingUserName || isEditingEmail || isEditingBio) && (
-              <>
-                <Typography variant="body1">
-                  Username: {user.username} <Button onClick={handleEditClickUserName}>Edit</Button>
-                </Typography>
-                <Typography variant="body1">
-                  Email: {user.email} <Button onClick={handleEditClickEmail}>Edit</Button>
-                </Typography>
-                <Typography variant="body1">
-                  Bio: {user.bio} <Button onClick={handleEditClickBio}>Edit</Button>
-                </Typography>
-              </>
-            )}
-            {/* Add more user information fields here */}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="body1">
+                Admin: {user.is_admin ? 'Yes' : 'No'}
+              </Typography>
+            </div>
+
           </Paper>
         </Container>
       </Box>
-    </ThemeProvider>
+    </ThemeProvider >
   )
 }
 
