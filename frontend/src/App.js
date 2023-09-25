@@ -11,7 +11,7 @@ import AdminView from "./pages/AdminView"
 import { useDispatch, useSelector } from "react-redux"
 import { authActions } from "./store"
 import useCookie from "./components/useCookie"
-import UserProfile from "./pages/userProfile"
+import UserProfile from "./pages/UserProfile"
 
 
 // const canRenderOnlyLogin = (isLoggedIn, route) => {
