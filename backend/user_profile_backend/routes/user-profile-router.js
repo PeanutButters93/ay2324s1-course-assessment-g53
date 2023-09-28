@@ -18,7 +18,6 @@ const loginUser = require('../controller/getUser').loginUser
 const checkUSerAdmin = require('../controller/checkUserAdmin').checkUSerAdmin
 const setUserAdmin = require('../controller/setUserAdmin').setUserAdmin
 
-
 const app = express()
 const router = express.Router()
 
@@ -34,6 +33,5 @@ router.put('/updateUser', [validateUser], updateUserInfo)
 router.delete('/deleteUser', [validateUser], deleteUserByUserID)
 router.get('/checkUserAdmin', [validateUser], checkUSerAdmin)
 router.put('/setUserAdmin', [validateUser], setUserAdmin)
-
 
 module.exports = router

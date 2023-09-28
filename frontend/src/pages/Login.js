@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
 import { authActions } from '../store'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import useCookie from '../components/useCookie'
 
 const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
@@ -42,7 +42,7 @@ const darkTheme = createTheme({
 
 function Login (props) {
   const dispatch = useDispatch()
-  const setLoggedIn = props.setLoggedIn;
+  const setLoggedIn = props.setLoggedIn
   const updateAdminStatus = props.updateAdminStatus
   const navigate = useNavigate()
   const [userIdentifier, setUserIdentifier] = useState('')  // This replaces the email state
@@ -84,12 +84,12 @@ function Login (props) {
         'Content-Type': 'application/json',
       },
     }).then(response => {
-        if (response.status === 403) {
-          // Handle the forbidden error
-          return response.then(err => { throw err })
-        }
-        return response.data
-      })
+      if (response.status === 403) {
+        // Handle the forbidden error
+        return response.then(err => { throw err })
+      }
+      return response.data
+    })
       .then(data => {
         const token = data.token
         console.log("Actual token:")
@@ -104,13 +104,13 @@ function Login (props) {
         } else {
           dispatch(authActions.setAdmin(false))
         }
-        
+
         updateCookies(token)
-          // Save JWT token to localStorage or context or wherever you store it
+        // Save JWT token to localStorage or context or wherever you store it
         dispatch(authActions.setLogin(true))
 
         navigate('/questionpage')
-        })
+      })
       .catch(error => {
         // Handle different types of errors here
         if (error.error === 'Incorrect password') {
@@ -123,7 +123,7 @@ function Login (props) {
         }
       })
   }
-const {updateCookies} = useCookie()
+  const { updateCookies } = useCookie()
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -201,7 +201,7 @@ const {updateCookies} = useCookie()
             </Button>
             <Grid container>
               <Grid item>
-                <MUILink to="/ " component={RouterLink} href="#" variant="body2">
+                <MUILink to="/signup " component={RouterLink} href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </MUILink>
               </Grid>

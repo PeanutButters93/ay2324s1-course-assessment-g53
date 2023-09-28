@@ -1,6 +1,7 @@
 const pool = require('../database/db.js')
 
 const updateUserInfo = (request, response) => {
+    console.log(request.body)
     const { user_id, new_username, new_email, new_password, new_bio, new_date_of_birth } = request.body
     // Check if user_id is provided
     if (!user_id) {

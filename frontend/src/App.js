@@ -10,20 +10,19 @@ import AdminView from "./pages/AdminView"
 import { useDispatch, useSelector } from "react-redux"
 import { authActions } from "./store"
 import useCookie from "./components/useCookie"
+import UserProfile from "./pages/UserProfile"
 
-// const canRenderOnlyLogin = (isLoggedIn, route) => {
-//   return isLoggedIn ? route : null
-// }
+
 
 const App = () => {
 
   const isLogin = useSelector((state) => state.auth.isLoggedIn)
-  const is_admin= useSelector((state) => state.auth.is_admin)
+  const is_admin = useSelector((state) => state.auth.is_admin)
   const dispatch = useDispatch()
-  const {getAuthCookie} = useCookie();
+  const { getAuthCookie } = useCookie()
 
   useEffect(() => {
-    const token = getAuthCookie();
+    const token = getAuthCookie()
     if (token) {
       dispatch(authActions.setLogin(true))
       const tokenBody = token.split('.')[1]
@@ -38,7 +37,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route index element={<Login />} />
-        <Route path="signup" element={<SignupPage/>} />
+        <Route path="signup" element={<SignupPage />} />
         <Route path="logout" element={<Logout />} />
         <Route path="/" element={<Layout />}>
           {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}

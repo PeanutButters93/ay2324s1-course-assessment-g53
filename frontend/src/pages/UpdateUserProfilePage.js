@@ -32,12 +32,7 @@ export default function UpdateUserProfilePage () {
     new_date_of_birth: '',
   })
 
-  const { getAuthCookie } = useCookie();
-
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target
-  //   setFormData({ ...formData, [name]: value })
-  // }
+  const { getAuthCookie } = useCookie()
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -63,7 +58,7 @@ export default function UpdateUserProfilePage () {
 
     axios.put(`${USER_HOST}/updateUser`, filteredFormData, {
       headers: {
-        'Content-Type': 'application/json', 
+        'Content-Type': 'application/json',
         'Authorization': getAuthCookie()
       },
     })
@@ -87,9 +82,9 @@ export default function UpdateUserProfilePage () {
     const deleteUserUrl = `${USER_HOST}/deleteUser/${formData.user_id}`
 
     axios.delete(deleteUserUrl, {
-        headers: {
-            'Authorization': getAuthCookie()
-        }
+      headers: {
+        'Authorization': getAuthCookie()
+      }
     })
       .then((response) => {
         if (response.ok) {

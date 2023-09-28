@@ -11,11 +11,12 @@ const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_H
 export default function AdminView () {
     const [users, setUsers] = useState([])
     const [searchQuery, setSearchQuery] = useState("")
-    const { getAuthCookie } = useCookie();
-
+    const { getAuthCookie } = useCookie()
+    console.log(getAuthCookie())
     useEffect(() => {
         // Fetch user data from your backend API
         axios.get(`${USER_HOST}/users`, {headers: {'Authorization': getAuthCookie()}})
+
             .then(response => setUsers(response.data))
             .catch((error) => console.error('Error fetching user data:', error))
     }, [])
@@ -34,16 +35,18 @@ export default function AdminView () {
             apiUrl = `${USER_HOST}/userByName?username=${query}`
         }
 
-        axios.get(apiUrl, {headers: {'Authorization': getAuthCookie()}})
+        axios.get(apiUrl, { headers: { 'Authorization': getAuthCookie() } })
             .then(response => setUsers(response.data))
             .catch(error => console.error('Error fetching user data:', error))
     }
 
     const setUserAsAdmin = (username) => {
         // Make a PUT request to set the user as admin
+        const token = getAuthCookie()
+        
         axios.put(`${USER_HOST}/setUserAdmin?username=${username}`, {
             headers: {
-                'Authorization': getAuthCookie()
+                'Authorization': token
             }
         })
             .then(response => {
