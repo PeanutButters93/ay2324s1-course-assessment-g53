@@ -16,7 +16,11 @@ const uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
 mongoose.connect(uri);
 
+
 app.use("/api/questions", QuestionRouter);
 app.listen(port, () => {
   console.log(`Question service connected on port ${port}`);
+  console.log("HEllo")
+  console.log(process.env.USER_SERVICE_HOST)
+  console.log("bye")
 });

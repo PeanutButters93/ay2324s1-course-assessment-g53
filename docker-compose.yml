@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  user_profile_backend:
+    build:
+      context: ./backend/user_profile_backend
+    ports: 
+      - 4000:4000
+  
+  question-backend:
+    build:
+      context: ./backend/question-backend
+    environment:
+      USER_SERVICE_HOST: http://localhost:4000
+    ports: 
+      - 8000:8000
+    depends_on:
+      - user_profile_backend
+
+  frontend:
+    build:
+      context: ./frontend
+    ports: 
+      - 3000:3000
+    depends_on:
+      - user_profile_backend
+      - question-backend

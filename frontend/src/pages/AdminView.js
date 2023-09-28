@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import AppBar from '@mui/material/AppBar'
-import Button from '@mui/material/Button'
-import PersonIcon from '@mui/icons-material/Person'
 import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { TextField } from "@mui/material"
 import './AdminView.css'
 import useCookie from '../components/useCookie'
