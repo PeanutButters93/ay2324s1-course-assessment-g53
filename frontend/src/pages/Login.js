@@ -19,7 +19,7 @@ import { authActions } from '../store'
 import {useDispatch} from 'react-redux'
 import useCookie from '../components/useCookie'
 
-const USER_HOST = process.env.USER_HOST ? process.env.USER_HOST : "http://localhost:4000/api/users"
+const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
 function Copyright (props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -61,6 +61,8 @@ function Login (props) {
   }
 
   const handleSubmit = (event) => {
+    console.log("Hello here is the user host:")
+    console.log(USER_HOST)
     event.preventDefault()
     // Additional validation here
     if (!isValidEmailOrUsername(userIdentifier)) {

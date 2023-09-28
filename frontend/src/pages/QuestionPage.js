@@ -37,7 +37,7 @@ const DEFAULT_QNS = [
     complexity: COMPLEXITY.EASY,
   },
 ];
-const QUESTION_HOST = process.env.QUESTION_HOST ? process.env.QUESTION_HOST : "http://localhost:8000/api/questions"
+const QUESTION_HOST = process.env.REACT_APP_QUESTION_HOST ? process.env.REACT_APP_QUESTION_HOST : "http://localhost:8000/api/questions"
 const emptyTitleMessage = "Title cannot be empty!";
 const emptyDescriptionMessage = "Description cannot be empty!";
 const emptyCategoryMessage = "Category cannot be empty!";
@@ -147,6 +147,12 @@ function QuestionPage() {
 
     React.useEffect(() => {
         async function fetchQuestions() {
+        console.log("Here is the process env question host value")
+        console.log(process.env.REACT_APP_QUESTION_HOST)
+        console.log("Here is the process env user host value")
+        console.log(process.env.REACT_APP_USER_HOST)
+
+
         const response = await axios.get(QUESTION_HOST, {
             headers: {
                 'Authorization': getAuthCookie()

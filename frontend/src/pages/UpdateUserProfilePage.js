@@ -9,7 +9,7 @@ import axios from 'axios'
 import useCookie from '../components/useCookie'
 
 // TODO remove, this demo shouldn't need to reset the theme.
-const USER_HOST = process.env.USER_HOST ? process.env.USER_HOST : "http://localhost:4000/api/users"
+const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
 const defaultTheme = createTheme({
   palette: {
     mode: "dark",

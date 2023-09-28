@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend/user_profile_backend
     environment:
-      USER_HOST: http://user_profile_backend:4000/api/users
+      - USER_HOST=http://user_profile_backend:4000/api/users
     ports: 
       - 4000:4000
   
@@ -13,7 +13,8 @@ services:
     build:
       context: ./backend/question-backend
     environment:
-      USER_HOST: http://user_profile_backend:4000/api/users
+      - USER_HOST=http://user_profile_backend:4000/api/users
+      - QUESTION_HOST=http://question-backend:8000/api/questions
     ports: 
       - 8000:8000
     depends_on:
@@ -25,8 +26,8 @@ services:
     ports: 
       - 3000:3000
     environment: 
-      USER_HOST: http://user_profile_backend:4000/api/users
-      QUESTION_HOST: http://question-backend:8000/api/questions
+      - REACT_APP_USER_HOST=http://localhost:4000/api/users
+      - REACT_APP_QUESTION_HOST=http://localhost:8000/api/questions
 
     depends_on:
       - user_profile_backend

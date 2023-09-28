@@ -6,7 +6,7 @@ import { TextField } from "@mui/material"
 import './AdminView.css'
 import useCookie from '../components/useCookie'
 
-const USER_HOST = process.env.USER_HOST ? process.env.USER_HOST : "http://localhost:4000/api/users"
+const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
 
 export default function AdminView () {
     const [users, setUsers] = useState([])
