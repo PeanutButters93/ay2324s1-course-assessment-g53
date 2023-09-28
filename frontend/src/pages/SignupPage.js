@@ -20,6 +20,7 @@ import axios from 'axios'
 import useCookie from '../components/useCookie'
 
 
+const USER_HOST = process.env.USER_HOST ? process.env.USER_HOST : "http://localhost:4000/api/users"
 
 function Copyright (props) {
     return (
@@ -77,7 +78,7 @@ function SignupPage () {
         }
 
         // Send the user data to the backend
-        axios.post('http://localhost:4000/api/users/createUser', userData, {
+        axios.post(`${USER_HOST}/createUser`, userData, {
             headers: {
                 'Content-Type': 'application/json',
             },

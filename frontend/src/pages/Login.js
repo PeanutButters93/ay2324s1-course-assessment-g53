@@ -19,7 +19,7 @@ import { authActions } from '../store'
 import {useDispatch} from 'react-redux'
 import useCookie from '../components/useCookie'
 
-
+const USER_HOST = process.env.USER_HOST ? process.env.USER_HOST : "http://localhost:4000/api/users"
 function Copyright (props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -74,7 +74,7 @@ function Login (props) {
     } else {
       setPasswordError('')  // Clear the error
     }
-    axios.post('http://localhost:4000/api/users/login', {
+    axios.post(`${USER_HOST}/login`, {
       userIdentifier: userIdentifier,  // Use the userIdentifier state variable
       password: password,              // Use the password state variable
     }, {

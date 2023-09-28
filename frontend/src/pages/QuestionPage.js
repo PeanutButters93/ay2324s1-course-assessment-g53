@@ -37,7 +37,7 @@ const DEFAULT_QNS = [
     complexity: COMPLEXITY.EASY,
   },
 ];
-
+const QUESTION_HOST = process.env.QUESTION_HOST ? process.env.QUESTION_HOST : "http://localhost:8000/api/questions"
 const emptyTitleMessage = "Title cannot be empty!";
 const emptyDescriptionMessage = "Description cannot be empty!";
 const emptyCategoryMessage = "Category cannot be empty!";
@@ -96,7 +96,7 @@ function QuestionPage() {
     async function addQuestion(title, description, categories, complexity, questions) {
         const id = questions ? questions[questions.length -1].id + 1 : 1;
         const question = { id, title, description, categories, complexity };
-        axios.post("http://localhost:8000/api/questions", question, {
+        axios.post(QUESTION_HOST, question, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': getAuthCookie()
@@ -113,7 +113,7 @@ function QuestionPage() {
     async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
         const id = questionToEdit.id;
         const question = {id, title, desc: description, categories, complexity}
-        await axios.put("http://localhost:8000/api/questions", question, {
+        await axios.put(QUESTION_HOST, question, {
         headers: {
             'Content-Type': 'application/json', 
             'Authorization': getAuthCookie()
@@ -128,7 +128,7 @@ function QuestionPage() {
 
     async function deleteQuestion(questionToDelete, questions) {
         console.log(questionToDelete);
-        await axios.delete(`http://localhost:8000/api/questions/${questionToDelete.id}`, {
+        await axios.delete(`${QUESTION_HOST}/${questionToDelete.id}`, {
             headers: {
                 'Authorization': getAuthCookie()
             }
@@ -147,7 +147,7 @@ function QuestionPage() {
 
     React.useEffect(() => {
         async function fetchQuestions() {
-        const response = await axios.get('http://localhost:8000/api/questions', {
+        const response = await axios.get(QUESTION_HOST, {
             headers: {
                 'Authorization': getAuthCookie()
             }

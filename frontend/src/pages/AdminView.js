@@ -6,6 +6,7 @@ import { TextField } from "@mui/material"
 import './AdminView.css'
 import useCookie from '../components/useCookie'
 
+const USER_HOST = process.env.USER_HOST ? process.env.USER_HOST : "http://localhost:4000/api/users"
 
 export default function AdminView () {
     const [users, setUsers] = useState([])
@@ -14,7 +15,7 @@ export default function AdminView () {
 
     useEffect(() => {
         // Fetch user data from your backend API
-        axios.get('http://localhost:4000/api/users/users', {headers: {'Authorization': getAuthCookie()}})
+        axios.get(`${USER_HOST}/users`, {headers: {'Authorization': getAuthCookie()}})
             .then(response => setUsers(response.data))
             .catch((error) => console.error('Error fetching user data:', error))
     }, [])
@@ -26,11 +27,11 @@ export default function AdminView () {
     }
 
     const fetchUsers = (query) => {
-        let apiUrl = 'http://localhost:4000/api/users/users'
+        let apiUrl = `${USER_HOST}/users`
 
         if (query) {
             // If there's a query, add it to the API URL
-            apiUrl = `http://localhost:4000/api/users/userByName?username=${query}`
+            apiUrl = `${USER_HOST}/userByName?username=${query}`
         }
 
         axios.get(apiUrl, {headers: {'Authorization': getAuthCookie()}})
@@ -40,7 +41,7 @@ export default function AdminView () {
 
     const setUserAsAdmin = (username) => {
         // Make a PUT request to set the user as admin
-        axios.put(`http://localhost:4000/api/users/setUserAdmin?username=${username}`, {
+        axios.put(`${USER_HOST}/setUserAdmin?username=${username}`, {
             headers: {
                 'Authorization': getAuthCookie()
             }

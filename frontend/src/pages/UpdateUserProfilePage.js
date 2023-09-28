@@ -9,6 +9,7 @@ import axios from 'axios'
 import useCookie from '../components/useCookie'
 
 // TODO remove, this demo shouldn't need to reset the theme.
+const USER_HOST = process.env.USER_HOST ? process.env.USER_HOST : "http://localhost:4000/api/users"
 const defaultTheme = createTheme({
   palette: {
     mode: "dark",
@@ -60,7 +61,7 @@ export default function UpdateUserProfilePage () {
       {}
     )
 
-    axios.put('http://localhost:4000/api/users/updateUser', filteredFormData, {
+    axios.put(`${USER_HOST}/updateUser`, filteredFormData, {
       headers: {
         'Content-Type': 'application/json', 
         'Authorization': getAuthCookie()
@@ -83,7 +84,7 @@ export default function UpdateUserProfilePage () {
       return
     }
 
-    const deleteUserUrl = `http://localhost:4000/api/users/deleteUser/${formData.user_id}`
+    const deleteUserUrl = `${USER_HOST}/deleteUser/${formData.user_id}`
 
     axios.delete(deleteUserUrl, {
         headers: {
