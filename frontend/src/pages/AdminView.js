@@ -16,11 +16,11 @@ import useCookie from '../components/useCookie'
 export default function AdminView () {
     const [users, setUsers] = useState([])
     const [searchQuery, setSearchQuery] = useState("")
-    const { getAuthCookie } = useCookie();
-
+    const { getAuthCookie } = useCookie()
+    console.log(getAuthCookie())
     useEffect(() => {
         // Fetch user data from your backend API
-        axios.get('http://localhost:4000/api/users/users', {headers: {'Authorization': getAuthCookie()}})
+        axios.get('http://localhost:4000/api/users/users', { headers: { 'Authorization': getAuthCookie() } })
             .then(response => setUsers(response.data))
             .catch((error) => console.error('Error fetching user data:', error))
     }, [])
@@ -39,16 +39,18 @@ export default function AdminView () {
             apiUrl = `http://localhost:4000/api/users/userByName?username=${query}`
         }
 
-        axios.get(apiUrl, {headers: {'Authorization': getAuthCookie()}})
+        axios.get(apiUrl, { headers: { 'Authorization': getAuthCookie() } })
             .then(response => setUsers(response.data))
             .catch(error => console.error('Error fetching user data:', error))
     }
 
     const setUserAsAdmin = (username) => {
         // Make a PUT request to set the user as admin
-        axios.put(`http://localhost:4000/api/users/setUserAdmin?username=${username}`, {
+        const token = getAuthCookie()
+        // console.log(token)
+        axios.put(`http://localhost:4000/api/users/setUserAdmin?username=${username}`, {}, {
             headers: {
-                'Authorization': getAuthCookie()
+                'Authorization': token
             }
         })
             .then(response => {
@@ -64,17 +66,8 @@ export default function AdminView () {
     }
 
     return (
-        <ThemeProvider theme={createTheme()}>
+        <Box>
             <CssBaseline />
-            <AppBar position="static">
-                <Toolbar>
-                    <PersonIcon />
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        User List
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
             <Box sx={{ padding: '16px' }}>
                 <TextField
                     label="Search"
@@ -114,6 +107,6 @@ export default function AdminView () {
                     </tbody>
                 </table>
             </Box>
-        </ThemeProvider>
+        </Box>
     )
 }

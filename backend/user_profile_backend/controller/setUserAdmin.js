@@ -4,6 +4,7 @@ const pool = require('../database/db.js')
 
 const setUserAdmin = (request, response) => {
     const username = request.query.username
+    console.log(username)
 
     pool.query('SELECT * FROM users WHERE username = $1', [username], (error, results) => {
         if (error) {
