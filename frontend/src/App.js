@@ -44,7 +44,7 @@ const App = () => {
         <Route path="logout" element={<Logout />} />
         <Route path="/" element={<Layout />}>
           {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
-          {isLogin ? <Route path="profile" element={<UpdateUserProfilePage />} /> : null}
+          {isLogin ? <Route path="userprofile" element={<UserProfile />} /> : null}
           {is_admin ? <Route path="adminview" element={<AdminView />} /> : null}
         </Route>
       </Routes>
