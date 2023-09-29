@@ -1,12 +1,26 @@
 import { Button, TextField , Box, FormControl, MenuItem} from "@mui/material";
 import { useState, useEffect} from "react";
+import { Modal , Typography} from "@mui/material";
 
 
+
+const modal_style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
 const Match = (props) => {
     const [difficulty, setDifficulty] = useState("")
-    const [timeLeft, setTimeLeft] = useState(30);
+    const [timeLeft, setTimeLeft] = useState(10);
     const [startCount, setStartCount] = useState(false)
+    const [open, setOpen] = useState(false)
 
     const handleDifficultyChange = (event) => {
         event.preventDefault()
@@ -21,8 +35,9 @@ const Match = (props) => {
             return () => {
                 clearInterval(intervalId)
                 if (timeLeft <= 0){
+                    setOpen(true)
                     setStartCount(false)
-                    setTimeLeft(30)
+                    setTimeLeft(10)
                 }
             }
         } else {
@@ -42,6 +57,10 @@ const Match = (props) => {
         setStartCount(false)
         setTimeLeft(30)
         console.log("Cancelled")
+    }
+
+    const handleCloseModal = () => {
+        setOpen(false)
     }
 
     return (
@@ -73,6 +92,23 @@ const Match = (props) => {
                 <Box sx={{height: "200px"}}></Box>
                 <Box>Timer Left: {timeLeft}</Box>
         </FormControl>
+        {
+        <Modal
+        open={open}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modal_style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Oops...
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Sorry we were unable to find you a match
+          </Typography>
+        </Box>
+      </Modal>
+        }
         
     </Box>);
 }
