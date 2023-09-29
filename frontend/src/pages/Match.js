@@ -1,4 +1,4 @@
-import { Button, Select , Box, FormControl, InputLabel, MenuItem} from "@mui/material";
+import { Button, TextField , Box, FormControl, MenuItem} from "@mui/material";
 import { useState, useEffect} from "react";
 
 
@@ -22,6 +22,7 @@ const Match = (props) => {
                 clearInterval(intervalId)
                 if (timeLeft <= 0){
                     setStartCount(false)
+                    setTimeLeft(30)
                 }
             }
         } else {
@@ -36,27 +37,43 @@ const Match = (props) => {
         console.log("BYEE")
     }
 
+    const handleCancel = (event) => {
+        event.preventDefault()
+        setStartCount(false)
+        setTimeLeft(30)
+        console.log("Cancelled")
+    }
+
     return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <FormControl sx={{ width: "150px" , margin: "50px"}}>
-            <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
-                <Select 
-                label="difficulty"
+    <Box sx={{ display: "flex", alignItems:"center"}}>
+        
+        <FormControl sx={{width: "100%" , margin: "50px", alignItems: "center"}}>
+        
+                <TextField 
+                select
                 id="difficulty"
+                label="Difficulty"
                 value={difficulty}
                 onChange={handleDifficultyChange}
-                autoWidth>
-                    <MenuItem value={"EASY"}>EASY</MenuItem>
-                    <MenuItem value={"MEDIUM"}>MEDIUM</MenuItem>
-                    <MenuItem value={"HARD"}>HARD</MenuItem>
-                </Select>
+                sx={{width:"200px"}}>
+                    <MenuItem key={1} value={"EASY"}>EASY</MenuItem>
+                    <MenuItem key={2} value={"MEDIUM"}>MEDIUM</MenuItem>
+                    <MenuItem key={3} value={"HARD"}>HARD</MenuItem>
+                </TextField>
                 <Box sx={{height: "200px"}}></Box>
-                <Button variant="contained" color="primary" onClick={handleSubmit} sx={{width: "150px", height:"50px"}}>
-                Submit
-                </Button>
+                <Box sx={{display: "flex"}}>
+                    <Button variant="contained" color="primary" onClick={handleSubmit} sx={{width: "150px", height:"50px", margin:"30px"}}>
+                    Submit
+                    </Button>
+                    <Button variant="contained" color="secondary" onClick={handleCancel} sx={{width: "150px", height:"50px", margin:"30px"}}>
+                    Cancel
+                    </Button>
+                </Box>
+                
                 <Box sx={{height: "200px"}}></Box>
                 <Box>Timer Left: {timeLeft}</Box>
         </FormControl>
+        
     </Box>);
 }
 
