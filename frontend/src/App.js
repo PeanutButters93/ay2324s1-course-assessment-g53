@@ -20,12 +20,12 @@ import useCookie from "./components/useCookie"
 const App = () => {
 
   const isLogin = useSelector((state) => state.auth.isLoggedIn)
-  const is_admin= useSelector((state) => state.auth.is_admin)
+  const is_admin = useSelector((state) => state.auth.is_admin)
   const dispatch = useDispatch()
-  const {getAuthCookie} = useCookie();
+  const { getAuthCookie } = useCookie()
 
   useEffect(() => {
-    const token = getAuthCookie();
+    const token = getAuthCookie()
     if (token) {
       dispatch(authActions.setLogin(true))
       const tokenBody = token.split('.')[1]
@@ -41,11 +41,12 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />} />
         <Route index element={<Login />} />
-        <Route path="signup" element={<SignupPage/>} />
+        <Route path="signup" element={<SignupPage />} />
         <Route path="logout" element={<Logout />} />
-        {isLogin ? <Route path="profile" element={<UpdateUserProfilePage />}/> : null}
+        {isLogin ? <Route path="updateprofile" element={<UpdateUserProfilePage />} /> : null}
         {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
-        {is_admin ? <Route path="adminview" element={<AdminView/>}/> : null}
+        {isLogin ? <Route path="userprofile" element={<UserProfile />} /> : null}
+        {is_admin ? <Route path="adminview" element={<AdminView />} /> : null}
       </Routes>
     </BrowserRouter>
   )
