@@ -4,6 +4,10 @@ import { Modal , Typography} from "@mui/material";
 
 
 
+// const yourFunction = async () => {
+//   await new Promise(resolve => setTimeout(resolve, 5000)); 
+//   console.log("Waited 5s");
+// };
 const modal_style = {
     position: 'absolute',
     top: '50%',
@@ -45,17 +49,19 @@ const Match = (props) => {
         }
     }, [startCount, timeLeft])
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         console.log(difficulty)
         setStartCount(true)
-        console.log("BYEE")
+        
+        //Send the request here. yourFunction simulates the sending of the request. 
+        //await yourFunction()
     }
 
     const handleCancel = (event) => {
         event.preventDefault()
         setStartCount(false)
-        setTimeLeft(30)
+        setTimeLeft(10)
         console.log("Cancelled")
     }
 
@@ -89,7 +95,7 @@ const Match = (props) => {
                     </Button>
                 </Box>
                 
-                <Box sx={{height: "200px"}}></Box>
+                <Box sx={{height: "100px"}}></Box>
                 <Box>Timer Left: {timeLeft}</Box>
         </FormControl>
         {
