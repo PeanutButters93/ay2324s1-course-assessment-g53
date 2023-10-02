@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { authActions } from "./store"
 import useCookie from "./components/useCookie"
 import UserProfile from "./pages/UserProfile"
+import Room from "./pages/Room"
 
 // const canRenderOnlyLogin = (isLoggedIn, route) => {
 //   return isLoggedIn ? route : null
@@ -42,6 +43,7 @@ const App = () => {
         <Route index element={<Login />} />
         <Route path="signup" element={<SignupPage />} />
         <Route path="logout" element={<Logout />} />
+        <Route path="room" element={<Room />}/>
         <Route path="/" element={<Layout />}>
           {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
           {isLogin ? <Route path="profile" element={<UserProfile />} /> : null}
