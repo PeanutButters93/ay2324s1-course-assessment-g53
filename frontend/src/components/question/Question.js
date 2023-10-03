@@ -10,6 +10,8 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
+import {useSelector } from "react-redux"
+
 
 export default function Question(props) {
   const questions = props.questions;
@@ -19,6 +21,7 @@ export default function Question(props) {
   const selectedQuestion = props.selectedQuestion;
   const setSelectedQuestion = props.setSelectedQuestion;
   const deleteQuestion = props.deleteQuestion;
+  const is_admin = useSelector((state) => state.auth.is_admin);
 
   const handleAddClick = () => {
     setAddPage(true);
@@ -84,20 +87,25 @@ export default function Question(props) {
                   >
                     <VisibilityIcon />
                   </IconButton>
-                  <IconButton
-                    color="primary"
-                    aria-label="Edit"
-                    onClick={() => handleEditClick(question)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    color="secondary"
-                    aria-label="Delete"
-                    onClick={() => handleDeleteClick(question)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+
+                  {is_admin && (
+                    <>
+                      <IconButton
+                        color="primary"
+                        aria-label="Edit"
+                        onClick={() => handleEditClick(question)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        color="secondary"
+                        aria-label="Delete"
+                        onClick={() => handleDeleteClick(question)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
+                  )}
                 </div>
               </TableCell>
             </TableRow>
