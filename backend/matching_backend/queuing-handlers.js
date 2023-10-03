@@ -1,35 +1,48 @@
 const pool = require("./database/db.js");
+const amq = require("amqplib")
 
-const addToQueue = (user_id, difficulty) => {
+const addToQueue = async (user_id, difficulty) => {
   const values = [user_id, difficulty];
 
   //Not sure how this line is supposed to look like uh but roughly it will be like this
   const query = `INSERT INTO queue (user_id, difficulty) VALUES ($1, $2) RETURNING user_id`;
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.log(error.message);
-      return;
-    }
-    console.log(`Added user with user_id: ${results.rows[0]} to queue`);
-    return;
-  });
+  try {
+    const { rows } = await pool.query(query, values);
+    return rows.length !== 0;
+  } catch {
+    return false;
+  }
 };
 
-const findFromQueue = (difficulty) => {
-    const query = `SELECT user_id FROM queue WHERE difficulty = $1 LIMIT 1`
-    pool.query(query, [difficulty], (error, results) => {
-        if (error) {
-            console.log(error.message)
-            return;
-        }
-        if (results.rows.length === 0) {
-            console.log("Nobody in the queue has this difficulty level...")
-            return null
-        }
-        const matchedUserId = results.rows[0].user_id
-        console.log("Matched user has ID: ", matchedUserId)
-        return matchedUserId;
-    })
+const findFromQueue = async (userId, difficulty, connection) => {
+  const query = `SELECT user_id FROM queue WHERE difficulty = $1 LIMIT 1`;
+  try {
+    const { rows } = await pool.query(query, [difficulty]);
+    if (rows.length === 0) return null;
+    const matchedUserId = rows[0].user_id;
+    const removed = await removeFromQueue(matchedUserId);
+    if (!removed) {
+      return null
+    }
+    
+    notifyWaitingUser(connection, matchedUserId, userId);
+    return matchedUserId;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+
+const removeFromQueue = async (user_id) => {
+  const query = `DELETE FROM queue WHERE user_id = $1`;
+  const { rowCount } = await pool.query(query, [user_id]);
+  return rowCount > 0;
+};
+
+async function notifyWaitingUser(connection, matchedUserId, userId) {
+  const channel = await connection.createChannel();
+  channel.publish("match-events", matchedUserId.toString(), Buffer.from(userId.toString()));
 }
 
-module.exports = {findFromQueue, addToQueue}
+module.exports = { findFromQueue, addToQueue };
+
