@@ -35,19 +35,28 @@ const Match = (props) => {
   };
 
   function createServer() {
-    // if (matchSocket === null) return;
+    if (matchSocket !== null) return;
     const submitDifficulty = difficulty
     const token = getAuthCookie()
+    console.log(token)
     const socket = io("ws://localhost:3000", {
-      reconnectionDelayMax: 10000,
+      reconnection: false,
       auth: {
-        token: "123",
+        token
       },
       query: {
-        "token": token,
         "difficulty": submitDifficulty,
       },
     })
+
+    socket.on('hello', (data) => {
+      console.log('Hello:', data)
+    })
+
+    socket.on('disconnect', () => {
+      setMatchSocket(null)
+    })
+
     setMatchSocket(socket)
   }
 
