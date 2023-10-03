@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
@@ -18,10 +16,10 @@ import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
 import { authActions } from '../store'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import useCookie from '../components/useCookie'
 
-
+const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
 function Copyright (props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -63,6 +61,8 @@ function Login (props) {
   }
 
   const handleSubmit = (event) => {
+    console.log("Hello here is the user host:")
+    console.log(USER_HOST)
     event.preventDefault()
     // Additional validation here
     if (!isValidEmailOrUsername(userIdentifier)) {
@@ -76,7 +76,7 @@ function Login (props) {
     } else {
       setPasswordError('')  // Clear the error
     }
-    axios.post('http://localhost:4000/api/users/login', {
+    axios.post(`${USER_HOST}/login`, {
       userIdentifier: userIdentifier,  // Use the userIdentifier state variable
       password: password,              // Use the password state variable
     }, {

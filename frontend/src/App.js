@@ -1,21 +1,18 @@
-import { ReactDOM, useEffect, useState } from "react"
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { useEffect } from "react"
+import { BrowserRouter, Routes, Route} from "react-router-dom"
 import QuestionPage from "./pages/QuestionPage"
 import Login from "./pages/Login"
 import Logout from "./pages/Logout"
 import Layout from "./pages/Layout"
 import UpdateUserProfilePage from "./pages/UpdateUserProfilePage"
 import SignupPage from "./pages/SignupPage"
-import RouteProtector from "./components/RouteProtector"
 import AdminView from "./pages/AdminView"
 import { useDispatch, useSelector } from "react-redux"
 import { authActions } from "./store"
 import useCookie from "./components/useCookie"
 import UserProfile from "./pages/UserProfile"
 
-// const canRenderOnlyLogin = (isLoggedIn, route) => {
-//   return isLoggedIn ? route : null
-// }
+
 
 const App = () => {
 
