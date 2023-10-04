@@ -3,7 +3,7 @@ const http = require("http");
 const amq = require("amqplib")
 const { Server } = require("socket.io");
 const { validateUser } = require("./validation.js");
-const { addToQueue, findFromQueue } = require("./queuing-handlers.js")
+const { addToQueue, findFromQueue, removeFromQueue } = require("./queuing-handlers.js")
 
 const app = express();
 const server = http.createServer(app);
@@ -23,12 +23,22 @@ async function waitForMatchInBackground(userId, event) {
   const channel = await connection.createChannel();
   const { exchange } = await channel.assertExchange("match-events", "topic");
   const { queue } = await channel.assertQueue(`user-queue-${userId}`, { exclusive: true });
+  channel.purgeQueue(`user-queue-${userId}`)
   channel.bindQueue(queue, exchange, userId.toString());
+
+  let matched = false
+  event.on("disconnect", () => {
+    if (matched) return
+    removeFromQueue(userId)
+    channel.close()
+  })
+
   channel.consume(queue, (msg) => {
+    matched = true
     console.log("Matched after wait:", userId, msg.content.toString());
     event.emit("hello", { matchedId: parseInt(msg.content.toString()) });
+    channel.purgeQueue(`user-queue-${userId}`)
     event.conn.close();
-    channel.close();
   });
 }
 

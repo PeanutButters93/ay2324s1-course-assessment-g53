@@ -19,14 +19,16 @@ const modal_style = {
   boxShadow: 24,
   p: 4,
 };
+const TIME_LIMIT = 8
 
 const Match = (props) => {
   const [difficulty, setDifficulty] = useState("");
-  const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
   const [startCount, setStartCount] = useState(false);
   const [open, setOpen] = useState(false);
   const [matchSocket, setMatchSocket] = useState(null);
   const { getAuthCookie } = useCookie(); 
+  const [matchFound, setMatchFound] = useState(false);
 
 
   const handleDifficultyChange = (event) => {
@@ -36,9 +38,9 @@ const Match = (props) => {
 
   function createServer() {
     if (matchSocket !== null) return;
+
     const submitDifficulty = difficulty
     const token = getAuthCookie()
-    console.log(token)
     const socket = io("ws://localhost:3000", {
       reconnection: false,
       auth: {
@@ -49,8 +51,16 @@ const Match = (props) => {
       },
     })
 
+    setTimeout(() => {
+      socket.disconnect()
+    }, TIME_LIMIT * 1000)
+
     socket.on('hello', (data) => {
       console.log('Hello:', data)
+      setMatchFound(true)
+      setOpen(true)
+      setTimeLeft(TIME_LIMIT)
+      setStartCount(false)
     })
 
     socket.on('disconnect', () => {
@@ -69,8 +79,9 @@ const Match = (props) => {
         clearInterval(intervalId);
         if (timeLeft <= 0) {
           setOpen(true);
+          setMatchFound(false);
           setStartCount(false);
-          setTimeLeft(10);
+          setTimeLeft(TIME_LIMIT);
         }
       };
     } else {
@@ -91,12 +102,13 @@ const Match = (props) => {
   const handleCancel = (event) => {
     event.preventDefault();
     setStartCount(false);
-    setTimeLeft(10);
+    setTimeLeft(TIME_LIMIT);
     console.log("Cancelled");
   };
 
   const handleCloseModal = () => {
     setOpen(false);
+    setMatchFound(false)
   };
 
   return (
@@ -152,10 +164,10 @@ const Match = (props) => {
         >
           <Box sx={modal_style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Oops...
+              {matchFound ?  "Hooray" :`Oops...` }
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Sorry we were unable to find you a match
+              {matchFound ? "Found you a match! Will connect you guys shortly...": "Sorry we were unable to find you a match"}
             </Typography>
           </Box>
         </Modal>

@@ -44,5 +44,5 @@ async function notifyWaitingUser(connection, matchedUserId, userId) {
   channel.publish("match-events", matchedUserId.toString(), Buffer.from(userId.toString()));
 }
 
-module.exports = { findFromQueue, addToQueue };
+module.exports = { findFromQueue, addToQueue, removeFromQueue };
 
