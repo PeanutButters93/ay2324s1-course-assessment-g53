@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
 import { Link as RouterLink } from "react-router-dom"
 import MUILink from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
@@ -13,13 +11,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import Login from './Login'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
 import useCookie from '../components/useCookie'
 
 
+const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
 
 function Copyright (props) {
     return (
@@ -77,7 +75,7 @@ function SignupPage () {
         }
 
         // Send the user data to the backend
-        axios.post('http://localhost:4000/api/users/createUser', userData, {
+        axios.post(`${USER_HOST}/createUser`, userData, {
             headers: {
                 'Content-Type': 'application/json',
             },
