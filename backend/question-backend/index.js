@@ -6,11 +6,7 @@ import QuestionRouter from "./routes/questionRouter.js";
 import cors from "cors";
 
 dotenv.config({
-<<<<<<< HEAD
-  path: "./.env.local",
-=======
   path: ".env.local",
->>>>>>> master
 });
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
