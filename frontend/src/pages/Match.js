@@ -29,6 +29,7 @@ const Match = (props) => {
   const [matchSocket, setMatchSocket] = useState(null);
   const { getAuthCookie } = useCookie(); 
   const [matchFound, setMatchFound] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
 
   const handleDifficultyChange = (event) => {
@@ -37,11 +38,12 @@ const Match = (props) => {
   };
 
   function createServer() {
+    
     if (matchSocket !== null) return;
 
     const submitDifficulty = difficulty
     const token = getAuthCookie()
-    const socket = io("ws://localhost:3000", {
+    const socket = io("ws://localhost:3001", {
       reconnection: false,
       auth: {
         token
@@ -53,6 +55,7 @@ const Match = (props) => {
 
     setTimeout(() => {
       socket.disconnect()
+      setIsSubmitting(false)
     }, TIME_LIMIT * 1000)
 
     socket.on('hello', (data) => {
@@ -61,12 +64,14 @@ const Match = (props) => {
       setOpen(true)
       setTimeLeft(TIME_LIMIT)
       setStartCount(false)
+      setIsSubmitting(false)
     })
 
     socket.on('disconnect', () => {
       setMatchSocket(null)
+      setIsSubmitting(false)
     })
-
+    setIsSubmitting(true)
     setMatchSocket(socket)
   }
 
@@ -82,6 +87,7 @@ const Match = (props) => {
           setMatchFound(false);
           setStartCount(false);
           setTimeLeft(TIME_LIMIT);
+          setIsSubmitting(false);
         }
       };
     } else {
@@ -93,6 +99,7 @@ const Match = (props) => {
     event.preventDefault();
     console.log(difficulty);
     setStartCount(true);
+    setIsSubmitting(true)
     createServer();
 
     //Send the request here. yourFunction simulates the sending of the request.
@@ -102,7 +109,12 @@ const Match = (props) => {
   const handleCancel = (event) => {
     event.preventDefault();
     setStartCount(false);
+    setIsSubmitting(false)
     setTimeLeft(TIME_LIMIT);
+    if (matchSocket) {
+      matchSocket.disconnect()
+      setMatchSocket(null)
+    }
     console.log("Cancelled");
   };
 
@@ -135,6 +147,7 @@ const Match = (props) => {
         <Box sx={{ height: "200px" }}></Box>
         <Box sx={{ display: "flex" }}>
           <Button
+            disabled={isSubmitting}
             variant="contained"
             color="primary"
             onClick={handleSubmit}
