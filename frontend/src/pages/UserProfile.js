@@ -18,7 +18,7 @@ const defaultTheme = createTheme({
     mode: 'dark',
   },
 })
-
+const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
 export default function UserProfile () {
   const [user, setUser] = useState({})
   const [loading, setLoading] = useState(true)
@@ -45,7 +45,7 @@ export default function UserProfile () {
 
     // Fetch user data from the backend when the component mounts
     axios
-      .get(`http://localhost:4000/api/users/userById?user_id=${user_id}`, {
+      .get(`${USER_HOST}/userById?user_id=${user_id}`, {
         headers: {
           Authorization: getAuthCookie(),
         },
@@ -86,7 +86,7 @@ export default function UserProfile () {
       new_username: updatedUsername,
     }
 
-    axios.put('http://localhost:4000/api/users/updateUser', new_user, {
+    axios.put(`${USER_HOST}/updateUser`, new_user, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': getAuthCookie()
@@ -124,7 +124,7 @@ export default function UserProfile () {
       user_id: user_id,
       new_email: updatedEmail,
     }
-    axios.put('http://localhost:4000/api/users/updateUser', new_user, {
+    axios.put(`${USER_HOST}/updateUser`, new_user, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': getAuthCookie()
@@ -163,7 +163,7 @@ export default function UserProfile () {
       user_id: user_id,
       new_bio: updatedBio,
     }
-    axios.put('http://localhost:4000/api/users/updateUser', new_user, {
+    axios.put(`${USER_HOST}/updateUser`, new_user, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': getAuthCookie()
@@ -194,7 +194,7 @@ export default function UserProfile () {
       new_date_of_birth: editedDateOfBirth,
     }
 
-    axios.put('http://localhost:4000/api/users/updateUser', new_user, {
+    axios.put(`${USER_HOST}/updateUser`, new_user, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': getAuthCookie()

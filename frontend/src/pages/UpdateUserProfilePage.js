@@ -1,18 +1,15 @@
 import * as React from 'react'
 import { useState } from "react"
-import AppBar from '@mui/material/AppBar'
 import Button from '@mui/material/Button'
-import PersonIcon from '@mui/icons-material/Person'
 import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { TextField } from "@mui/material"
 import axios from 'axios'
 import useCookie from '../components/useCookie'
 
 // TODO remove, this demo shouldn't need to reset the theme.
+const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
 const defaultTheme = createTheme({
   palette: {
     mode: "dark",
@@ -37,11 +34,6 @@ export default function UpdateUserProfilePage () {
 
   const { getAuthCookie } = useCookie()
 
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target
-  //   setFormData({ ...formData, [name]: value })
-  // }
-
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormData((prevData) => ({
@@ -63,8 +55,8 @@ export default function UpdateUserProfilePage () {
       },
       {}
     )
-    console.log(filteredFormData)
-    axios.put('http://localhost:4000/api/users/updateUser', filteredFormData, {
+
+    axios.put(`${USER_HOST}/updateUser`, filteredFormData, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': getAuthCookie()
@@ -87,7 +79,7 @@ export default function UpdateUserProfilePage () {
       return
     }
 
-    const deleteUserUrl = `http://localhost:4000/api/users/deleteUser/${formData.user_id}`
+    const deleteUserUrl = `${USER_HOST}/deleteUser/${formData.user_id}`
 
     axios.delete(deleteUserUrl, {
       headers: {
@@ -167,9 +159,9 @@ export default function UpdateUserProfilePage () {
               name="new_password"
               value={formData.new_password}
               type="password"
-              error={formData.new_password.length != 0 && !isValidPassword(formData.new_password)}
+              error={formData.new_password.length !== 0 && !isValidPassword(formData.new_password)}
               helperText={
-                (formData.new_password.length != 0 && !isValidPassword(formData.new_password)) ? "Password not strong enough" : ""
+                (formData.new_password.length !== 0 && !isValidPassword(formData.new_password)) ? "Password not strong enough" : ""
               }
               variant="outlined"
               color="secondary"
@@ -222,7 +214,7 @@ export default function UpdateUserProfilePage () {
           </form>
         </Box>
         <Box textAlign='center'>
-          <Button variant="outlined" color="secondary" type="submit" onClick={handleDelete} disabled={formData.user_id == ""}>Delete Account</Button>
+          <Button variant="outlined" color="secondary" type="submit" onClick={handleDelete} disabled={formData.user_id === ""}>Delete Account</Button>
         </Box>
       </Box>
 
