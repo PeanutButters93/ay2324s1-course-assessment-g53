@@ -19,7 +19,7 @@ const modal_style = {
   boxShadow: 24,
   p: 4,
 };
-const TIME_LIMIT = 8
+const TIME_LIMIT = 15
 
 const Match = (props) => {
   const [difficulty, setDifficulty] = useState("");
