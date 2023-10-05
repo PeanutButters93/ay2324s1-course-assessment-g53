@@ -5,17 +5,19 @@ const { Server } = require("socket.io");
 const { validateUser } = require("./validation.js");
 const { addToQueue, findFromQueue, removeFromQueue } = require("./queuing-handlers.js")
 
+const FRONTEND_HOST = process.env.FRONTEND_HOST ?  process.env.FRONTEND_HOST : "http://localhost:3000"
+const RABBIT_MQ_HOST = process.env.RABBIT_MQ_HOST ? process.env.RABBIT_MQ_HOST : 'amqp://guest:guest@localhost:5672'
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: FRONTEND_HOST,
     methods: ["GET", "POST"],
   },
 });
 
 let connection = null;
-amq.connect('amqp://guest:guest@localhost:5672').then((amqConnection) => {
+amq.connect(RABBIT_MQ_HOST).then((amqConnection) => {
   connection = amqConnection;
 })
 

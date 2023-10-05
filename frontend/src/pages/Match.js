@@ -20,7 +20,7 @@ const modal_style = {
   p: 4,
 };
 const TIME_LIMIT = 15
-
+const MATCHING_HOST = process.env.REACT_APP_MATCHING_HOST ? process.env.REACT_APP_MATCHING_HOST : "ws://localhost:3001"
 const Match = (props) => {
   const [difficulty, setDifficulty] = useState("");
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
@@ -43,7 +43,7 @@ const Match = (props) => {
 
     const submitDifficulty = difficulty
     const token = getAuthCookie()
-    const socket = io("ws://localhost:3001", {
+    const socket = io( MATCHING_HOST, {
       reconnection: false,
       auth: {
         token
