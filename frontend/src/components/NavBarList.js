@@ -3,6 +3,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import NavBarItem from './NavBarItem'
 import useCookie from './useCookie';
 
@@ -16,6 +17,11 @@ const NavBarList = () => {
         text = "Questions"
         icon = {<DashboardIcon />}
         href = "../questionpage"
+      />
+      <NavBarItem
+        text = "Matching Service"
+        icon = {<PersonSearchIcon />}
+        href = "../match"
       />
       <NavBarItem
         text = "User Profile"
