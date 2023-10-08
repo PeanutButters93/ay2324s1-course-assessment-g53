@@ -12,7 +12,6 @@ export default function AdminView () {
     const [users, setUsers] = useState([])
     const [searchQuery, setSearchQuery] = useState("")
     const { getAuthCookie } = useCookie()
-    console.log(getAuthCookie())
     useEffect(() => {
         // Fetch user data from your backend API
         axios.get(`${USER_HOST}/users`, {headers: {'Authorization': getAuthCookie()}})
