@@ -11,7 +11,7 @@ function TextEditor() {
    * Connect to Collab Service in backend upon page start
    */
   useEffect(() => {
-    const s = io("http://localhost:3001")
+    const s = io("http://localhost:9000")
     setSocket(s)
 
     return () => {
