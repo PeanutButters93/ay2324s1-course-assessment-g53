@@ -5,8 +5,6 @@ const io = require('socket.io')(9000, {
     }
 })
 
-console.log(`Collaboration service connected on port 9000`);
-
 io.on("connection", socket => {
     socket.on("send-changes", delta => {
         socket.broadcast.emit("recieve-changes", delta)
