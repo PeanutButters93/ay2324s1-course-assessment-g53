@@ -20,6 +20,20 @@ services:
     depends_on:
       - user_profile_backend
 
+  matching_backend:
+    build:
+      context: ./backend/matching_backend
+    ports:
+      - 3001:3001
+    environment:
+      - RABBIT_MQ_HOST=amqp://rabbitmq:5672
+      - FRONTEND_HOST=http://localhost:3000
+      - USER_HOST=http://user_profile_backend:4000/api/users
+    depends_on:
+      - rabbitmq
+      - frontend
+      - user_profile_backend
+
   frontend:
     build:
       context: ./frontend
@@ -28,7 +42,16 @@ services:
     environment: 
       - REACT_APP_USER_HOST=http://localhost:4000/api/users
       - REACT_APP_QUESTION_HOST=http://localhost:8000/api/questions
+      - REACT_APP_MATCHING_HOST=ws://localhost:3001
 
     depends_on:
       - user_profile_backend
       - question-backend
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
