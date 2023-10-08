@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import { io } from "socket.io-client"
+import { useParams } from "react-router-dom"
 
 function TextEditor() {
+  const {id: documentId} = useParams()
   const [socket, setSocket] = useState()
   const [quill, setQuill] = useState()
-    
   /**
    * Connect to Collab Service in backend upon page start
    */
@@ -18,6 +19,18 @@ function TextEditor() {
       s.disconnect()
     }
   }, [])
+
+  useEffect(() => {
+    if (socket == null || quill == null) return
+    
+    socket.once("load-document", docmuent => {
+      quill.setContents(document)
+      quill.enable()
+    })
+
+    socket.emit('get-document', documentId)
+  }, [socket, quill, documentId])
+    
   
   /**
    * Send user made changes to the server
@@ -65,6 +78,8 @@ function TextEditor() {
       const editor = document.createElement('div')
       wrapper.append(editor)
       const q = new Quill(editor, {theme : "snow"})
+      q.disable()
+      q.setText("Loading...")
       setQuill(q)
   }, [])
 
