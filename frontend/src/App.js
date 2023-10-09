@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { authActions } from "./store"
 import useCookie from "./components/useCookie"
 import UserProfile from "./pages/UserProfile"
+import Room from "./pages/Room"
 import Match from "./pages/Match"
 
 
@@ -44,6 +45,7 @@ const App = () => {
         <Route path="match" element = {<Match/>}/>
           {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
           {isLogin ? <Route path="profile" element={<UserProfile />} /> : null}
+          {isLogin ? <Route path="room/:id" element={<Room />} /> : null}
           {is_admin ? <Route path="adminview" element={<AdminView />} /> : null}
         </Route>
       </Routes>
