@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
 import Quill from "quill"
-import "quill/dist/quill.snow.css"
 import { io } from "socket.io-client"
 import { useParams } from "react-router-dom"
 
@@ -27,6 +26,7 @@ function TextEditor() {
     
     socket.once("load-document", document => {
       quill.setContents(document)
+      quill.format('code-block', true)
       quill.enable()
     })
 
@@ -85,7 +85,7 @@ function TextEditor() {
       wrapper.innerHTML = ""
       const editor = document.createElement('div')
       wrapper.append(editor)
-      const q = new Quill(editor, {theme : "snow"})
+      const q = new Quill(editor)
       q.disable()
       q.setText("Loading...")
       setQuill(q)
