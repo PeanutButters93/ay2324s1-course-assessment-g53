@@ -10,18 +10,21 @@ const io = require('socket.io')(9000, {
     }
 })
 
-const defaultValue = ""
+const defaultDocumentData = ""
 
 io.on("connection", socket => {
     socket.on('get-document', async documentID => {
+        // Upon connecting, grab latest copy of document w/ ID, and join channel w/ ID
         const document = await findOrCreateDocument(documentID)
         socket.join(documentID)
         socket.emit("load-document", document.data)
 
+        // Proprogate changes from users to other users in the same channel
         socket.on("send-changes", delta => {
             socket.broadcast.to(documentID).emit("recieve-changes", delta)
         })
-
+        
+        // Save document into MongoDB
         socket.on("save-document", async data => {
             await Document.findByIdAndUpdate(documentID, {data})
             findOrCreateDocument(documentID)
@@ -34,6 +37,6 @@ async function findOrCreateDocument(id) {
     
     const document = await Document.findById(id)
     if (document) return document 
-    return await Document.create({_id: id, data: defaultValue})
+    return await Document.create({_id: id, data: defaultDocumentData})
     
 }
