@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
+import hljs from 'highlight.js';
+import 'highlight.js/styles/monokai-sublime.css'; 
 import Quill from "quill"
 import { io } from "socket.io-client"
 import { useParams } from "react-router-dom"
@@ -26,7 +28,7 @@ function TextEditor() {
     
     socket.once("load-document", document => {
       quill.setContents(document)
-      quill.format('code-block', true)
+      // quill.format('code-block', true)
       quill.enable()
     })
 
@@ -85,7 +87,15 @@ function TextEditor() {
       wrapper.innerHTML = ""
       const editor = document.createElement('div')
       wrapper.append(editor)
-      const q = new Quill(editor)
+
+      const q = new Quill(editor, {
+        modules: {
+          syntax: {
+            highlight: (text) => hljs.highlightAuto(text).value, // Use Highlight.js for syntax highlighting
+          },
+        },
+      });
+
       q.disable()
       q.setText("Loading...")
       setQuill(q)
