@@ -4,6 +4,8 @@ import "quill/dist/quill.snow.css"
 import { io } from "socket.io-client"
 import { useParams } from "react-router-dom"
 
+const SAVE_INTERVAL_MS = 2000
+
 function TextEditor() {
   const {id: documentId} = useParams()
   const [socket, setSocket] = useState()
@@ -23,7 +25,7 @@ function TextEditor() {
   useEffect(() => {
     if (socket == null || quill == null) return
     
-    socket.once("load-document", docmuent => {
+    socket.once("load-document", document => {
       quill.setContents(document)
       quill.enable()
     })
@@ -32,6 +34,20 @@ function TextEditor() {
   }, [socket, quill, documentId])
     
   
+  useEffect(() => {
+    if (socket == null || quill == null) return
+
+    const interval = setInterval(() => {
+      socket.emit("save-document", quill.getContents())
+    }, SAVE_INTERVAL_MS)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [socket, quill])
+  
+  
+
   /**
    * Send user made changes to the server
    */
