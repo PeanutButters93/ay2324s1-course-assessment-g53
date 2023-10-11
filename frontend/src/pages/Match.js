@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Modal, Typography } from "@mui/material";
 import { io } from "socket.io-client";
 import useCookie from "../components/useCookie";
+import { useNavigate } from "react-router-dom";
 
 // const yourFunction = async () => {
 //   await new Promise(resolve => setTimeout(resolve, 5000));
@@ -30,7 +31,7 @@ const Match = (props) => {
   const { getAuthCookie } = useCookie(); 
   const [matchFound, setMatchFound] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const navigate = useNavigate();
 
   const handleDifficultyChange = (event) => {
     event.preventDefault();
@@ -65,6 +66,7 @@ const Match = (props) => {
       setTimeLeft(TIME_LIMIT)
       setStartCount(false)
       setIsSubmitting(false)
+      navigate("/room/1");
     })
 
     socket.on('disconnect', () => {
@@ -122,6 +124,7 @@ const Match = (props) => {
     setOpen(false);
     setMatchFound(false)
   };
+
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
