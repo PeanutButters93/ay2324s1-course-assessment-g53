@@ -38,7 +38,7 @@ async function waitForMatchInBackground(userId, event) {
   channel.consume(queue, (msg) => {
     matched = true
     console.log("Matched after wait:", userId, msg.content.toString());
-    event.emit("hello", { matchedId: parseInt(msg.content.toString()) });
+    event.emit("hello", { room_id: msg.content.toString() });
     channel.purgeQueue(`user-queue-${userId}`)
     event.conn.close();
   });
@@ -54,11 +54,11 @@ io.on("connection", async (event, x) => {
     return;
   }
   
-  const matchedId = await findFromQueue(userId, difficulty, connection)
-  if (matchedId) {
-    console.log("Matched without wait:", userId, matchedId)
+  const room_id = await findFromQueue(userId, difficulty, connection)
+  if (room_id) {
+    console.log("Matched without wait:", userId, room_id)
     // send information
-    event.emit("hello", {matchedId})
+    event.emit("hello", {room_id})
     event.conn.close()
     return;
   }
