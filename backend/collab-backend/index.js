@@ -27,7 +27,7 @@ server.listen(PORT, () => {
     console.log(`Collab service connected on port ${PORT}`);
 });
 
-app.post("/get_room_id", async function (req, res) {
+app.post("/get_room_id", async (req, res) => {
     // User ids are not used. Could have a future use.
     const {user1, user2} = req.body
 
@@ -36,7 +36,6 @@ app.post("/get_room_id", async function (req, res) {
 
     do {
         room_id = uuidv4()
-        console.log(room_id)
         document = await Document.findById(room_id)
     } while (document)
 
