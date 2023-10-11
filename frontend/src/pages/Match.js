@@ -60,13 +60,12 @@ const Match = (props) => {
     }, TIME_LIMIT * 1000)
 
     socket.on('hello', (data) => {
-      console.log('Hello:', data)
       setMatchFound(true)
       setOpen(true)
       setTimeLeft(TIME_LIMIT)
       setStartCount(false)
       setIsSubmitting(false)
-      navigate("/room/1");
+      navigate("/room/" + data["room_id"]);
     })
 
     socket.on('disconnect', () => {
