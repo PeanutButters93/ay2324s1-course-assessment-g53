@@ -33,6 +33,7 @@ services:
       - rabbitmq
       - frontend
       - user_profile_backend
+    restart: unless-stopped
 
   frontend:
     build:
