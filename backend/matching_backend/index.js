@@ -24,24 +24,22 @@ amq.connect(RABBIT_MQ_HOST).then((amqConnection) => {
 async function waitForMatchInBackground(userId, event) {
   const channel = await connection.createChannel();
   const { exchange } = await channel.assertExchange("match-events", "topic");
-  const { queue } = await channel.assertQueue(`user-queue-${userId}`, { exclusive: true });
-  channel.purgeQueue(`user-queue-${userId}`)
+  const { queue } = await channel.assertQueue(`user-queue-${userId}`, { exclusive: true, autoDelete: true });
   channel.bindQueue(queue, exchange, userId.toString());
 
   let matched = false
-  event.on("disconnect", () => {
-    if (matched) return
-    removeFromQueue(userId)
-    channel.close()
-  })
-
   channel.consume(queue, (msg) => {
     matched = true
-    console.log("Matched after wait:", userId, msg.content.toString());
     event.emit("hello", { matchedId: parseInt(msg.content.toString()) });
-    channel.purgeQueue(`user-queue-${userId}`)
     event.conn.close();
   });
+  
+  event.on("disconnect", () => { 
+    channel.close();
+    if (matched) return
+    removeFromQueue(userId);
+  })
+
 }
 
 io.on("connection", async (event, x) => {
@@ -70,3 +68,7 @@ io.on("connection", async (event, x) => {
 server.listen(3001, () => {
   console.log("listening on *:3001");
 });
+
+io.on('connect_error', (e) => {
+  console.log(e)
+})
