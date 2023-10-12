@@ -25,6 +25,7 @@ services:
       context: ./backend/matching_backend
     ports:
       - 3001:3001
+    restart: unless-stopped
     environment:
       - RABBIT_MQ_HOST=amqp://rabbitmq:5672
       - FRONTEND_HOST=http://localhost:3000
@@ -33,7 +34,6 @@ services:
       - rabbitmq
       - frontend
       - user_profile_backend
-    restart: unless-stopped
 
   frontend:
     build:

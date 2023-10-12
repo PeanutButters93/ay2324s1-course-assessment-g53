@@ -54,12 +54,14 @@ const Match = (props) => {
       },
     })
 
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       socket.disconnect()
       setIsSubmitting(false)
     }, TIME_LIMIT * 1000)
 
     socket.on('hello', (data) => {
+      console.log('Hello:', data)
+      if (!data.room_id) return
       setMatchFound(true)
       setOpen(true)
       setTimeLeft(TIME_LIMIT)
@@ -69,6 +71,8 @@ const Match = (props) => {
     })
 
     socket.on('disconnect', () => {
+      clearTimeout(timeout)
+      console.log('Socket closing')
       setMatchSocket(null)
       setIsSubmitting(false)
     })
