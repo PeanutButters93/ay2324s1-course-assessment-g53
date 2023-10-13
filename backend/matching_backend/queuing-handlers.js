@@ -1,6 +1,8 @@
 const pool = require("./database/db.js");
 const amq = require("amqplib")
 const axios = require("axios")
+const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
+// const COLLAB_HOST = "Giraffee"
 
 const addToQueue = async (user_id, difficulty) => {
   const values = [user_id, difficulty];
@@ -47,7 +49,8 @@ async function notifyWaitingUser(connection, matchedUserId, room_id) {
 }
 
 async function get_room_id(user1, user2) {
-  return axios.post("http://localhost:9000/get_room_id", {
+  console.log(`${COLLAB_HOST}/get_room_id`)
+  return axios.post(`${COLLAB_HOST}/get_room_id`, {
     user1: user1,
     user2: user2,
   }, {headers: {

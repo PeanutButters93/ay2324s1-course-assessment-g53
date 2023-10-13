@@ -1,5 +1,7 @@
 const express = require("express")
 const cors = require("cors")
+const ip = require('ip');
+const ipAddress = ip.address();
 const { v4: uuidv4 } = require('uuid');
 // const mongoose = require("mongoose")
 // const Document = require("./Document")
@@ -12,19 +14,20 @@ const defaultDocumentData = ""
 const app = express()
 const server = require("http").createServer(app)
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: '*',
     methods: ["GET", "POST"],
     optionsSuccessStatus: 200
 }))
 app.use(express.json())
 const io = require("socket.io")(server, {
     cors: {
-      origin: 'http://localhost:3000',
+      origin: '*',
       methods: ["GET", "POST"]
     }
 })
 server.listen(PORT, () => {
     console.log(`Collab service connected on port ${PORT}`);
+    console.log(`Network access via: ${ipAddress}:${PORT}!`);
 });
 
 app.post("/get_room_id", async (req, res) => {

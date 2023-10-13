@@ -7,6 +7,7 @@ const { addToQueue, findFromQueue, removeFromQueue } = require("./queuing-handle
 
 const FRONTEND_HOST = process.env.FRONTEND_HOST ?  process.env.FRONTEND_HOST : "http://localhost:3000"
 const RABBIT_MQ_HOST = process.env.RABBIT_MQ_HOST ? process.env.RABBIT_MQ_HOST : 'amqp://guest:guest@localhost:5672'
+const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
