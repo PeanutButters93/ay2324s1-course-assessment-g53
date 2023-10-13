@@ -65,6 +65,7 @@ services:
     ports:
       - 9000:9000
     environment:
+      - FRONTEND_HOST=http://localhost:3000
       - USER_HOST=http://collab-backend:8000
       - MONGODB_URI=mongodb://mongodb_container/document_db
     depends_on:

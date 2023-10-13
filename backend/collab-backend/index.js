@@ -8,26 +8,24 @@ const Document = require("./Document")
 dotenv.config({
     path: ".env.local"
 })
-const defaultDocumentData = ""
+const DEFAULT_DOCUMENT_DATA = ""
+const PORT = process.env.PORT ? process.env.PORT : 9000
+const FRONTEND_HOST = process.env.FRONTEND_HOST ? process.env.FRONTEND_HOST : "http://localhost:3000"
 
 mongoose.connect(process.env.MONGODB_URI)
 
 const app = express()
 const server = require("http").createServer(app)
-app.use(cors({
-    origin: '*',
-    methods: ["GET", "POST"],
-    optionsSuccessStatus: 200
-}))
+app.use(cors())
 app.use(express.json())
 const io = require("socket.io")(server, {
     cors: {
-      origin: '*',
+      origin: FRONTEND_HOST,
       methods: ["GET", "POST"]
     }
 })
-server.listen(process.env.PORT, () => {
-    console.log(`Collab service connected on port ${process.env.PORT}`);
+server.listen(PORT, () => {
+    console.log(`Collab service connected on port ${PORT}`);
 });
 
 app.post("/get_room_id", async (req, res) => {
@@ -70,6 +68,5 @@ async function findOrCreateDocument(id) {
     
     const document = await Document.findById(id)
     if (document) return document 
-    return await Document.create({_id: id, data: defaultDocumentData})
-    
+    return await Document.create({_id: id, data: DEFAULT_DOCUMENT_DATA})
 }
