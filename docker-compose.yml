@@ -56,3 +56,12 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+  
+  collab-backend:
+    build:
+      context: ./backend/collab-backend
+    environment:
+      - COLLAB_HOST=http://collab-backend:9000
+    ports: 
+      - 9000:9000
+      
