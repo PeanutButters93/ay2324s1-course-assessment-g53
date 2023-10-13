@@ -67,13 +67,9 @@ services:
     environment:
       - USER_HOST=http://collab-backend:8000
 
-#   mongodb_container:
-#     image: mongo:latest
-#     restart: always
-#     ports:
-#       - 27017:27017
-#     volumes:
-#       - mongodb_data_container:/data/db
-  
-# volumes:
-#   mongodb_data_container:
+  mongodb_container:
+    image: mongo:latest
+    build:
+      context: ./backend/collab-backend/mongo
+    ports:
+      - 27017:27017
