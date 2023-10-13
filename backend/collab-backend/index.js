@@ -1,16 +1,16 @@
 const express = require("express")
 const cors = require("cors")
 const { v4: uuidv4 } = require('uuid');
-// const mongoose = require("mongoose")
+const mongoose = require("mongoose")
 const dotenv = require("dotenv")
-// const Document = require("./Document")
+const Document = require("./Document")
 
 dotenv.config({
     path: ".env.local"
 })
 const defaultDocumentData = ""
 
-// mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI)
 
 const app = express()
 const server = require("http").createServer(app)
@@ -32,18 +32,17 @@ server.listen(process.env.PORT, () => {
 
 app.post("/get_room_id", async (req, res) => {
     // User ids are not used. Could have a future use.
-    // const {user1, user2} = req.body
+    const {user1, user2} = req.body
 
-    // var room_id = null
-    // var document = null
+    var room_id = null
+    var document = null
 
-    // do {
-    //     room_id = uuidv4()
-    //     document = await Document.findById(room_id)
-    // } while (document)
+    do {
+        room_id = uuidv4()
+        document = await Document.findById(room_id)
+    } while (document)
 
-    // res.send({ room_id : room_id})
-    res.send({ room_id : uuidv4()})
+    res.send({ room_id : room_id})
 })
 
 // io.on("connection", socket => {

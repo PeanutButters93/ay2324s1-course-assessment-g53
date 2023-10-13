@@ -66,6 +66,9 @@ services:
       - 9000:9000
     environment:
       - USER_HOST=http://collab-backend:8000
+      - MONGODB_URI=mongodb://mongodb_container/document_db
+    depends_on:
+      - mongodb_container
 
   mongodb_container:
     image: mongo:latest
