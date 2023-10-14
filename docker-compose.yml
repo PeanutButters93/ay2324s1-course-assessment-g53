@@ -30,6 +30,7 @@ services:
       - RABBIT_MQ_HOST=amqp://rabbitmq:5672
       - FRONTEND_HOST=http://localhost:3000
       - USER_HOST=http://user_profile_backend:4000/api/users
+      - REACT_APP_COLLAB_HOST=http://collab-backend:9000
     depends_on:
       - rabbitmq
       - frontend
@@ -44,6 +45,7 @@ services:
       - REACT_APP_USER_HOST=http://localhost:4000/api/users
       - REACT_APP_QUESTION_HOST=http://localhost:8000/api/questions
       - REACT_APP_MATCHING_HOST=ws://localhost:3001
+      - REACT_APP_COLLAB_HOST=http://localhost:9000
 
     depends_on:
       - user_profile_backend
@@ -56,3 +58,22 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+
+  collab-backend:
+    build:
+      context: ./backend/collab-backend
+    ports:
+      - 9000:9000
+    environment:
+      - FRONTEND_HOST=http://localhost:3000
+      - USER_HOST=http://collab-backend:8000
+      - MONGODB_URI=mongodb://mongodb_container/document_db
+    depends_on:
+      - mongodb_container
+
+  mongodb_container:
+    image: mongo:latest
+    build:
+      context: ./backend/collab-backend/mongo
+    ports:
+      - 27017:27017
