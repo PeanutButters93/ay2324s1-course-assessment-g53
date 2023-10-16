@@ -61,6 +61,16 @@ io.on("connection", socket => {
             findOrCreateDocument(documentID)
         })
     })
+//socket for the video calling
+    socket.on('join-room', (roomId, userId) => {
+        socket.join(roomId)
+        socket.to(roomId).broadcast.emit('user-connected', userId)
+    
+        socket.on('disconnect', () => {
+          socket.to(roomId).broadcast.emit('user-disconnected', userId)
+        })
+      })
+    
 })
 
 async function findOrCreateDocument(id) {
