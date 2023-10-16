@@ -48,7 +48,6 @@ const App = () => {
           {isLogin ? <Route path="room/:id" element={<Room />} /> : null}
           {is_admin ? <Route path="adminview" element={<AdminView />} /> : null}
         </Route>
-        <Route path="/*" element={<Navigate replace to="/questionpage" />}/>
       </Routes>
     </BrowserRouter>
   )

@@ -68,7 +68,7 @@ const Room = () => {
         <Paper elevation={3} style={{ height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
           
           {/* Playground */}
-          <div style={{ flex: 1, padding: '16px' }}>
+          <div style={{ flex: 1, padding: '16px', overflowY: 'auto', overflowX: 'hidden', whiteSpace: 'pre-wrap', wordWrap: 'break-word', maxHeight: 'calc(100vh - 64px - 68px)'}}>
             <Typography variant="h6">Playground</Typography>
             <TextEditor />
           </div>
