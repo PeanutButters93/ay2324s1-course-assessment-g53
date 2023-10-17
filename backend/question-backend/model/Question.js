@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
+import categorySchema from "./Categories.js";
 
 const questionSchema = new mongoose.Schema({
   id: Number,
   title: String,
   desc: String,
-  categories: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "category",
-  }],
+  categories: [categorySchema],
   complexity: String,
 });
 
