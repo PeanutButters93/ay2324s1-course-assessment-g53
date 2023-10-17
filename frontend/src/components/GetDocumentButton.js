@@ -3,17 +3,16 @@ import { useParams } from "react-router-dom"
 import axios from 'axios';
 
 function GetDocumentButton() {
-  const [buttonText, setButtonText] = useState('Click me');
   const {id: roomId} = useParams()
 
   const handleButtonClick = async () => {
-    setButtonText(await get_document());
+    console.log(await get_document());
   };
 
   const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
 
   async function get_document() {
-    return axios.post(COLLAB_HOST + "/get_document", {
+    return axios.post(COLLAB_HOST + "/get_raw_text", {
       documentID: roomId,
     }, {headers: {
       "Content-Type": "application/json",
@@ -30,7 +29,7 @@ function GetDocumentButton() {
 
   return (
     <div>
-      <button onClick={handleButtonClick}>{buttonText}</button>
+      <button onClick={handleButtonClick}>"Click me to log editor contents into console"</button>
     </div>
   );
 }
