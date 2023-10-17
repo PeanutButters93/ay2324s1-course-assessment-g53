@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from "react-router-dom"
 import axios from 'axios';
 
-function GetDocumentButton() {
+function LogEditorButton() {
   const {id: roomId} = useParams()
 
   const handleButtonClick = async () => {
@@ -12,7 +12,7 @@ function GetDocumentButton() {
   const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
 
   async function get_document() {
-    return axios.post(COLLAB_HOST + "/get_raw_text", {
+    return axios.post(COLLAB_HOST + "/get_document_raw", {
       documentID: roomId,
     }, {headers: {
       "Content-Type": "application/json",
@@ -29,9 +29,9 @@ function GetDocumentButton() {
 
   return (
     <div>
-      <button onClick={handleButtonClick}>"Click me to log editor contents into console"</button>
+      <button onClick={handleButtonClick}>Click to log editor into console</button>
     </div>
   );
 }
 
-export default GetDocumentButton;
+export default LogEditorButton;

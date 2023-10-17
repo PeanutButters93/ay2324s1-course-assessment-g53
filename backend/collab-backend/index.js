@@ -43,7 +43,13 @@ app.post("/get_room_id", async (req, res) => {
     res.send({ room_id : room_id})
 })
 
-app.post("/get_raw_text", async (req, res) => {
+app.post("/get_document", async (req, res) => {
+    const {documentID} = req.body
+    var document = await Document.findById(documentID)
+    res.send({ document : JSON.stringify(document)})
+})
+
+app.post("/get_document_raw", async (req, res) => {
     const {documentID} = req.body
     var document = await Document.findById(documentID)
     document = document.data.ops[0].insert

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Paper, Typography, Button } from '@mui/material';
 import TextEditor from '../components/TextEditor';
 import DividerIcon from '@mui/icons-material/DragHandle';
-import GetDocumentButton from '../components/GetDocumentButton';
+import LogEditorButton from '../components/LogEditorButton';
 
 const Room = () => {
   const [dividerPosition, setDividerPosition] = useState(50);
@@ -84,7 +84,7 @@ const Room = () => {
 
     </Grid>
     
-    <GetDocumentButton/>
+    <LogEditorButton/>
     </div>
   );
 };
