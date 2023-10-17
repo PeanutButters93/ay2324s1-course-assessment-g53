@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-import categorySchema from "./Category.js";
+import Category from "./Category.js";
 
 const questionSchema = new mongoose.Schema({
   id: Number,
   title: String,
   desc: String,
   categories: String,
-  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'category' }],
+  categories: [Category.schema],
   complexity: String,
 });
 
