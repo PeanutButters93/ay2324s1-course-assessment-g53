@@ -43,6 +43,12 @@ app.post("/get_room_id", async (req, res) => {
     res.send({ room_id : room_id})
 })
 
+app.post("/get_document", async (req, res) => {
+    const {documentID} = req.body
+    console.log(documentID)
+    res.send({ document : Document.findById(documentID)})
+})
+
 io.on("connection", socket => {
     socket.on('get-document', async documentID => {
         // Upon connecting, grab latest copy of document w/ ID, and join channel w/ ID

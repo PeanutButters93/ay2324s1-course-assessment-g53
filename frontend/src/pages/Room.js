@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Paper, Typography, Button } from '@mui/material';
 import TextEditor from '../components/TextEditor';
 import DividerIcon from '@mui/icons-material/DragHandle';
+import GetDocumentButton from '../components/GetDocumentButton';
 
 const Room = () => {
   const [dividerPosition, setDividerPosition] = useState(50);
@@ -27,6 +28,7 @@ const Room = () => {
   }, [isDragging, handleDividerDrag]);
 
   return (
+    <div>
     <Grid container spacing={3} style={{ position: 'relative', overflow: 'hidden' }}>
       
       {/* Problem Description Section */}
@@ -81,6 +83,9 @@ const Room = () => {
       </Grid>
 
     </Grid>
+    
+    <GetDocumentButton/>
+    </div>
   );
 };
 
