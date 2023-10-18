@@ -1,4 +1,4 @@
-import Category from "../model/Category";
+import Category from "../model/Category.js";
 
 export async function addCategory(req, res) {
     const existingCategory = await Category.findOne({ name: { $regex: new RegExp(req.body.name, 'i') } });
