@@ -46,12 +46,13 @@ const VideoCall = () => {
         addVideoStream(personalVideo, stream);
         socket.emit("video-ready", {"ping" : "pong"}); 
         //this is to allow any person who calls me to get my video stream, and for me to get theirs
-        peer.on("call", (call) => {
+        peer.on("call", (call, otherStream) => {
           console.log("Sending stream back to other guy");
           call.answer(stream);
-          call.on("stream", (userVideoStream) => {
-            addVideoStream(null, userVideoStream);
-          });
+        //   call.on("stream", (userVideoStream) => {
+        //     addVideoStream(null, userVideoStream);
+        //   });
+        addVideoStream(null, otherStream)
         });
         //Server will emit this to the room, this is to allow for new user connected, I call the new user
 
@@ -60,6 +61,10 @@ const VideoCall = () => {
           console.log("Trying to connect to: ", userId);
           connectToNewUser(userId, stream);
         });
+
+        socket.on('user-disconnected', userId => {
+            if (peers[userId]) peers[userId].close()
+          })
       });
   }, [peerId]);
 
@@ -117,7 +122,8 @@ const VideoCall = () => {
     [videoElements]
   );
 
-  return <div id="video" ref={wrapperRef}></div>;
+  return <div id="video" ref={wrapperRef}>
+  </div>;
 };
 
 export default VideoCall;
