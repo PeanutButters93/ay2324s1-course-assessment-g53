@@ -12,7 +12,6 @@ import AddQuestion from "../components/question/AddQuestion";
 import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
 import axios from 'axios';
 import useCookie from "../components/useCookie";
-import { useDispatch, useSelector } from "react-redux"
 
 
 const COMPLEXITY = {
@@ -27,7 +26,7 @@ const DEFAULT_QNS = [
     title: "Reverse a String",
     description:
       "Write a function that reverses a string. The input string is given as an array of characters s. You must do this by modifying the input array in-place with O(1) extra memory.",
-    categories: "Strings, Algorithms",
+    categories: ["Strings", "Algorithms"],
     complexity: COMPLEXITY.EASY,
   },
   {
@@ -35,7 +34,7 @@ const DEFAULT_QNS = [
     title: "Linked List Cycle Detection",
     description:
       "Given head, the head of a linked list, determine if the linked list has a cycle in it. There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter. Return true if there is a cycle in the linked list. Otherwise, return false.",
-    categories: "Data Structures, Algorithms",
+    categories: ["Data Structures", "Algorithms"],
     complexity: COMPLEXITY.EASY,
   },
 ];
@@ -149,26 +148,27 @@ function QuestionPage() {
 
     React.useEffect(() => {
         async function fetchQuestions() {
-        console.log("Here is the process env question host value")
-        console.log(process.env.REACT_APP_QUESTION_HOST)
-        console.log("Here is the process env user host value")
-        console.log(process.env.REACT_APP_USER_HOST)
+            console.log("Here is the process env question host value")
+            console.log(process.env.REACT_APP_QUESTION_HOST)
+            console.log("Here is the process env user host value")
+            console.log(process.env.REACT_APP_USER_HOST)
 
 
-        const response = await axios.get(QUESTION_HOST, {
-            headers: {
-                'Authorization': getAuthCookie()
+            const response = await axios.get(QUESTION_HOST, {
+                headers: {
+                    'Authorization': getAuthCookie()
+                }
+            })
+            const data = response.data
+            const questions = []
+            for (var i in data) {
+                questions.push(data[i])
             }
-        })
-        const data = response.data
-        const questions = []
-        for (var i in data) {
-        questions.push(data[i])
-        }
-        setQuestions(questions)
+            setQuestions(questions)
         }
         fetchQuestions()
     }, [])
+
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
