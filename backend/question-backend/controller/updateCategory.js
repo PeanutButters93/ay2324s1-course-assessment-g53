@@ -1,4 +1,5 @@
 import Category from "../model/Category.js";
+import Question from "../model/Question.js";
 
 export async function updateCategory(req, res) {
     try {
@@ -6,7 +7,7 @@ export async function updateCategory(req, res) {
         const categoryToUpdate = await Category.findOne({ _id: _id });
         const updatedName = req.body.name;
         if (updatedName === categoryToUpdate.name) {
-            res.status(400).send("No changes made");
+            res.send(categoryToUpdate.toJSON());
             return;
         }
 
@@ -16,8 +17,13 @@ export async function updateCategory(req, res) {
             return;
         }
 
-        categoryToUpdate.name = updatedName;
+
+        await Question.updateMany({ categories: 
+            { $elemMatch: { name: categoryToUpdate.name } } 
+        }, { $set: { "categories.$.name": updatedName }});
+        categoryToUpdate.name = updatedName
         await categoryToUpdate.save();
+
         res.send(categoryToUpdate.toJSON());
         
     } catch (error) {
