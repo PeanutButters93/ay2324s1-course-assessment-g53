@@ -1,136 +1,84 @@
-import React from "react";
-import { io } from "socket.io-client";
-import { useEffect, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import React, { useRef } from "react";
 import { Peer } from "peerjs";
+import { io } from "socket.io-client";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
+const associateStreamWithVideo = (myVideo, stream) => {
+    myVideo.srcObject = stream;
+    myVideo.onloadedmetadata = () => {
+        myVideo.play();
+    };
+}
 
 const VideoCall = () => {
-  const [peers, setPeers] = useState({});
+  const [myPeer, setMyPeer] = useState(null);
+  const [myPeerId, setMyPeerId] = useState(null);
   const [socket, setSocket] = useState(null);
   const [videoElements, setVideoElements] = useState([]);
   const { id: ROOM_ID } = useParams();
-  const [peer, setPeer] = useState(new Peer());
-  const [peerId, setPeerId] = useState(null)
+  const videoContainerRef = useRef();
 
   useEffect(() => {
-    const s = io("http://localhost:9001");
-    //connect to the server
-    setSocket(s);
-    
+    const peer = new Peer();
     peer.on("open", (id) => {
-      s.emit("join-room", ROOM_ID, id , () => {
-        setPeerId(id)
-      });
-      //socket emits the intention to join a room, lets the server handle it
+      console.log(id);
+      setMyPeerId(id);
     });
-
-    return () => {
-      s.disconnect();
-    };
+    setMyPeer(peer);
+    setSocket(io("http://localhost:9001"));
   }, []);
 
   useEffect(() => {
-    console.log("room, ", peerId)
-    if (!peerId) return
-
-    const personalVideo = document.createElement("video");
-    personalVideo.muted = true;
+    if (!socket) return;
+    if (!myPeer || !myPeerId) return;
+    const myVideo = document.createElement("video");
+    myVideo.muted = true;
+    const partnerVideo = document.createElement("video");
     navigator.mediaDevices
       .getUserMedia({
         video: true,
         audio: true,
       })
       .then((stream) => {
-        if (videoElements.length == 0) {
-        console.log("Adding personal video")
-        addVideoStream(personalVideo, stream, "personal");
-        }
-        socket.emit("video-ready", {"ping" : "pong"}); 
-        //this is to allow any person who calls me to get my video stream, and for me to get theirs
-        peer.on("call", (call, otherStream) => {
-          console.log("Sending stream back to other guy");
+        associateStreamWithVideo(myVideo, stream);
+        setVideoElements([myVideo]);
+        myPeer.on("call", (call) => {
           call.answer(stream);
-        //   call.on("stream", (userVideoStream) => {
-        //     addVideoStream(null, userVideoStream);
-        //   });
-        console.log("otherStream: ", otherStream)
-        if (otherStream === undefined) return
-        const video = document.createElement("video")
-        // console.log("adding other guy video")
-         addVideoStream(video, otherStream, "Other")
-        });
-        //Server will emit this to the room, this is to allow for new user connected, I call the new user
-
-        socket.on("user-connected", (userId) => {
-            if (userId === peerId) return
-            console.log("calling the other guy")
-          connectToNewUser(userId, stream);
+          call.once("stream", (partnerStream) => {
+            associateStreamWithVideo(partnerVideo, partnerStream)
+            setVideoElements([myVideo, partnerVideo]);
+          });
+          call.on("close", () => {
+            setVideoElements([myVideo]);
+          });
         });
 
-        socket.on('user-disconnected', userId => {
-            if (peers[userId]){
-                peers[userId].close()
-            } 
-            
-          })
+        socket.on("user-joined", (userId) => {
+          const call = myPeer.call(userId, stream);
+          call.once("stream", (partnerStream) => {
+            console.log(partnerStream);
+            associateStreamWithVideo(partnerVideo, partnerStream);
+            setVideoElements([myVideo, partnerVideo]);
+          });
+        });
+
+        socket.emit("hello-server", { id: myPeerId, roomId: ROOM_ID });
       });
-  }, [peerId]);
+  }, [socket, myPeer, myPeerId]);
 
+  useEffect(() => {
+    if (videoContainerRef.current == null) return;
+    videoContainerRef.current.innerHtml = "";
+    for (let videoElem of videoElements) {
+      videoElem.style.width = '250px'
+      videoElem.style.height = '250px'
+      videoContainerRef.current.appendChild(videoElem);
+    }
+  }, [videoElements, videoContainerRef]);
 
-  function connectToNewUser(userId, stream) {
-    //when I am calling this user, I send over my stream
-    const call = peer.call(userId, stream);
-    const video = document.createElement("video");
-    
-    // I then also expect a stream in return which I would then use to add to my display
-    call.once("stream", (userVideoStream) => {
-      console.log("hi")
-      addVideoStream(video, userVideoStream, "Other person");
-    });
-    //when the call is closed then I will remove the video stream
-    call.on("close", () => {
-      video.remove();
-    });
-
-    peers[userId] = call;
-  }
-
-  function addVideoStream(video, stream, whose) {
-      console.log(whose)
-      video.srcObject = stream;
-      video.addEventListener("loadedmetadata", () => {
-        video.play();
-      });
-      setVideoElements((prevVideoElements) => [...prevVideoElements, video]);
-      return;
-  }
-
-
-  const wrapperRef = useCallback(
-    (wrapper) => {
-      if (wrapper == null) {
-        return;
-      }
-
-      wrapper.innerHTML = "";
-      const editor = document.createElement("div");
-    //   const textNode = document.createTextNode("Hello world");
-    //   editor.appendChild(textNode);
-
-      videoElements.forEach((video) => {
-        video.style.width = '250px'
-        video.style.height = '250px'
-        video.style.margin = '10px'
-        editor.appendChild(video)});
-      console.log(videoElements);
-      wrapper.append(editor);
-    },
-    [videoElements]
-  );
-
-  return <div id="video" ref={wrapperRef} style={{ width: '750px', backgroundColor: 'white'}}>
-  </div>;
+  return <div id="videos" ref={videoContainerRef} style={{margin: '10px'}}></div>;
 };
 
 export default VideoCall;
+

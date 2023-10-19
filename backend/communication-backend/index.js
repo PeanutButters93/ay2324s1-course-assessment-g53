@@ -30,19 +30,26 @@ server.listen(PORT, () => {
 let count = 0;
 io.on("connection", (socket) => {
   console.log("One person connected", count++);
+  socket.on("hello-server", (obj) => {
+    const roomId = obj.roomId
+    const userId = obj.id
+    socket.join(roomId)
+    socket.broadcast.to(roomId).emit("user-joined", userId)
 
-  socket.on("join-room", (roomId, userId, callback) => {
-    socket.join(roomId);
-    console.log("joined", roomId);
+  })
 
-    socket.on("disconnect", () => {
-      socket.to(roomId).emit("user-disconnected", userId);
-    });
+  // socket.on("join-room", (roomId, userId, callback) => {
+  //   socket.join(roomId);
+  //   console.log("joined", roomId);
 
-    socket.on("video-ready", () => {
-      console.log("Video ready");
-      socket.to(roomId).emit("user-connected", userId);
-    });
-    callback()
-  });
+  //   socket.on("disconnect", () => {
+  //     socket.to(roomId).emit("user-disconnected", userId);
+  //   });
+
+  //   socket.on("video-ready", () => {
+  //     console.log("Video ready");
+  //     socket.to(roomId).emit("user-connected", userId);
+  //   });
+  //   callback()
+  // });
 });
