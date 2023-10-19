@@ -50,6 +50,7 @@ const VideoCall = () => {
             setVideoElements([myVideo, partnerVideo]);
           });
           call.on("close", () => {
+            partnerVideo.remove()
             setVideoElements([myVideo]);
           });
         });
@@ -73,6 +74,7 @@ const VideoCall = () => {
     for (let videoElem of videoElements) {
       videoElem.style.width = '250px'
       videoElem.style.height = '250px'
+      videoElem.style.margin = '10px'
       videoContainerRef.current.appendChild(videoElem);
     }
   }, [videoElements, videoContainerRef]);
