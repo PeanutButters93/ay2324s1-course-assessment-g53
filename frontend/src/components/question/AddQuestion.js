@@ -28,13 +28,13 @@ const MenuProps = {
 };
 
 function getStyles(category, categories, theme) {
-  return {
-    fontWeight:
-      categories.indexOf(category) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+    return {
+        fontWeight:
+        categories.indexOf(category) === -1
+            ? theme.typography.fontWeightRegular
+            : theme.typography.fontWeightMedium,
+    };
+    }
 
 const AddQuestion = (props) => {
     const COMPLEXITY = props.COMPLEXITY;
@@ -115,11 +115,11 @@ const AddQuestion = (props) => {
         );
 
         if (!title || !description || !categories || !complexity) {
-        return;
+            return;
         }
 
         if (hasDuplicateDescription || hasDuplicateTitle) {
-        return;
+            return;
         }
         const question = addQuestion(title, description, categories, complexity, questions);
 

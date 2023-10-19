@@ -148,10 +148,10 @@ function QuestionPage() {
 
     React.useEffect(() => {
         async function fetchQuestions() {
-            console.log("Here is the process env question host value")
-            console.log(process.env.REACT_APP_QUESTION_HOST)
-            console.log("Here is the process env user host value")
-            console.log(process.env.REACT_APP_USER_HOST)
+            // console.log("Here is the process env question host value")
+            // console.log(process.env.REACT_APP_QUESTION_HOST)
+            // console.log("Here is the process env user host value")
+            // console.log(process.env.REACT_APP_USER_HOST)
 
 
             const response = await axios.get(QUESTION_HOST, {
