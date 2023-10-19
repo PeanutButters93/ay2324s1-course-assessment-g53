@@ -7,7 +7,6 @@ import { getCategories } from "../controller/getCategories.js";
 import { addCategory } from "../controller/addCategory.js";
 import { deleteCategory } from "../controller/deleteCategory.js";
 import { updateCategory } from "../controller/updateCategory.js";
-import { checkLogin } from "../middleware/checkLogin.js";
 
 const router = express.Router();
 
