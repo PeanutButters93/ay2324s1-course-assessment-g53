@@ -44,6 +44,7 @@ services:
     environment: 
       - REACT_APP_USER_HOST=http://localhost:4000/api/users
       - REACT_APP_QUESTION_HOST=http://localhost:8000/api/questions
+      - REACT_APP_CATEGORY_HOST=http://localhost:8000/api/categories
       - REACT_APP_MATCHING_HOST=ws://localhost:3001
       - REACT_APP_COLLAB_HOST=http://localhost:9000
 
