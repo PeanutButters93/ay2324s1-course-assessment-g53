@@ -114,8 +114,6 @@ const AddQuestion = (props) => {
         setEmptyComplexityMessage
         );
 
-        console.log(categories)
-
         if (!title || !description || !categories || !complexity) {
             return;
         }
@@ -154,10 +152,8 @@ const AddQuestion = (props) => {
                 margin="normal"
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
-                // error={!!emptyTitleMessage}
-                // helperText={emptyTitleMessage}
                 error={!!emptyTitleMessage || !!duplicateTitleMessage}
-                helperText={emptyTitleMessage || duplicateTitleMessage}
+                helpertext={emptyTitleMessage || duplicateTitleMessage}
             />
             <FormControl sx={{ width: 588 }}>
                 <InputLabel id="categories" error={!!emptyCategoryMessage}>Categories</InputLabel>
@@ -167,6 +163,7 @@ const AddQuestion = (props) => {
                     multiple
                     value={categories}
                     onChange={handleChange}
+                    error={!!emptyCategoryMessage}
                     input={<OutlinedInput id="select-categories" label="Categories" />}
                     renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -187,6 +184,7 @@ const AddQuestion = (props) => {
                         </MenuItem>
                     ))}
                 </Select>
+                <FormHelperText error>{emptyComplexityMessage}</FormHelperText>
             </FormControl>
             <FormControl fullWidth sx={{ marginTop: 2 }}>
                 <InputLabel id="complexity" error={!!emptyComplexityMessage}>
@@ -219,8 +217,6 @@ const AddQuestion = (props) => {
                 sx={{ marginTop: 2 }}
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                // error={!!emptyDescriptionMessage}
-                // helperText={emptyDescriptionMessage}
                 error={!!emptyDescriptionMessage || !!duplicateDescriptionMessage}
                 helperText={emptyDescriptionMessage || duplicateDescriptionMessage}
             />
@@ -240,7 +236,6 @@ const AddQuestion = (props) => {
             >
                 Cancel
             </Button>
-            {console.log("End of AddQuestion.js")}
         </div>
     );
 };

@@ -77,9 +77,10 @@ export default function Question(props) {
                 <TableRow key={question.id}>
                 <TableCell>{question.id}</TableCell>
                 <TableCell>{question.title}</TableCell>
-                <TableCell>{question.categories.map((category, index) => (
-                    <Chip key={index} label={category.name} style={{ marginRight: '8px', marginBottom: '8px' }} />
-                ))}
+                <TableCell>
+                    {question.categories.map(category => (
+                        <Chip key={category} label={category} style={{ marginRight: '8px', marginBottom: '8px' }} />
+                    ))}
                 </TableCell>
                 <TableCell>{question.complexity}</TableCell>
                 <TableCell>

@@ -40,7 +40,7 @@ const DEFAULT_QNS = [
 const QUESTION_HOST = process.env.REACT_APP_QUESTION_HOST ? process.env.REACT_APP_QUESTION_HOST : "http://localhost:8000/api/questions"
 const emptyTitleMessage = "Title cannot be empty!";
 const emptyDescriptionMessage = "Description cannot be empty!";
-const emptyCategoryMessage = "Category cannot be empty!";
+const emptyCategoryMessage = "Please select a category!";
 const emptyComplexityMessage = "Complexity cannot be empty!";
 
 const duplicateMessages = {
@@ -58,19 +58,20 @@ function checkEmpty(
   complexity,
   setEmptyComplexityMessage
 ) {
-  if (!title) {
-    setEmptyTitleMessage(emptyTitleMessage);
-  }
-  if (!description) {
-    setEmptyDescriptionMessage(emptyDescriptionMessage);
-  }
-  if (!category) {
-    setEmptyCategoryMessage(emptyCategoryMessage);
-  }
-  if (!complexity) {
-    setEmptyComplexityMessage(emptyComplexityMessage);
-  }
-  return;
+    if (!title) {
+        setEmptyTitleMessage(emptyTitleMessage);
+        console.log(emptyTitleMessage);
+    }
+    if (!description) {
+        setEmptyDescriptionMessage(emptyDescriptionMessage);
+    }
+    if (category.length === 0) {
+        setEmptyCategoryMessage(emptyCategoryMessage);
+    }
+    if (!complexity) {
+        setEmptyComplexityMessage(emptyComplexityMessage);
+    }
+    return;
 }
 function QuestionPage() {
     const {getAuthCookie} = useCookie();
