@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/", [checkLogin], getCategories);
 router.post("/", [checkLogin, checkAdmin], addCategory);
-router.put("/", [checkLogin, checkAdmin], updateCategory);
+router.put("/:oldName", [checkLogin, checkAdmin], updateCategory);
 router.delete("/:id", [checkLogin, checkAdmin], deleteCategory);
 
 export default router;

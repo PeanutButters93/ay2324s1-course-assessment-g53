@@ -3,8 +3,8 @@ import Question from "../model/Question.js";
 
 export async function updateCategory(req, res) {
     try {
-        const _id = req.body._id;
-        const categoryToUpdate = await Category.findOne({ _id: _id });
+        const oldName = decodeURIComponent(req.params.oldName);
+        const categoryToUpdate = await Category.findOne({ name: oldName });
         const updatedName = req.body.name;
         if (updatedName === categoryToUpdate.name) {
             res.send(categoryToUpdate.toJSON());
