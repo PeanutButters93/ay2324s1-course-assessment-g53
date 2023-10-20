@@ -6,8 +6,8 @@ const questionSchema = new mongoose.Schema({
     title: String,
     desc: String,
     categories: String,
-    // categories: [Category.schema],
-    categories: [String],
+    categories: [Category.schema],
+    // categories: [String],
     complexity: String,
 });
 

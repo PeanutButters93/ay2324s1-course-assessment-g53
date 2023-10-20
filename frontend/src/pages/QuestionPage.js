@@ -13,7 +13,6 @@ import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../Lo
 import axios from 'axios';
 import useCookie from "../components/useCookie";
 
-
 const COMPLEXITY = {
   EASY: "EASY",
   MEDIUM: "MEDIUM",
@@ -136,8 +135,8 @@ function QuestionPage() {
         }).catch(error => {
         console.error('Error:', error);
         return;
-    })
-    setQuestions(questions.filter(x => x.id !== questionToDelete.id));
+        })
+        setQuestions(questions.filter(x => x.id !== questionToDelete.id));
     }
 
     const [questions, setQuestions] = useState(DEFAULT_QNS)
@@ -262,7 +261,6 @@ function QuestionPage() {
                 )}
                 </Grid>
             </Container>
-
         </Box>
     );
 }

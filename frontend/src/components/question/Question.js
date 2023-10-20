@@ -1,4 +1,5 @@
 import * as React from "react";
+import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -14,107 +15,110 @@ import {useSelector } from "react-redux"
 
 
 export default function Question(props) {
-  const questions = props.questions;
-  const setAddPage = props.setAddPage;
-  const setViewPage = props.setViewPage;
-  const setEditPage = props.setEditPage;
-  const selectedQuestion = props.selectedQuestion;
-  const setSelectedQuestion = props.setSelectedQuestion;
-  const deleteQuestion = props.deleteQuestion;
-  const is_admin = useSelector((state) => state.auth.is_admin);
+    const questions = props.questions;
+    const setAddPage = props.setAddPage;
+    const setViewPage = props.setViewPage;
+    const setEditPage = props.setEditPage;
+    const selectedQuestion = props.selectedQuestion;
+    const setSelectedQuestion = props.setSelectedQuestion;
+    const deleteQuestion = props.deleteQuestion;
+    const is_admin = useSelector((state) => state.auth.is_admin);
 
-  const handleAddClick = () => {
-    setAddPage(true);
-    setViewPage(false);
-    setEditPage(false);
-  };
-
-  const handleViewClick = (question) => {
-    setAddPage(false);
-    setViewPage(true);
-    setEditPage(false);
-    setSelectedQuestion(question);
-  };
-
-  const handleEditClick = (question) => {
-    setAddPage(false);
-    setViewPage(false);
-    setEditPage(true);
-    setSelectedQuestion(question);
-  };
-
-  const handleDeleteClick = (question) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete Question ${question.id}? This is an irreversible action!`
-      )
-    ) {
-      if (selectedQuestion === question) {
+    const handleAddClick = () => {
+        setAddPage(true);
         setViewPage(false);
         setEditPage(false);
-        setSelectedQuestion(null);
-      }
-      deleteQuestion(question, questions);
-    }
-  };
+    };
 
-  return (
-    <React.Fragment>
-      <Title>Question Bank</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Question ID</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Category</TableCell>
-            <TableCell>Complexity</TableCell>
-            <TableCell align="right"></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {questions.map((question) => (
-            <TableRow key={question.id}>
-              <TableCell>{question.id}</TableCell>
-              <TableCell>{question.title}</TableCell>
-              <TableCell>{question.categories}</TableCell>
-              <TableCell>{question.complexity}</TableCell>
-              <TableCell>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <IconButton
-                    color="primary"
-                    aria-label="View"
-                    onClick={() => handleViewClick(question)}
-                  >
-                    <VisibilityIcon />
-                  </IconButton>
+    const handleViewClick = (question) => {
+        setAddPage(false);
+        setViewPage(true);
+        setEditPage(false);
+        setSelectedQuestion(question);
+    };
 
-                  {is_admin && (
-                    <>
-                      <IconButton
-                        color="primary"
-                        aria-label="Edit"
-                        onClick={() => handleEditClick(question)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        color="secondary"
-                        aria-label="Delete"
-                        onClick={() => handleDeleteClick(question)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </>
-                  )}
-                </div>
-              </TableCell>
+    const handleEditClick = (question) => {
+        setAddPage(false);
+        setViewPage(false);
+        setEditPage(true);
+        setSelectedQuestion(question);
+    };
+
+    const handleDeleteClick = (question) => {
+        if (
+        window.confirm(
+            `Are you sure you want to delete Question ${question.id}? This is an irreversible action!`
+        )
+        ) {
+        if (selectedQuestion === question) {
+            setViewPage(false);
+            setEditPage(false);
+            setSelectedQuestion(null);
+        }
+        deleteQuestion(question, questions);
+        }
+    };
+
+    return (
+        <React.Fragment>
+        <Title>Question Bank</Title>
+        <Table size="small">
+            <TableHead>
+            <TableRow>
+                <TableCell>Question ID</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Complexity</TableCell>
+                <TableCell align="right"></TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Link color="primary" href="#" onClick={handleAddClick} sx={{ mt: 3 }}>
-        Add A New Question
-      </Link>
-    </React.Fragment>
-  );
+            </TableHead>
+            <TableBody>
+            {questions.map((question) => (
+                <TableRow key={question.id}>
+                <TableCell>{question.id}</TableCell>
+                <TableCell>{question.title}</TableCell>
+                <TableCell>{question.categories.map((category, index) => (
+                    <Chip key={index} label={category.name} style={{ marginRight: '8px', marginBottom: '8px' }} />
+                ))}
+                </TableCell>
+                <TableCell>{question.complexity}</TableCell>
+                <TableCell>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <IconButton
+                        color="primary"
+                        aria-label="View"
+                        onClick={() => handleViewClick(question)}
+                    >
+                        <VisibilityIcon />
+                    </IconButton>
+
+                    {is_admin && (
+                        <>
+                        <IconButton
+                            color="primary"
+                            aria-label="Edit"
+                            onClick={() => handleEditClick(question)}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                        <IconButton
+                            color="secondary"
+                            aria-label="Delete"
+                            onClick={() => handleDeleteClick(question)}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                        </>
+                    )}
+                    </div>
+                </TableCell>
+                </TableRow>
+            ))}
+            </TableBody>
+        </Table>
+        <Link color="primary" href="#" onClick={handleAddClick} sx={{ mt: 3 }}>
+            Add A New Question
+        </Link>
+        </React.Fragment>
+    );
 }

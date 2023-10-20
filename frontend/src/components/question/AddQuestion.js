@@ -114,6 +114,8 @@ const AddQuestion = (props) => {
         setEmptyComplexityMessage
         );
 
+        console.log(categories)
+
         if (!title || !description || !categories || !complexity) {
             return;
         }
@@ -121,6 +123,7 @@ const AddQuestion = (props) => {
         if (hasDuplicateDescription || hasDuplicateTitle) {
             return;
         }
+
         const question = addQuestion(title, description, categories, complexity, questions);
 
         setSelectedQuestion(question);
@@ -143,100 +146,101 @@ const AddQuestion = (props) => {
 
     return (
         <div>
-        <Title>Add A New Question</Title>
-        <TextField
-            fullWidth
-            label={"Title"}
-            id="Title"
-            margin="normal"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            // error={!!emptyTitleMessage}
-            // helperText={emptyTitleMessage}
-            error={!!emptyTitleMessage || !!duplicateTitleMessage}
-            helperText={emptyTitleMessage || duplicateTitleMessage}
-        />
-        <FormControl sx={{ width: 588 }}>
-            <InputLabel id="categories" error={!!emptyCategoryMessage}>Categories</InputLabel>
-            <Select
-                labelId="categories-label"
-                id="categories"
-                multiple
-                value={categories}
-                onChange={handleChange}
-                input={<OutlinedInput id="select-categories" label="Categories" />}
-                renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((value) => (
-                        <Chip key={value} label={value} />
+            <Title>Add A New Question</Title>
+            <TextField
+                fullWidth
+                label={"Title"}
+                id="Title"
+                margin="normal"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                // error={!!emptyTitleMessage}
+                // helperText={emptyTitleMessage}
+                error={!!emptyTitleMessage || !!duplicateTitleMessage}
+                helperText={emptyTitleMessage || duplicateTitleMessage}
+            />
+            <FormControl sx={{ width: 588 }}>
+                <InputLabel id="categories" error={!!emptyCategoryMessage}>Categories</InputLabel>
+                <Select
+                    labelId="categories-label"
+                    id="categories"
+                    multiple
+                    value={categories}
+                    onChange={handleChange}
+                    input={<OutlinedInput id="select-categories" label="Categories" />}
+                    renderValue={(selected) => (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((value) => (
+                            <Chip key={value} label={value} />
+                        ))}
+                        </Box>
+                    )}
+                    MenuProps={MenuProps}
+                >
+                    {categoriesList.map((category) => (
+                        <MenuItem
+                        key={category}
+                        value={category}
+                        style={getStyles(category, categories, theme)}
+                        >
+                            {category}
+                        </MenuItem>
                     ))}
-                    </Box>
-                )}
-                MenuProps={MenuProps}
+                </Select>
+            </FormControl>
+            <FormControl fullWidth sx={{ marginTop: 2 }}>
+                <InputLabel id="complexity" error={!!emptyComplexityMessage}>
+                Complexity
+                </InputLabel>
+                <Select
+                labelId="complexity"
+                id="complexity"
+                value={complexity}
+                label="Complexity"
+                onChange={(event) => setComplexity(event.target.value)}
+                error={!!emptyComplexityMessage}
+                >
+                <MenuItem value="">
+                    <em>--Please select--</em>
+                </MenuItem>
+                <MenuItem value={COMPLEXITY.EASY}>EASY</MenuItem>
+                <MenuItem value={COMPLEXITY.MEDIUM}>MEDIUM</MenuItem>
+                <MenuItem value={COMPLEXITY.HARD}>HARD</MenuItem>
+                </Select>
+                <FormHelperText error>{emptyComplexityMessage}</FormHelperText>
+            </FormControl>
+            <TextField
+                id="description"
+                label={"Description"}
+                multiline
+                rows={4}
+                variant="outlined"
+                fullWidth
+                sx={{ marginTop: 2 }}
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                // error={!!emptyDescriptionMessage}
+                // helperText={emptyDescriptionMessage}
+                error={!!emptyDescriptionMessage || !!duplicateDescriptionMessage}
+                helperText={emptyDescriptionMessage || duplicateDescriptionMessage}
+            />
+            <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: 2, marginRight: 2 }}
+                onClick={handleAdd}
             >
-                {categoriesList.map((category) => (
-                    <MenuItem
-                    key={category}
-                    value={category}
-                    style={getStyles(category, categories, theme)}
-                    >
-                        {category}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
-        <FormControl fullWidth sx={{ marginTop: 2 }}>
-            <InputLabel id="complexity" error={!!emptyComplexityMessage}>
-            Complexity
-            </InputLabel>
-            <Select
-            labelId="complexity"
-            id="complexity"
-            value={complexity}
-            label="Complexity"
-            onChange={(event) => setComplexity(event.target.value)}
-            error={!!emptyComplexityMessage}
+                Add Question
+            </Button>
+            <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: 2 }}
+                onClick={handleCancel}
             >
-            <MenuItem value="">
-                <em>--Please select--</em>
-            </MenuItem>
-            <MenuItem value={COMPLEXITY.EASY}>EASY</MenuItem>
-            <MenuItem value={COMPLEXITY.MEDIUM}>MEDIUM</MenuItem>
-            <MenuItem value={COMPLEXITY.HARD}>HARD</MenuItem>
-            </Select>
-            <FormHelperText error>{emptyComplexityMessage}</FormHelperText>
-        </FormControl>
-        <TextField
-            id="description"
-            label={"Description"}
-            multiline
-            rows={4}
-            variant="outlined"
-            fullWidth
-            sx={{ marginTop: 2 }}
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            // error={!!emptyDescriptionMessage}
-            // helperText={emptyDescriptionMessage}
-            error={!!emptyDescriptionMessage || !!duplicateDescriptionMessage}
-            helperText={emptyDescriptionMessage || duplicateDescriptionMessage}
-        />
-        <Button
-            variant="contained"
-            color="primary"
-            sx={{ marginTop: 2, marginRight: 2 }}
-            onClick={handleAdd}
-        >
-            Add Question
-        </Button>
-        <Button
-            variant="contained"
-            color="primary"
-            sx={{ marginTop: 2 }}
-            onClick={handleCancel}
-        >
-            Cancel
-        </Button>
+                Cancel
+            </Button>
+            {console.log("End of AddQuestion.js")}
         </div>
     );
 };

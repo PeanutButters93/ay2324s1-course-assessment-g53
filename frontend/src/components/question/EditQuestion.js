@@ -224,6 +224,7 @@ const EditQuestion = (props) => {
                 sx={{ marginTop: 2 }}
                 onClick={handleCancel}
             >Cancel</Button>
+            {console.log("End of EditQuestion.js")}
         </div>
     )
 };
