@@ -28,6 +28,7 @@ function TextEditor() {
     
     socket.once("load-document", document => {
       quill.setContents(document)
+      quill.format('code-block', true)
       quill.enable()
     })
 
@@ -97,7 +98,6 @@ function TextEditor() {
 
       q.disable()
       q.setText("Loading...")
-      q.format('code-block', true)
       setQuill(q)
   }, [])
 
