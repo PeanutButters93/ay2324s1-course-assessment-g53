@@ -28,7 +28,6 @@ const Room = () => {
   }, [isDragging, handleDividerDrag])
 
   return (
-    <div>
       <Grid container spacing={3} style={{ position: 'relative', overflow: 'hidden' }}>
 
         {/* Problem Description Section */}
@@ -86,9 +85,6 @@ const Room = () => {
         </Grid>
 
       </Grid>
-
-      <LogEditorButton />
-    </div>
   )
 }
 
