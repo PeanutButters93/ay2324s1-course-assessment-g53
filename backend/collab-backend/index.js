@@ -57,6 +57,7 @@ app.post("/get_document_raw", async (req, res) => {
 })
 
 io.on("connection", socket => {
+    console.log("member joined")
     socket.on('get-document', async documentID => {
         // Upon connecting, grab latest copy of document w/ ID, and join channel w/ ID
         const document = await findOrCreateDocument(documentID)
@@ -74,6 +75,21 @@ io.on("connection", socket => {
             findOrCreateDocument(documentID)
         })
     })
+//socket for the video calling
+    socket.on('join-room', (roomId, userId) => {
+        socket.join(roomId)
+        // console.log("user has joined the room")
+        socket.on("video-ready", () => {
+            // console.log("server sees that user's video is ready")
+            socket.to(roomId).emit('user-connected', userId)
+        })
+        
+    
+        socket.on('disconnect', () => {
+          socket.to(roomId).emit('user-disconnected', userId)
+        })
+      })
+    
 })
 
 async function findOrCreateDocument(id) {

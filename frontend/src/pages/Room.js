@@ -3,6 +3,7 @@ import { Grid, Paper, Typography, Button } from '@mui/material';
 import TextEditor from '../components/TextEditor';
 import DividerIcon from '@mui/icons-material/DragHandle';
 import LogEditorButton from '../components/LogEditorButton';
+import VideoCall from '../components/VideoCall';
 
 const Room = () => {
   const [dividerPosition, setDividerPosition] = useState(50);
@@ -42,6 +43,7 @@ const Room = () => {
           </Typography>
         </Paper>
       </Grid>
+      <VideoCall/>
       
       {/* Divider */}
       <div
