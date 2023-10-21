@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Paper, Typography, Button } from '@mui/material'
+import { Grid, Paper, Typography } from '@mui/material'
 import TextEditor from '../components/TextEditor'
 import DividerIcon from '@mui/icons-material/DragHandle'
 import LogEditorButton from '../components/LogEditorButton'
@@ -76,11 +76,9 @@ const Room = () => {
 
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: '16px' }}>
-            <Button variant="contained" color="primary">Submit</Button>
+            <LogEditorButton />
           </Paper>
-
-          {/* Get Document Button */}
-          <LogEditorButton />
+          
         </Paper>
       </Grid>
 
