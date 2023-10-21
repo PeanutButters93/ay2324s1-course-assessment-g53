@@ -52,7 +52,7 @@ app.post("/get_document", async (req, res) => {
 app.post("/get_document_raw", async (req, res) => {
     const {documentID} = req.body
     var document = await Document.findById(documentID)
-    document = document.data.ops[0].insert
+    document = document.data.ops.map(item => item.insert).join('')
     res.send({ document : document})
 })
 
