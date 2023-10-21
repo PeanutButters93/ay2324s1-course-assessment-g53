@@ -161,6 +161,7 @@ const EditQuestion = (props) => {
                     value={categories}
                     onChange={handleChange}
                     input={<OutlinedInput id="select-categories" label="Categories" />}
+                    error={!!emptyCategoryMessage}
                     renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                         {selected.map((value) => (
@@ -180,6 +181,7 @@ const EditQuestion = (props) => {
                         </MenuItem>
                     ))}
                 </Select>
+                <FormHelperText error>{emptyCategoryMessage}</FormHelperText>
             </FormControl>
             <FormControl fullWidth sx={{ marginTop: 2 }}>
                 <InputLabel id="complexity" error={!!emptyComplexityMessage}>Complexity</InputLabel>

@@ -60,7 +60,6 @@ function checkEmpty(
 ) {
     if (!title) {
         setEmptyTitleMessage(emptyTitleMessage);
-        console.log(emptyTitleMessage);
     }
     if (!description) {
         setEmptyDescriptionMessage(emptyDescriptionMessage);

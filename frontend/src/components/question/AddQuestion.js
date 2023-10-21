@@ -114,7 +114,7 @@ const AddQuestion = (props) => {
         setEmptyComplexityMessage
         );
 
-        if (!title || !description || !categories || !complexity) {
+        if (!title || !description || categories.length === 0 || !complexity) {
             return;
         }
 
@@ -153,7 +153,7 @@ const AddQuestion = (props) => {
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
                 error={!!emptyTitleMessage || !!duplicateTitleMessage}
-                helpertext={emptyTitleMessage || duplicateTitleMessage}
+                helperText={emptyTitleMessage || duplicateTitleMessage}
             />
             <FormControl sx={{ width: 588 }}>
                 <InputLabel id="categories" error={!!emptyCategoryMessage}>Categories</InputLabel>
@@ -184,7 +184,7 @@ const AddQuestion = (props) => {
                         </MenuItem>
                     ))}
                 </Select>
-                <FormHelperText error>{emptyComplexityMessage}</FormHelperText>
+                <FormHelperText error>{emptyCategoryMessage}</FormHelperText>
             </FormControl>
             <FormControl fullWidth sx={{ marginTop: 2 }}>
                 <InputLabel id="complexity" error={!!emptyComplexityMessage}>
