@@ -97,7 +97,7 @@ const EditQuestion = (props) => {
         setDescription(question.description);
         setEmptyTitleMessage("");
         setEmptyDescriptionMessage("");
-        setEmptyCategoryMessage([]);
+        setEmptyCategoryMessage("");
         setEmptyComplexityMessage("");
     }, [question]);
 
@@ -107,9 +107,9 @@ const EditQuestion = (props) => {
         );
       }, [description, questions, duplicateCheckers]);
     
-      useEffect(() => {
+    useEffect(() => {
         setHasDuplicateTitle(
-          duplicateCheckers.checkDuplicateTitle(title, questions)
+            duplicateCheckers.checkDuplicateTitle(title, questions)
         );
       }, [title, questions, duplicateCheckers]);
 
