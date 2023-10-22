@@ -29,7 +29,7 @@ function TextEditor() {
     
     socket.once("load-document", document => {
       quill.setContents(document)
-      quill.format('code-block', true)
+      applyFormatting()
       quill.enable()
     })
 
@@ -42,6 +42,7 @@ function TextEditor() {
 
     const handler = (delta, oldDelta, source) => {
       if (source !== 'user') return
+      applyFormatting()
       socket.emit("send-changes", delta)
     }
 
@@ -59,6 +60,7 @@ function TextEditor() {
 
     const handler = (delta) => {
       quill.updateContents(delta)
+      applyFormatting()
     }
 
     socket.on('recieve-changes', handler)
@@ -80,6 +82,11 @@ function TextEditor() {
       clearInterval(interval)
     }
   }, [socket, quill])
+
+  function applyFormatting() {
+    quill.format('code-block', true)
+    setQuill(quill)
+  }
 
   // Create Quill instance
   const wrapperRef = useCallback((wrapper) => {
