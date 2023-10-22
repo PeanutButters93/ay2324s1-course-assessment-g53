@@ -1,10 +1,10 @@
 import * as React from "react";
+import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Link from "@mui/material/Link";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,6 +19,7 @@ export default function Question(props) {
     const setAddPage = props.setAddPage;
     const setViewPage = props.setViewPage;
     const setEditPage = props.setEditPage;
+    const setCategoriesPage = props.setCategoriesPage;
     const selectedQuestion = props.selectedQuestion;
     const setSelectedQuestion = props.setSelectedQuestion;
     const deleteQuestion = props.deleteQuestion;
@@ -28,12 +29,14 @@ export default function Question(props) {
         setAddPage(true);
         setViewPage(false);
         setEditPage(false);
+        setCategoriesPage(false);
     };
 
     const handleViewClick = (question) => {
         setAddPage(false);
         setViewPage(true);
         setEditPage(false);
+        setCategoriesPage(false);
         setSelectedQuestion(question);
     };
 
@@ -41,7 +44,16 @@ export default function Question(props) {
         setAddPage(false);
         setViewPage(false);
         setEditPage(true);
+        setCategoriesPage(false);
         setSelectedQuestion(question);
+    };
+
+    const handleCategoriesClick = () => {
+        setAddPage(false);
+        setViewPage(false);
+        setEditPage(false);
+        setCategoriesPage(true);
+        setSelectedQuestion(null); // TODO: is this necessary?
     };
 
     const handleDeleteClick = (question) => {
@@ -117,9 +129,14 @@ export default function Question(props) {
             ))}
             </TableBody>
         </Table>
-        <Link color="primary" href="#" onClick={handleAddClick} sx={{ mt: 3 }}>
-            Add A New Question
-        </Link>
+        <div>
+            <Button color="primary" href="#" onClick={handleAddClick} sx={{ mt: 1 }}>
+                Add New Question
+            </Button>
+            <Button color="primary" href="#" onClick={handleCategoriesClick} sx={{ mt: 1 }}>
+                Edit Categories
+            </Button>
+        </div>
         </React.Fragment>
     );
 }

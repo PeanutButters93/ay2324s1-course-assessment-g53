@@ -135,6 +135,7 @@ const AddQuestion = (props) => {
         setViewPage(true);
         }
     };
+
     const duplicateTitleMessage = hasDuplicateTitle
         ? duplicateMessages.title
         : "";

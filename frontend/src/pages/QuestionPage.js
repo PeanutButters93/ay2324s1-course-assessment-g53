@@ -12,6 +12,7 @@ import AddQuestion from "../components/question/AddQuestion";
 import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
 import axios from 'axios';
 import useCookie from "../components/useCookie";
+import Categories from "../components/question/Categories";
 
 const COMPLEXITY = {
   EASY: "EASY",
@@ -156,14 +157,15 @@ function QuestionPage() {
     const [viewPage, setViewPage] = useState(false);
     const [addPage, setAddPage] = useState(false);
     const [editPage, setEditPage] = useState(false);
+    const [categoriesPage, setCategoriesPage] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
 
     React.useEffect(() => {
         async function fetchQuestions() {
-            // console.log("Here is the process env question host value")
-            // console.log(process.env.REACT_APP_QUESTION_HOST)
-            // console.log("Here is the process env user host value")
-            // console.log(process.env.REACT_APP_USER_HOST)
+            console.log("Here is the process env question host value")
+            console.log(process.env.REACT_APP_QUESTION_HOST)
+            console.log("Here is the process env user host value")
+            console.log(process.env.REACT_APP_USER_HOST)
 
 
             const response = await axios.get(QUESTION_HOST, {
@@ -196,6 +198,7 @@ function QuestionPage() {
                         setAddPage={setAddPage}
                         setViewPage={setViewPage}
                         setEditPage={setEditPage}
+                        setCategoriesPage={setCategoriesPage}
                         setSelectedQuestion={setSelectedQuestion}
                         selectedQuestion={selectedQuestion}
                         deleteQuestion={deleteQuestion}
@@ -268,6 +271,24 @@ function QuestionPage() {
                         duplicateCheckers={duplicateCheckers}
                         duplicateMessages={duplicateMessages}
                         editQuestion={editQuestion}
+                        />
+                    </Paper>
+                    </Grid>
+                )}
+                {/* Categories */}
+                {categoriesPage && (
+                    <Grid item xs={12} md={6}>
+                    <Paper
+                        sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "110%",
+                        }}
+                    >
+                        <Categories
+                        question={selectedQuestion}
+                        addPage={setAddPage}
                         />
                     </Paper>
                     </Grid>

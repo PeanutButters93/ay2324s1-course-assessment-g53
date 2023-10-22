@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Category from "./Category.js";
 
 const questionSchema = new mongoose.Schema({
     id: Number,
