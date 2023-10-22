@@ -23,7 +23,7 @@ const modal_style = {
 const TIME_LIMIT = 15
 const MATCHING_HOST = process.env.REACT_APP_MATCHING_HOST ? process.env.REACT_APP_MATCHING_HOST : "ws://localhost:3001"
 const Match = (props) => {
-  const [difficulty, setDifficulty] = useState("");
+  const [difficulty, setDifficulty] = useState("MEDIUM");
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
   const [startCount, setStartCount] = useState(false);
   const [open, setOpen] = useState(false);

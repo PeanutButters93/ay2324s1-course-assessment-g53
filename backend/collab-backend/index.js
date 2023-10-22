@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 const Document = require("./Document")
+const { Mutex } = require('async-mutex')
 
 dotenv.config({
     path: ".env.local"
@@ -32,7 +33,7 @@ app.post("/get_room_id", async (req, res) => {
     // User ids are not used. Could have a future use.
     const {user1, user2} = req.body
 
-    var room_id = null
+    var room_id = 1
     var document = null
 
     do {
@@ -40,7 +41,7 @@ app.post("/get_room_id", async (req, res) => {
         document = await Document.findById(room_id)
     } while (document)
 
-    res.send({ room_id : room_id})
+    res.send({ room_id : room_id })
 })
 
 app.post("/get_document", async (req, res) => {
@@ -76,10 +77,23 @@ io.on("connection", socket => {
     })
 })
 
+const add_to_db_mutex = new Mutex()
+
 async function findOrCreateDocument(id) {
     if (id == null) return
+
+    const release = await add_to_db_mutex.acquire();
+    var document = null
+    try {
+        document = await Document.findById(id)
+
+        // if document is null, aka isn't in the DB
+        if (!document) {
+            document = await Document.create({_id: id, data: DEFAULT_DOCUMENT_DATA})
+        }
     
-    const document = await Document.findById(id)
-    if (document) return document 
-    return await Document.create({_id: id, data: DEFAULT_DOCUMENT_DATA})
+    } finally {
+        release()
+    }
+    return document
 }
