@@ -94,7 +94,7 @@ const EditQuestion = (props) => {
         setTitle(question.title);
         setCategories(question.categories);
         setComplexity(question.complexity);
-        setDescription(question.desc);
+        setDescription(question.description);
         setEmptyTitleMessage("");
         setEmptyDescriptionMessage("");
         setEmptyCategoryMessage([]);

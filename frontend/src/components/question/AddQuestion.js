@@ -102,7 +102,7 @@ const AddQuestion = (props) => {
         );
     }, [title, questions, duplicateCheckers]);
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         checkEmpty(
         title,
         setEmptyTitleMessage,
@@ -122,9 +122,9 @@ const AddQuestion = (props) => {
             return;
         }
 
-        const question = addQuestion(title, description, categories, complexity, questions);
+        const selectedQuestion = await addQuestion(title, description, categories, complexity, questions);
 
-        setSelectedQuestion(question);
+        setSelectedQuestion(selectedQuestion);
         setAddPage(false);
         setViewPage(true);
     };

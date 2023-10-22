@@ -9,7 +9,7 @@ export async function updateQuestion(req, res) {
     const new_title = req.body.title
       ? req.body.title
       : question_to_change.title;
-    const new_desc = req.body.desc ? req.body.desc : question_to_change.desc;
+    const new_description = req.body.description ? req.body.description : question_to_change.description;
     const new_categories = req.body.categories
       ? req.body.categories
       : question_to_change.categories;
@@ -17,15 +17,15 @@ export async function updateQuestion(req, res) {
       ? req.body.complexity
       : question_to_change.complexity;
     let duplicate_title = [];
-    let duplicate_desc = [];
+    let duplicate_description = [];
     if (new_title !== question_to_change.title) {
       duplicate_title = await Question.find({ title: new_title });
     }
 
-    if (new_desc !== question_to_change.desc) {
-      duplicate_desc = await Question.find({ desc: new_desc });
+    if (new_description !== question_to_change.description) {
+      duplicate_description = await Question.find({ description: new_description });
     }
-    if (duplicate_title.length !== 0 || duplicate_desc.length !== 0) {
+    if (duplicate_title.length !== 0 || duplicate_description.length !== 0) {
       res
         .status(400)
         .send(
@@ -35,7 +35,7 @@ export async function updateQuestion(req, res) {
     }
 
     question_to_change.title = new_title;
-    question_to_change.desc = new_desc;
+    question_to_change.description = new_description;
     question_to_change.categories = new_categories;
     question_to_change.complexity = new_complexity;
 

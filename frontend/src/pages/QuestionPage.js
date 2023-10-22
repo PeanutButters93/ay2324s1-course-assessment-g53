@@ -80,7 +80,7 @@ function QuestionPage() {
     };
 
     const checkDuplicateDescription = (description, questions) => {
-        return questions.some((question) => question.desc === description);
+        return questions.some((question) => question.description === description);
     };
 
     const duplicateCheckers = {
@@ -94,7 +94,7 @@ function QuestionPage() {
     }
 
     async function addQuestion(title, description, categories, complexity, questions) {
-        const id = questions ? questions[questions.length -1].id + 1 : 1;
+        const id = questions ? questions[questions.length - 1].id + 1 : 1;
         const question = { id, title, description, categories, complexity };
         axios.post(QUESTION_HOST, question, {
         headers: {
@@ -112,7 +112,7 @@ function QuestionPage() {
 
     async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
         const id = questionToEdit.id;
-        const question = {id, title, desc: description, categories, complexity}
+        const question = {id, title, description, categories, complexity}
         await axios.put(QUESTION_HOST, question, {
         headers: {
             'Content-Type': 'application/json', 
