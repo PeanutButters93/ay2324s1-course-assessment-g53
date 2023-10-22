@@ -58,20 +58,33 @@ function checkEmpty(
   complexity,
   setEmptyComplexityMessage
 ) {
-    if (!title) {
+    if (title) {
+        setEmptyTitleMessage("");
+    } else {
         setEmptyTitleMessage(emptyTitleMessage);
     }
-    if (!description) {
+
+    if (description) {
+        setEmptyDescriptionMessage("");
+    } else {
         setEmptyDescriptionMessage(emptyDescriptionMessage);
     }
-    if (category.length === 0) {
+
+    if (category.length !== 0) {
+        setEmptyCategoryMessage("");
+    } else {
         setEmptyCategoryMessage(emptyCategoryMessage);
     }
-    if (!complexity) {
+
+    if (complexity) {
+        setEmptyComplexityMessage("");
+    } else {
         setEmptyComplexityMessage(emptyComplexityMessage);
     }
+
     return;
 }
+
 function QuestionPage() {
     const {getAuthCookie} = useCookie();
 
