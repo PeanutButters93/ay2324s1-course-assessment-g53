@@ -11,6 +11,8 @@ const associateStreamWithVideo = (myVideo, stream) => {
     };
 }
 
+const COMMUNICATION_HOST = proccess.env.REACT_APP_COMMUNICATION_HOST ? proccess.env.REACT_APP_COMMUNICATION_HOST : "http://localhost:9001"
+
 const VideoCall = () => {
   const [myPeer, setMyPeer] = useState(null);
   const [myPeerId, setMyPeerId] = useState(null);
@@ -26,7 +28,7 @@ const VideoCall = () => {
       setMyPeerId(id);
     });
     setMyPeer(peer);
-    setSocket(io("http://localhost:9001"));
+    setSocket(io(COMMUNICATION_HOST));
   }, []);
 
   useEffect(() => {
