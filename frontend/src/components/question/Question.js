@@ -77,7 +77,7 @@ export default function Question(props) {
         <Table size="small">
             <TableHead>
             <TableRow>
-                <TableCell>Question ID</TableCell>
+                <TableCell>ID</TableCell>
                 <TableCell>Title</TableCell>
                 <TableCell>Category</TableCell>
                 <TableCell>Complexity</TableCell>

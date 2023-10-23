@@ -18,9 +18,9 @@ export async function updateCategory(req, res) {
         }
 
 
-        await Question.updateMany({ categories: 
-            { $elemMatch: { name: categoryToUpdate.name } } 
-        }, { $set: { "categories.$.name": updatedName }});
+        await Question.updateMany({ categories: categoryToUpdate.name }, 
+            { $set: { "categories.$": updatedName } });
+
         categoryToUpdate.name = updatedName
         await categoryToUpdate.save();
 

@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { OutlinedInput } from "@mui/material";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import { Theme, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import Title from "./Title";
 import useCookie from "../useCookie";
 import { useEffect, useState } from "react";
@@ -189,19 +189,17 @@ const AddQuestion = (props) => {
             </FormControl>
             <FormControl fullWidth sx={{ marginTop: 2 }}>
                 <InputLabel id="complexity" error={!!emptyComplexityMessage}>
-                Complexity
+                    Complexity
                 </InputLabel>
                 <Select
-                labelId="complexity"
-                id="complexity"
-                value={complexity}
-                label="Complexity"
-                onChange={(event) => setComplexity(event.target.value)}
-                error={!!emptyComplexityMessage}
+                    labelId="complexity"
+                    id="complexity"
+                    value={complexity}
+                    label="Complexity"
+                    onChange={(event) => setComplexity(event.target.value)}
+                    error={!!emptyComplexityMessage}
                 >
-                <MenuItem value="">
-                    <em>--Please select--</em>
-                </MenuItem>
+                <MenuItem value=""><em>--Please select--</em></MenuItem>
                 <MenuItem value={COMPLEXITY.EASY}>EASY</MenuItem>
                 <MenuItem value={COMPLEXITY.MEDIUM}>MEDIUM</MenuItem>
                 <MenuItem value={COMPLEXITY.HARD}>HARD</MenuItem>

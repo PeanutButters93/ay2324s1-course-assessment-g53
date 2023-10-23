@@ -193,7 +193,6 @@ const EditQuestion = (props) => {
                     onChange={event => setComplexity(event.target.value)}
                     error={!!emptyComplexityMessage}
                 >
-                    <MenuItem value=""><em>--Please select--</em></MenuItem>
                     <MenuItem value={COMPLEXITY.EASY}>EASY</MenuItem>
                     <MenuItem value={COMPLEXITY.MEDIUM}>MEDIUM</MenuItem>
                     <MenuItem value={COMPLEXITY.HARD}>HARD</MenuItem>
@@ -226,7 +225,6 @@ const EditQuestion = (props) => {
                 sx={{ marginTop: 2 }}
                 onClick={handleCancel}
             >Cancel</Button>
-            {console.log("End of EditQuestion.js")}
         </div>
     )
 };

@@ -135,7 +135,7 @@ function QuestionPage() {
         }).catch(error => {
         console.error('Error:', error);
         return;
-    })
+        })
         const res = [...questions, question].sort((a,b) => a.id - b.id)
         setQuestions(res);
     }
@@ -159,6 +159,7 @@ function QuestionPage() {
     const [editPage, setEditPage] = useState(false);
     const [categoriesPage, setCategoriesPage] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
+    const [buttonClickCount, setButtonClickCount] = useState(0); // For lack of better options
 
     React.useEffect(() => {
         async function fetchQuestions() {
@@ -181,7 +182,7 @@ function QuestionPage() {
             setQuestions(questions)
         }
         fetchQuestions()
-    }, [])
+    }, [buttonClickCount])
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -287,8 +288,9 @@ function QuestionPage() {
                         }}
                     >
                         <Categories
-                        question={selectedQuestion}
-                        addPage={setAddPage}
+                            setCategoriesPage={setCategoriesPage}
+                            buttonClickCount={buttonClickCount}
+                            setButtonClickCount={setButtonClickCount}
                         />
                     </Paper>
                     </Grid>
