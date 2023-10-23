@@ -4,6 +4,7 @@ import 'highlight.js/styles/monokai-sublime.css';
 import Quill from "quill"
 import { io } from "socket.io-client"
 import { useParams } from "react-router-dom"
+import "./TextEditor.css"
 
 const SAVE_INTERVAL_MS = 2000
 
@@ -28,6 +29,7 @@ function TextEditor() {
     
     socket.once("load-document", document => {
       quill.setContents(document)
+      applyFormatting()
       quill.enable()
     })
 
@@ -40,6 +42,7 @@ function TextEditor() {
 
     const handler = (delta, oldDelta, source) => {
       if (source !== 'user') return
+      applyFormatting()
       socket.emit("send-changes", delta)
     }
 
@@ -57,6 +60,7 @@ function TextEditor() {
 
     const handler = (delta) => {
       quill.updateContents(delta)
+      applyFormatting()
     }
 
     socket.on('recieve-changes', handler)
@@ -79,16 +83,21 @@ function TextEditor() {
     }
   }, [socket, quill])
 
+  function applyFormatting() {
+    quill.format('code-block', true)
+    setQuill(quill)
+  }
+
   // Create Quill instance
   const wrapperRef = useCallback((wrapper) => {
       if (wrapper == null) return
 
-      wrapper.innerHTML = ""
+      // wrapper.innerHTML = ""
       const editor = document.createElement('div')
       wrapper.append(editor)
 
-      const q = new Quill(editor, {
-        modules: {
+      const q = new Quill(editor,
+        {modules: {
           syntax: {
             highlight: (text) => hljs.highlightAuto(text).value, // Use Highlight.js for syntax highlighting
           },
@@ -97,7 +106,6 @@ function TextEditor() {
 
       q.disable()
       q.setText("Loading...")
-      q.format('code-block', true)
       setQuill(q)
   }, [])
 
