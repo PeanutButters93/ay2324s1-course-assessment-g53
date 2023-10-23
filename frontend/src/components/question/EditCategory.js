@@ -8,6 +8,7 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import useCookie from "../useCookie";
 import { useEffect, useState } from "react";
+import Title from "./Title";
 
 const CATEGORIES_HOST = process.env.REACT_APP_CATEGORIES_HOST ? process.env.REACT_APP_CATEGORIES_HOST : "http://localhost:8000/api/categories";
 
@@ -88,65 +89,68 @@ const EditCategory = (props) => {
     }
 
     return (
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="categories">Category</InputLabel>
-            <Select
-                labelId="category"
-                id="category"
-                value={selectedCategory}
-                label="Category"
-                onChange={event => {
-                    setSelectedCategory(event.target.value);
-                    setUpdatedCategory(event.target.value);
-                
-                }}
-            >
-                {categoriesList.map((category) => (
-                    <MenuItem key={category} value={category}>{category}</MenuItem>
-                ))}
-            </Select>
-            <FormHelperText>{ emptyCategoryMessage || categoryHelperText }</FormHelperText>
-            {selectedCategory && (
+        <div>
+            <Title>Edit Existing Category</Title>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="categories">Category</InputLabel>
+                <Select
+                    labelId="category"
+                    id="category"
+                    value={selectedCategory}
+                    label="Category"
+                    onChange={event => {
+                        setSelectedCategory(event.target.value);
+                        setUpdatedCategory(event.target.value);
+                    
+                    }}
+                >
+                    {categoriesList.map((category) => (
+                        <MenuItem key={category} value={category}>{category}</MenuItem>
+                    ))}
+                </Select>
+                <FormHelperText>{ emptyCategoryMessage || categoryHelperText }</FormHelperText>
+                {selectedCategory && (
+                    <div>
+                        <TextField 
+                            fullWidth 
+                            label={'Categories'} 
+                            id="Categories" 
+                            margin="normal" 
+                            value={updatedCategory} 
+                            onChange={event => setUpdatedCategory(event.target.value)}
+                            error={!!emptyCategoryMessage || !!duplicateCategoryMessage}
+                            helperText={emptyCategoryMessage || duplicateCategoryMessage}
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ marginTop: 2 , marginRight:2 }}
+                            onClick={handleUpdate}
+                        >Update Category</Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ marginTop: 2 , marginRight:2 }}
+                            // onClick={handleDelete}
+                        >Delete Category</Button>
+                    </div>
+                )}
                 <div>
-                    <TextField 
-                        fullWidth 
-                        label={'Categories'} 
-                        id="Categories" 
-                        margin="normal" 
-                        value={updatedCategory} 
-                        onChange={event => setUpdatedCategory(event.target.value)}
-                        error={!!emptyCategoryMessage || !!duplicateCategoryMessage}
-                        helperText={emptyCategoryMessage || duplicateCategoryMessage}
-                    />
                     <Button
                         variant="contained"
                         color="primary"
                         sx={{ marginTop: 2 , marginRight:2 }}
-                        onClick={handleUpdate}
-                    >Update Category</Button>
+                        onClick={handleAdd}
+                    >Add New Category</Button>
                     <Button
                         variant="contained"
                         color="primary"
-                        sx={{ marginTop: 2 , marginRight:2 }}
-                        // onClick={handleDelete}
-                    >Delete Category</Button>
+                        sx={{ marginTop: 2 }}
+                        onClick={handleCancel}
+                    >Cancel</Button>
                 </div>
-            )}
-            <div>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ marginTop: 2 , marginRight:2 }}
-                    onClick={handleAdd}
-                >Add New Category</Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ marginTop: 2 }}
-                    onClick={handleCancel}
-                >Cancel</Button>
-            </div>
-        </FormControl>
+            </FormControl>
+        </div>
     )
 };
 
