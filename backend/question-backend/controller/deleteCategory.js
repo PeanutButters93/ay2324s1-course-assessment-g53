@@ -8,12 +8,12 @@ export async function deleteCategory(req, res) {
         const questions = await Question.find({ categories: 
             { $elemMatch: { name: name } } 
         });
-        if (questions) {
+        if (questions.length > 0) {
             console.log('Category is in use');
             res.status(400).send("Category is in use");
             return;
         }
-        await Category.deleteOne({ _id: id });
+        await Category.deleteOne({ name: name });
         res.send("Success");
     } catch (error) {
         console.log(error);

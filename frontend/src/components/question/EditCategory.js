@@ -10,9 +10,11 @@ import useCookie from "../useCookie";
 import { useEffect, useState } from "react";
 import Title from "./Title";
 
+const QUESTION_HOST = process.env.REACT_APP_QUESTION_HOST ? process.env.REACT_APP_QUESTION_HOST : "http://localhost:8000/api/questions";
 const CATEGORIES_HOST = process.env.REACT_APP_CATEGORIES_HOST ? process.env.REACT_APP_CATEGORIES_HOST : "http://localhost:8000/api/categories";
 
 const categoryHelperText = "Please select a category to edit it";
+const deleteCategoryInUseMessage = "Questions cannot have no category. Only questions that do not have this category as its only category will have this category deleted.";
 
 const EditCategory = (props) => {
     const setCategoriesPage = props.setCategoriesPage;
@@ -49,7 +51,7 @@ const EditCategory = (props) => {
     const handleAdd = () => {
         setAddNewCategory(true);
         setEditExistingCategory(false);
-    }
+    };
 
     const handleUpdate = async () => {
         if (updatedCategory === "") {
@@ -80,17 +82,84 @@ const EditCategory = (props) => {
         setSelectedCategory("");
         setButtonClickCount(buttonClickCount + 1);
         setAddNewCategory(false);
-    }
+    };
 
     const handleDelete = async () => {
-        //
-    }
+        const response = await axios.get(QUESTION_HOST, {
+            headers: {
+                'Authorization': getAuthCookie()
+            }
+        });
+
+        const data = response.data;
+        const questions = [];
+        for (var i of data) {
+            questions.push(i);
+        }
+
+        const questionsWithCategory = questions.filter(question => question.categories.indexOf(selectedCategory) !== -1);
+        if (questionsWithCategory.length !== 0) {
+            const questionsWithCategoryNotAsOnlyCategory = questionsWithCategory.filter(question => question.categories.length > 1);
+            const questionsWithCategoryAsOnlyCategory = questionsWithCategory.filter(question => question.categories.length === 1);
+
+            for (var question of questionsWithCategoryNotAsOnlyCategory) {
+                const updatedQuestionCategories = question.categories.filter(category => category !== selectedCategory);
+                question.categories = updatedQuestionCategories;
+                await axios.put(QUESTION_HOST, question, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': getAuthCookie()
+                    }})
+                    .catch(error => {
+                        console.error('Error:', error);
+                        return;
+                    });
+            }
+
+            if (questionsWithCategoryAsOnlyCategory.length > 0) {
+                var listOfQuestions = "";
+                for (var question of questionsWithCategoryAsOnlyCategory) {
+                    listOfQuestions += question.id + ") " + question.title + "\n";
+                }
+                alert(`Category has not been fully deleted.\n\nThe following questions have ${selectedCategory} as their only category:\n${listOfQuestions}\nPlease delete these questions or add another category to them before deleting the ${selectedCategory} category.`);
+                setButtonClickCount(buttonClickCount + 1);
+                return;
+            }
+        }
+
+        // const response1 = await axios.get(QUESTION_HOST, {
+        //     headers: {
+        //         'Authorization': getAuthCookie()
+        //     }
+        // });
+
+        // const data1 = response1.data;
+        // const questions1 = [];
+        // for (var i of data) {
+        //     questions1.push(i);
+        // }
+        // console.log(data1);
+        console.log(encodeURIComponent(selectedCategory));
+
+        await axios.delete(CATEGORIES_HOST + "/" + encodeURIComponent(selectedCategory), {
+            headers: {
+                'Authorization': getAuthCookie()
+            }})
+            .catch(error => {
+                console.error('Error:', error);
+                return;
+            });
+        
+        setButtonClickCount(buttonClickCount + 1);
+        setSelectedCategory("");
+        setAddNewCategory(false);
+    };
 
     const handleCancel = () => {
         setEditExistingCategory(false);
         setAddNewCategory(false);
         setCategoriesPage(false);
-    }
+    };
 
     return (
         <div>
@@ -135,7 +204,7 @@ const EditCategory = (props) => {
                             variant="contained"
                             color="primary"
                             sx={{ marginTop: 2 , marginRight:2 }}
-                            // onClick={handleDelete}
+                            onClick={handleDelete}
                         >Delete Category</Button>
                     </div>
                 )}
