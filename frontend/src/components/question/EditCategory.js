@@ -82,6 +82,10 @@ const EditCategory = (props) => {
         setAddNewCategory(false);
     }
 
+    const handleDelete = async () => {
+        //
+    }
+
     const handleCancel = () => {
         setEditExistingCategory(false);
         setAddNewCategory(false);

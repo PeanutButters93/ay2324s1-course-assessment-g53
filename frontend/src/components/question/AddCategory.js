@@ -65,6 +65,11 @@ const AddCategory = (props) => {
         setCategoriesPage(false);
     }
 
+    const handleEdit = () => {
+        setAddNewCategory(false);
+        setEditExistingCategory(true);
+    }
+
     return (
         <div>
             <Title>Add New Category</Title>
@@ -93,7 +98,7 @@ const AddCategory = (props) => {
                 variant="contained"
                 color="primary"
                 sx={{ marginTop: 2 }}
-                // onClick={handleEdit}
+                onClick={handleEdit}
             >Edit Existing Category</Button>
         </div>
     )
