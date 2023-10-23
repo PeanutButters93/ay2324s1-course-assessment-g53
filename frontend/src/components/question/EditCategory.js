@@ -113,6 +113,12 @@ const EditCategory = (props) => {
                         sx={{ marginTop: 2 , marginRight:2 }}
                         onClick={handleUpdate}
                     >Update Category</Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{ marginTop: 2 , marginRight:2 }}
+                        // onClick={handleDelete}
+                    >Delete Category</Button>
                 </div>
             )}
             <div>
