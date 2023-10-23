@@ -16,7 +16,7 @@ const categoryHelperText = "Please select a category to edit it";
 const EditCategory = (props) => {
     const setCategoriesPage = props.setCategoriesPage;
     const setAddNewCategory = props.setAddNewCategory;
-    const editExistingCategory = props.editExistingCategory;
+    const setEditExistingCategory = props.setEditExistingCategory;
     const buttonClickCount = props.buttonClickCount;
     const setButtonClickCount = props.setButtonClickCount;
     
@@ -44,6 +44,11 @@ const EditCategory = (props) => {
         }
         fetchCategories()
     }, [buttonClickCount])
+
+    const handleAdd = () => {
+        setAddNewCategory(true);
+        setEditExistingCategory(false);
+    }
 
     const handleUpdate = async () => {
         if (updatedCategory === "") {
@@ -74,6 +79,12 @@ const EditCategory = (props) => {
         setSelectedCategory("");
         setButtonClickCount(buttonClickCount + 1);
         setAddNewCategory(false);
+    }
+
+    const handleCancel = () => {
+        setEditExistingCategory(false);
+        setAddNewCategory(false);
+        setCategoriesPage(false);
     }
 
     return (
@@ -126,13 +137,13 @@ const EditCategory = (props) => {
                     variant="contained"
                     color="primary"
                     sx={{ marginTop: 2 , marginRight:2 }}
-                    // onClick={handleUpdate}
+                    onClick={handleAdd}
                 >Add New Category</Button>
                 <Button
                     variant="contained"
                     color="primary"
                     sx={{ marginTop: 2 }}
-                    // onClick={handleCancel}
+                    onClick={handleCancel}
                 >Cancel</Button>
             </div>
         </FormControl>

@@ -1,3 +1,4 @@
+import AddCategory from "./AddCategory";
 import EditCategory from "./EditCategory";
 import Title from "./Title";
 import { useState } from "react";
@@ -16,6 +17,15 @@ const Categories = (props) => {
             <Title>Categories</Title>
             { editExistingCategory && (
                     <EditCategory
+                        setCategoriesPage={setCategoriesPage}
+                        setAddNewCategory={setAddNewCategory}
+                        setEditExistingCategory={setEditExistingCategory}
+                        buttonClickCount={buttonClickCount}
+                        setButtonClickCount={setButtonClickCount}
+                    />
+            )}
+            { addNewCategory && (
+                    <AddCategory
                         setCategoriesPage={setCategoriesPage}
                         setAddNewCategory={setAddNewCategory}
                         setEditExistingCategory={setEditExistingCategory}
