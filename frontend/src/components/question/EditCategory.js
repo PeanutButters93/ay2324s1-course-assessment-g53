@@ -127,20 +127,6 @@ const EditCategory = (props) => {
             }
         }
 
-        // const response1 = await axios.get(QUESTION_HOST, {
-        //     headers: {
-        //         'Authorization': getAuthCookie()
-        //     }
-        // });
-
-        // const data1 = response1.data;
-        // const questions1 = [];
-        // for (var i of data) {
-        //     questions1.push(i);
-        // }
-        // console.log(data1);
-        console.log(encodeURIComponent(selectedCategory));
-
         await axios.delete(CATEGORIES_HOST + "/" + encodeURIComponent(selectedCategory), {
             headers: {
                 'Authorization': getAuthCookie()
