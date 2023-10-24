@@ -6,7 +6,7 @@ import { io } from "socket.io-client"
 import { useParams } from "react-router-dom"
 
 const SAVE_INTERVAL_MS = 2000
-const COLLAB_HOST = proccess.env.REACT_APP_COLLAB_HOST ? proccess.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
+const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
 function TextEditor() {
   const {id: documentId} = useParams()
   const [socket, setSocket] = useState()
