@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom"
 import "./TextEditor.css"
 
 const SAVE_INTERVAL_MS = 2000
-
+const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
 function TextEditor() {
   const {id: documentId} = useParams()
   const [socket, setSocket] = useState()
@@ -15,7 +15,7 @@ function TextEditor() {
 
   // Connect to Collab Service
   useEffect(() => {
-    const s = io("http://localhost:9000")
+    const s = io(COLLAB_HOST)
     setSocket(s)
 
     return () => {

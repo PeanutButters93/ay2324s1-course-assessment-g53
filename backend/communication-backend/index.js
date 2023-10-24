@@ -23,9 +23,12 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+
 server.listen(PORT, () => {
   console.log(`Communication service connected on port ${PORT}`);
 });
+
+app.use("/", (req, res) => res.status(200).json({status: "OK"}))
 
 let count = 0;
 io.on("connection", (socket) => {
@@ -38,18 +41,4 @@ io.on("connection", (socket) => {
 
   })
 
-  // socket.on("join-room", (roomId, userId, callback) => {
-  //   socket.join(roomId);
-  //   console.log("joined", roomId);
-
-  //   socket.on("disconnect", () => {
-  //     socket.to(roomId).emit("user-disconnected", userId);
-  //   });
-
-  //   socket.on("video-ready", () => {
-  //     console.log("Video ready");
-  //     socket.to(roomId).emit("user-connected", userId);
-  //   });
-  //   callback()
-  // });
 });

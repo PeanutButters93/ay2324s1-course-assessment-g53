@@ -7,6 +7,7 @@ const { addToQueue, findFromQueue, removeFromQueue } = require("./queuing-handle
 
 const FRONTEND_HOST = process.env.FRONTEND_HOST ?  process.env.FRONTEND_HOST : "http://localhost:3000"
 const RABBIT_MQ_HOST = process.env.RABBIT_MQ_HOST ? process.env.RABBIT_MQ_HOST : 'amqp://guest:guest@localhost:5672'
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -16,8 +17,12 @@ const io = new Server(server, {
   },
 });
 
+app.use("/api/matching", (req,res) => {res.status(200).json({status: "OK"})})
+
 let connection = null;
 amq.connect(RABBIT_MQ_HOST).then((amqConnection) => {
+  console.log("connected to RabbitMQ")
+  console.log(FRONTEND_HOST)
   connection = amqConnection;
 })
 
