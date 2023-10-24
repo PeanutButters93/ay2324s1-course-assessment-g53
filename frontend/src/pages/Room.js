@@ -33,15 +33,17 @@ const Room = () => {
 
       {/* Problem Description Section */}
       <Grid item style={{ flex: `0 0 ${dividerPosition}%`, position: 'relative' }}>
-        <Paper elevation={3} style={{ padding: '16px', height: '100%' }}>
+        <Paper elevation={3} style={{ padding: '16px', height: '70%' }}>
           <Typography variant="h5">Problem Title</Typography>
           <Typography variant="subtitle1" color="textSecondary">Difficulty: Easy</Typography>
           <Typography variant="body1" paragraph>
             Here is the problem description. It should explain what the problem is
             and what the user is expected to do in order to solve it.
           </Typography>
+          <Paper/>
+          
         </Paper>
-        <Paper elevation={4}>
+        <Paper style={{ margin:"10px", height: "30%"}}>
           <VideoCall/>
         </Paper>
       </Grid>
