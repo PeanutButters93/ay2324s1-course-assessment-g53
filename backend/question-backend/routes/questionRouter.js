@@ -6,7 +6,7 @@ import { deleteQuestion } from "../controller/deleteQuestion.js";
 import { checkLogin } from "../middleware/checkLogin.js";
 import { checkAdmin } from "../middleware/checkAdmin.js";
 const router = express.Router();
-router.get("/", [checkLogin], getQuestions);
+router.get("/", getQuestions);
 
 router.post("/", [checkLogin, checkAdmin], addQuestion);
 
