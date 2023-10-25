@@ -160,6 +160,7 @@ function QuestionPage() {
     const [categoriesPage, setCategoriesPage] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [buttonClickCount, setButtonClickCount] = useState(0); // For lack of better options
+    const [filteredQuestions, setFilteredQuestions] = useState(questions);
 
     React.useEffect(() => {
         async function fetchQuestions() {
@@ -180,9 +181,10 @@ function QuestionPage() {
                 questions.push(data[i])
             }
             setQuestions(questions)
+            setFilteredQuestions(questions)
         }
         fetchQuestions()
-    }, [buttonClickCount])
+    }, [buttonClickCount]);
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -202,7 +204,10 @@ function QuestionPage() {
                         setCategoriesPage={setCategoriesPage}
                         setSelectedQuestion={setSelectedQuestion}
                         selectedQuestion={selectedQuestion}
+                        filteredQuestions={filteredQuestions}
+                        setFilteredQuestions={setFilteredQuestions}
                         deleteQuestion={deleteQuestion}
+                        buttonClickCount={buttonClickCount}
                     />
                     </Paper>
                 </Grid>

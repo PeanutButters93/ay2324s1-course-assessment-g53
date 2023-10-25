@@ -14,8 +14,8 @@ import useCookie from '../useCookie';
 import { useState, useEffect } from 'react';
 import useTheme from '@mui/material/styles/useTheme';
 
-const cancelMessage = "Are you sure you want to cancel? All changes will be lost.";
 const CATEGORIES_HOST = process.env.REACT_APP_CATEGORIES_HOST ? process.env.REACT_APP_CATEGORIES_HOST : "http://localhost:8000/api/categories";
+const cancelMessage = "Are you sure you want to cancel? All changes will be lost.";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {

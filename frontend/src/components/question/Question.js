@@ -1,18 +1,50 @@
 import * as React from "react";
+import axios from "axios";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { FormControl } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Select from "@mui/material/Select";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import useCookie from "../useCookie";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux"
+import useTheme from "@mui/material/styles/useTheme";
+import { select } from "react-cookies";
 
+const CATEGORIES_HOST = process.env.REACT_APP_CATEGORIES_HOST ? process.env.REACT_APP_CATEGORIES_HOST : "http://localhost:8000/api/categories";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+function getStyles(category, categories, theme) {
+    return {
+        fontWeight:
+        categories.indexOf(category) === -1
+            ? theme.typography.fontWeightRegular
+            : theme.typography.fontWeightMedium,
+    };
+}
 
 export default function Question(props) {
     const questions = props.questions;
@@ -22,8 +54,40 @@ export default function Question(props) {
     const setCategoriesPage = props.setCategoriesPage;
     const selectedQuestion = props.selectedQuestion;
     const setSelectedQuestion = props.setSelectedQuestion;
+    const filteredQuestions = props.filteredQuestions;
+    const setFilteredQuestions = props.setFilteredQuestions;
     const deleteQuestion = props.deleteQuestion;
+    const buttonClickCount = props.buttonClickCount;
     const is_admin = useSelector((state) => state.auth.is_admin);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [categoriesList, setCategoriesList] = useState([]);
+    const { getAuthCookie } = useCookie();
+    const theme = useTheme();
+
+    useEffect(() => {
+        async function fetchCategories() {
+            const response = await axios.get(CATEGORIES_HOST, {
+                headers: {
+                    'Authorization': getAuthCookie()
+                }
+            })
+            const data = response.data;
+            const categories = [];
+            for (var i of data) {
+                categories.push(i.name);
+            }
+            setCategoriesList(categories);
+        }
+        fetchCategories()
+    }, [buttonClickCount]);
+
+    useEffect(() => {
+        if (selectedCategories.length === 0) {
+            setFilteredQuestions(questions);
+            return;
+        }
+        setFilteredQuestions(questions.filter(question => question.categories.some(category => selectedCategories.includes(category))));
+    }, [selectedCategories]);
 
     const handleAddClick = () => {
         setAddPage(true);
@@ -71,9 +135,46 @@ export default function Question(props) {
         }
     };
 
+    const handleChange = (event) => {
+        const { target: { value } } = event;
+        setSelectedCategories(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
+
     return (
         <React.Fragment>
         <Title>Question Bank</Title>
+        <FormControl sx={{ width: 535 }}>
+            <InputLabel id="categories">Categories</InputLabel>
+            <Select
+                labelId="categories-label"
+                id="categories"
+                multiple
+                value={selectedCategories}
+                onChange={handleChange}
+                input={<OutlinedInput id="select-categories" label="Categories" />}
+                renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selected.map((value) => (
+                        <Chip key={value} label={value} />
+                    ))}
+                    </Box>
+                )}
+                MenuProps={MenuProps}
+            >
+                {categoriesList.map((category) => (
+                    <MenuItem
+                    key={category}
+                    value={category}
+                    style={getStyles(category, selectedCategories, theme)}
+                    >
+                        {category}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
         <Table size="small">
             <TableHead>
             <TableRow>
@@ -85,7 +186,7 @@ export default function Question(props) {
             </TableRow>
             </TableHead>
             <TableBody>
-            {questions.map((question) => (
+            {filteredQuestions.map((question) => (
                 <TableRow key={question.id}>
                 <TableCell>{question.id}</TableCell>
                 <TableCell>{question.title}</TableCell>

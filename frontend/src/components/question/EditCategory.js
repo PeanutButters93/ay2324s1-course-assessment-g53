@@ -14,7 +14,6 @@ const QUESTION_HOST = process.env.REACT_APP_QUESTION_HOST ? process.env.REACT_AP
 const CATEGORIES_HOST = process.env.REACT_APP_CATEGORIES_HOST ? process.env.REACT_APP_CATEGORIES_HOST : "http://localhost:8000/api/categories";
 
 const categoryHelperText = "Please select a category to edit it";
-const deleteCategoryInUseMessage = "Questions cannot have no category. Only questions that do not have this category as its only category will have this category deleted.";
 
 const EditCategory = (props) => {
     const setCategoriesPage = props.setCategoriesPage;
@@ -160,7 +159,6 @@ const EditCategory = (props) => {
                     onChange={event => {
                         setSelectedCategory(event.target.value);
                         setUpdatedCategory(event.target.value);
-                    
                     }}
                 >
                     {categoriesList.map((category) => (
