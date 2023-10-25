@@ -9,8 +9,8 @@ import { updateQuestion } from "../controller/updateQuestion.js";
 import { deleteQuestion } from "../controller/deleteQuestion.js";
 
 const router = express.Router();
+router.get("/", getQuestions);
 
-router.get("/", [checkLogin], getQuestions);
 router.post("/", [checkLogin, checkAdmin], addQuestion);
 router.put("/", [checkLogin, checkAdmin], updateQuestion);
 router.delete("/:id", [checkLogin, checkAdmin], deleteQuestion);
