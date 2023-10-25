@@ -147,14 +147,14 @@ export default function Question(props) {
         <React.Fragment>
         <Title>Question Bank</Title>
         <FormControl sx={{ width: 535 }}>
-            <InputLabel id="categories">Categories</InputLabel>
+            <InputLabel id="Search by category">Search by category</InputLabel>
             <Select
                 labelId="categories-label"
                 id="categories"
                 multiple
                 value={selectedCategories}
                 onChange={handleChange}
-                input={<OutlinedInput id="select-categories" label="Categories" />}
+                input={<OutlinedInput id="select-categories" label="Search by category" />}
                 renderValue={(selected) => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((value) => (
