@@ -138,6 +138,7 @@ function QuestionPage() {
         })
         const res = [...questions, question].sort((a,b) => a.id - b.id)
         setQuestions(res);
+        return question;
     }
 
     async function deleteQuestion(questionToDelete, questions) {
@@ -277,6 +278,7 @@ function QuestionPage() {
                         duplicateCheckers={duplicateCheckers}
                         duplicateMessages={duplicateMessages}
                         editQuestion={editQuestion}
+                        setSelectedQuestion={setSelectedQuestion}
                         />
                     </Paper>
                     </Grid>

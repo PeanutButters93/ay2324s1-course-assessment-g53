@@ -46,6 +46,7 @@ const EditQuestion = (props) => {
     const duplicateCheckers = props.duplicateCheckers;
     const duplicateMessages = props.duplicateMessages;
     const editQuestion = props.editQuestion
+    const setSelectedQuestion = props.setSelectedQuestion;
 
     const [title, setTitle] = useState(question.title);
     const [categories, setCategories] = useState(question.categories);
@@ -113,7 +114,7 @@ const EditQuestion = (props) => {
         );
       }, [title, questions, duplicateCheckers]);
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         checkEmpty(title, setEmptyTitleMessage, description, setEmptyDescriptionMessage, categories, setEmptyCategoryMessage, complexity, setEmptyComplexityMessage);
 
         if (!title || !description || !categories || !complexity) {
@@ -124,8 +125,8 @@ const EditQuestion = (props) => {
             return;
         }
 
-
-        editQuestion(question, title, description, categories, complexity, questions)
+        const editedQuestion = await editQuestion(question, title, description, categories, complexity, questions)
+        setSelectedQuestion(editedQuestion);
         setEditPage(false);
         setViewPage(true);
     };

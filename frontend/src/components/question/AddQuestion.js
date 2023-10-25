@@ -132,7 +132,7 @@ const AddQuestion = (props) => {
     const handleCancel = () => {
         setAddPage(false);
         if (selectedQuestion != null) {
-        setViewPage(true);
+            setViewPage(true);
         }
     };
 
