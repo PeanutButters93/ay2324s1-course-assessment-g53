@@ -87,7 +87,7 @@ export default function Question(props) {
             return;
         }
         setFilteredQuestions(questions.filter(question => question.categories.some(category => selectedCategories.includes(category))));
-    }, [selectedCategories]);
+    }, [questions, selectedCategories]);
 
     const handleAddClick = () => {
         setAddPage(true);
