@@ -72,7 +72,6 @@ export default function Question(props) {
             })
             const data = response.data;
             const categories = [];
-            console.log(data);
             for (var i of data) {
                 categories.push(i.name);
             }
@@ -121,17 +120,13 @@ export default function Question(props) {
     };
 
     const handleDeleteClick = (question) => {
-        if (
-        window.confirm(
-            `Are you sure you want to delete Question ${question.id}? This is an irreversible action!`
-        )
-        ) {
-        if (selectedQuestion === question) {
-            setViewPage(false);
-            setEditPage(false);
-            setSelectedQuestion(null);
-        }
-        deleteQuestion(question, questions);
+        if (window.confirm(`Are you sure you want to delete Question ${question.id}? This is an irreversible action!`)) {
+            if (selectedQuestion === question) {
+                setViewPage(false);
+                setEditPage(false);
+                setSelectedQuestion(null);
+            }
+            deleteQuestion(question, questions);
         }
     };
 
@@ -186,48 +181,48 @@ export default function Question(props) {
             </TableRow>
             </TableHead>
             <TableBody>
-            {filteredQuestions.map((question) => (
-                <TableRow key={question.id}>
-                <TableCell>{question.id}</TableCell>
-                <TableCell>{question.title}</TableCell>
-                <TableCell>
-                    {question.categories.map(category => (
-                        <Chip key={category} label={category} style={{ marginRight: '8px', marginBottom: '8px' }} />
-                    ))}
-                </TableCell>
-                <TableCell>{question.complexity}</TableCell>
-                <TableCell>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                    <IconButton
-                        color="primary"
-                        aria-label="View"
-                        onClick={() => handleViewClick(question)}
-                    >
-                        <VisibilityIcon />
-                    </IconButton>
-
-                    {is_admin && (
-                        <>
+                {filteredQuestions.map((question) => (
+                    <TableRow key={question.id}>
+                    <TableCell>{question.id}</TableCell>
+                    <TableCell>{question.title}</TableCell>
+                    <TableCell>
+                        {question.categories.map(category => (
+                            <Chip key={category} label={category} style={{ marginRight: '8px', marginBottom: '8px' }} />
+                        ))}
+                    </TableCell>
+                    <TableCell>{question.complexity}</TableCell>
+                    <TableCell>
+                        <div style={{ display: "flex", alignItems: "center" }}>
                         <IconButton
                             color="primary"
-                            aria-label="Edit"
-                            onClick={() => handleEditClick(question)}
+                            aria-label="View"
+                            onClick={() => handleViewClick(question)}
                         >
-                            <EditIcon />
+                            <VisibilityIcon />
                         </IconButton>
-                        <IconButton
-                            color="secondary"
-                            aria-label="Delete"
-                            onClick={() => handleDeleteClick(question)}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                        </>
-                    )}
-                    </div>
-                </TableCell>
-                </TableRow>
-            ))}
+
+                        {is_admin && (
+                            <>
+                            <IconButton
+                                color="primary"
+                                aria-label="Edit"
+                                onClick={() => handleEditClick(question)}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton
+                                color="secondary"
+                                aria-label="Delete"
+                                onClick={() => handleDeleteClick(question)}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                            </>
+                        )}
+                        </div>
+                    </TableCell>
+                    </TableRow>
+                ))}
             </TableBody>
         </Table>
         {is_admin && (
