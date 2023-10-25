@@ -22,7 +22,6 @@ import useCookie from "../useCookie";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux"
 import useTheme from "@mui/material/styles/useTheme";
-import { select } from "react-cookies";
 
 const CATEGORIES_HOST = process.env.REACT_APP_CATEGORIES_HOST ? process.env.REACT_APP_CATEGORIES_HOST : "http://localhost:8000/api/categories";
 
@@ -73,6 +72,7 @@ export default function Question(props) {
             })
             const data = response.data;
             const categories = [];
+            console.log(data);
             for (var i of data) {
                 categories.push(i.name);
             }
@@ -230,14 +230,16 @@ export default function Question(props) {
             ))}
             </TableBody>
         </Table>
-        <div>
-            <Button color="primary" href="#" onClick={handleAddClick} sx={{ mt: 1 }}>
-                Add New Question
-            </Button>
-            <Button color="primary" href="#" onClick={handleCategoriesClick} sx={{ mt: 1 }}>
-                Edit Categories
-            </Button>
-        </div>
+        {is_admin && (
+            <div>
+                <Button color="primary" href="#" onClick={handleAddClick} sx={{ mt: 1 }}>
+                    Add New Question
+                </Button>
+                <Button color="primary" href="#" onClick={handleCategoriesClick} sx={{ mt: 1 }}>
+                    Edit Categories
+                </Button>
+            </div>
+        )}
         </React.Fragment>
     );
 }

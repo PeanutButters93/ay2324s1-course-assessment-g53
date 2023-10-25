@@ -19,8 +19,8 @@ mongoose.connect(uri);
 
 
 app.use("/api/questions", QuestionRouter);
-app.use("/", (req, res) => res.status(200).json({status: "OK"}))
 app.use("/api/categories", CategoryRouter);
+app.use("/", (req, res) => res.status(200).json({status: "OK"}))
 app.listen(port, () => {
   console.log(`Question service connected on port ${port}`);
   console.log(process.env.USER_HOST)
