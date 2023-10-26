@@ -1,15 +1,12 @@
 import React, { useState } from 'react'
 import { useParams } from "react-router-dom"
 import axios from 'axios'
+import { Button } from '@mui/material'
 
 function LogEditorButton () {
   const { id: roomId } = useParams()
   const [output, setOutput] = useState(null)
-
-  const handleButtonClick = async () => {
-    console.log(await get_document())
-  }
-
+  
   // Event handler for the submit button
   const handleSubmit = async () => {
     const code = await get_document()
@@ -70,7 +67,7 @@ function LogEditorButton () {
 
   return (
     <div>
-      <button onClick={handleSubmit}>Submit Code</button>
+      <Button variant="contained" color="primary" onClick={handleSubmit}>Submit</Button>
       <div>
         <h2>API Response:</h2>
         <div style={{ width: "100%", height: "100%", overflowY: "scroll", border: "1px solid #ccc", padding: "10px", maxHeight: "300px", maxWidth: "800px" }}>

@@ -16,7 +16,7 @@ app.use(cors())
 // Import and use your user-profile-router
 const userRouter = require('./routes/user-profile-router')
 app.use('/api/users', userRouter) // Mount the router at '/api'
-
+app.use('/', (req, res) => res.status(200).json({status: "OK"}))
 // Start the server
 app.listen(port, () => {
   console.log(`User server is running on port ${port}`)
