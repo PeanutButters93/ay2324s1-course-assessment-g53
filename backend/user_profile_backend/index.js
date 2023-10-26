@@ -3,8 +3,8 @@ const express = require('express')
 const dotenv = require('dotenv')
 
 dotenv.config({
-    path: ".env.local",
-  });
+  path: ".env.local",
+})
 
 const app = express()
 const port = process.env.PORT
@@ -19,5 +19,7 @@ app.use('/api/users', userRouter) // Mount the router at '/api'
 
 // Start the server
 app.listen(port, () => {
-    console.log(`User server is running on port ${port}`)
+  console.log(`User server is running on port ${port}`)
 })
+
+module.exports = app
