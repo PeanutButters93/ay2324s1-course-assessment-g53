@@ -10,7 +10,7 @@ export async function addQuestion(req, res) {
     const question = new Question({
       id: req.body.id,
       title: req.body.title,
-      desc: req.body.desc,
+      description: req.body.description,
       categories: req.body.categories,
       complexity: req.body.complexity,
     });

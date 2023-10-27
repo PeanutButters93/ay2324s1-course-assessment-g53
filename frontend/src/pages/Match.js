@@ -67,7 +67,9 @@ const Match = (props) => {
       setTimeLeft(TIME_LIMIT)
       setStartCount(false)
       setIsSubmitting(false)
-      navigate("/room/" + data["room_id"]);
+      setTimeout(() => {
+        navigate("/room/" + data["room_id"]);
+        }, 2000);
     })
 
     socket.on('disconnect', () => {
