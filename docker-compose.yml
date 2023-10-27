@@ -35,6 +35,14 @@ services:
       - rabbitmq
       - frontend
       - user_profile_backend
+    
+  communication-backend:
+    build:
+      context: ./backend/communication-backend
+    ports:
+      - 9001:9001
+    environment:
+      - FRONTEND_HOST=http://localhost:3000
 
   frontend:
     build:
@@ -44,7 +52,7 @@ services:
     environment: 
       - REACT_APP_USER_HOST=http://localhost:4000/api/users
       - REACT_APP_QUESTION_HOST=http://localhost:8000/api/questions
-      - REACT_APP_MATCHING_HOST=wss://localhost:3001
+      - REACT_APP_MATCHING_HOST=ws://localhost:3001
       - REACT_APP_COLLAB_HOST=http://localhost:9000/api/collab
 
     depends_on:
