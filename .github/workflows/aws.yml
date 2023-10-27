@@ -35,7 +35,7 @@ env:
   ECR_REPOSITORY: peerprep-user-backend          # set this to your Amazon ECR repository name
   ECS_SERVICE: Peerprep-User-Backend                 # set this to your Amazon ECS service name
   ECS_CLUSTER: PeerPrepDev                # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: .aws/peerprep-user-backend # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: ./backend/user_profile_backend/task-definition.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: peerprep-user-backend           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
