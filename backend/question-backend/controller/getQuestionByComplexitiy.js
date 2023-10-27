@@ -1,9 +1,11 @@
 import Question from "../model/Question.js";
 
 export async function getQuestionsByComplexity(req, res) {
+  console.log("test")
     try {
         // Extract complexity from the request (e.g., from query parameters)
         const { complexity } = req.params;
+        console.log(complexity, req.params)
     
         // If no complexity is provided, return an error response
         if (!complexity) {
