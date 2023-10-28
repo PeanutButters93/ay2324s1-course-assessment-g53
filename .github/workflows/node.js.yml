@@ -23,13 +23,6 @@ jobs:
         with:
           path: 'backend' # Specify the path to the backend directory
 
-      - name: Setup Node.js and Install Dependencies for Backend
-        uses: actions/setup-node@v3
-        with:
-          path: 'backend'
-          node-version: 20 # Change to your desired version
-          cache: 'npm'
-
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
