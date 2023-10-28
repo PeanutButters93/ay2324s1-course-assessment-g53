@@ -24,24 +24,7 @@ jobs:
         with:
           node-version: 20 # Change to your desired version
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
-
-  frontend:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Frontend
-        uses: actions/checkout@v3
-        with:
-          path: 'frontend' # Specify the path to the frontend directory
-
-      - name: Setup Node.js and Install Dependencies for Frontend
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20 # Change to your desired version
-          cache: 'npm'
+      - run: cd backend/user_profile_backend
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
