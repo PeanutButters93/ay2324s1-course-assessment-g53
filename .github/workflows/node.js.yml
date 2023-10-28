@@ -19,7 +19,7 @@ jobs:
         with:
           path: 'backend' # Specify the path to the backend directory
 
-      -name: cd to backend
+      - name: cd to backend
         run: cd backend
 
       - name: Setup Node.js and Install Dependencies for Backend
