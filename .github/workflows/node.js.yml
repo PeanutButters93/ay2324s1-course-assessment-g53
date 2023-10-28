@@ -23,6 +23,6 @@ jobs:
         with:
           path: 'backend' # Specify the path to the backend directory
 
-      - run: npm ci
-      - run: npm run build --if-present
+      # - run: npm ci
+      # - run: npm run build --if-present
       - run: npm test
