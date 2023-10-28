@@ -26,6 +26,7 @@ jobs:
       - name: Setup Node.js and Install Dependencies for Backend
         uses: actions/setup-node@v3
         with:
+          path: 'backend'
           node-version: 20 # Change to your desired version
           cache: 'npm'
 
