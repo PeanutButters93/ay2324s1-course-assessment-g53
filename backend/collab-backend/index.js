@@ -1,91 +1,122 @@
-const express = require("express")
-const cors = require("cors")
-const mongoose = require("mongoose")
-const dotenv = require("dotenv")
-const Document = require("./Document")
-const { Mutex } = require('async-mutex')
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const Document = require("./Document");
+const { Mutex } = require("async-mutex");
+const axios = require("axios");
 
-const collabRouter = require('./routes/collabRouter')
+const collabRouter = require("./routes/collabRouter");
+const { join } = require("path");
 dotenv.config({
-    path: ".env.local"
-})
-const DEFAULT_DOCUMENT_DATA = ""
-const PORT = process.env.PORT ? process.env.PORT : 9000
-const FRONTEND_HOST = process.env.FRONTEND_HOST ? process.env.FRONTEND_HOST : "http://localhost:3000"
+  path: ".env.local",
+});
+const DEFAULT_DOCUMENT_DATA = "";
+const PORT = process.env.PORT ? process.env.PORT : 9000;
+const FRONTEND_HOST = process.env.FRONTEND_HOST
+  ? process.env.FRONTEND_HOST
+  : "http://localhost:3000";
+const QUESTION_HOST = process.env.QUESTION_HOST
+  ? process.env.QUESTION_HOST
+  : "http://localhost:8000/api/questions";
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI);
 
-const app = express()
-const server = require("http").createServer(app)
-app.use(cors())
-app.use(express.json())
+const app = express();
+const server = require("http").createServer(app);
+app.use(cors());
+app.use(express.json());
 const io = require("socket.io")(server, {
-    cors: {
-      origin: FRONTEND_HOST,
-      methods: ["GET", "POST"]
-    }
-})
+  cors: {
+    origin: FRONTEND_HOST,
+    methods: ["GET", "POST"],
+  },
+});
 server.listen(PORT, () => {
-    console.log(`Collab service connected on port ${PORT}`);
+  console.log(`Collab service connected on port ${PORT}`);
 });
 
+app.use("/api/collab", collabRouter);
+app.use("/", (req, res) => res.status(200).json({ status: "OK" }));
 
-app.use("/api/collab", collabRouter)
-app.use("/", (req, res) => res.status(200).json({status: "OK"}))
+io.on("connection", (socket) => {
+  console.log("member joined");
+  socket.on("get-document", async (documentID) => {
+    // Upon connecting, grab latest copy of document w/ ID, and join channel w/ ID
+    const document = await findOrCreateDocument(documentID);
+    socket.join(documentID);
+    socket.emit("load-document", document.data);
 
-io.on("connection", socket => {
-    console.log("member joined")
-    socket.on('get-document', async documentID => {
-        // Upon connecting, grab latest copy of document w/ ID, and join channel w/ ID
-        const document = await findOrCreateDocument(documentID)
-        socket.join(documentID)
-        socket.emit("load-document", document.data)
+    // Proprogate changes from users to other users in the same channel
+    socket.on("send-changes", (delta) => {
+      socket.broadcast.to(documentID).emit("recieve-changes", delta);
+    });
 
-        // Proprogate changes from users to other users in the same channel
-        socket.on("send-changes", delta => {
-            socket.broadcast.to(documentID).emit("recieve-changes", delta)
-        })
-        
-        // Save document into MongoDB
-        socket.on("save-document", async data => {
-            await Document.findByIdAndUpdate(documentID, {data})
-            findOrCreateDocument(documentID)
-        })
-    })
-//socket for the video calling
-    socket.on('join-room', (roomId, userId) => {
-        socket.join(roomId)
-        // console.log("user has joined the room")
-        socket.on("video-ready", () => {
-            // console.log("server sees that user's video is ready")
-            socket.to(roomId).emit('user-connected', userId)
-        })
-        
-    
-        socket.on('disconnect', () => {
-          socket.to(roomId).emit('user-disconnected', userId)
-        })
-      })
-    
-})
+    // Save document into MongoDB
+    socket.on("save-document", async (data) => {
+      await Document.findByIdAndUpdate(documentID, { data });
+      findOrCreateDocument(documentID);
+    });
+  });
+  //socket for the video calling
+  socket.on("join-room", (roomId, userId) => {
+    socket.join(roomId);
+    // console.log("user has joined the room")
+    socket.on("video-ready", () => {
+      // console.log("server sees that user's video is ready")
+      socket.to(roomId).emit("user-connected", userId);
+    });
 
-const add_to_db_mutex = new Mutex()
+    socket.on("disconnect", () => {
+      socket.to(roomId).emit("user-disconnected", userId);
+    });
+  });
+
+  async function fetchQuestionByComplexity(complexity) {
+    try {
+      const response = await axios.get(`${QUESTION_HOST}/${complexity}`, {});
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching question:", error);
+      return null;
+    }
+  }
+  // Join the question room
+  socket.on("join-question-room", (roomId) => {
+    console.log("join-question-room")
+    const questionRoomId = `question_${roomId}`;
+    socket.join(questionRoomId);
+  });
+
+  // Request questions for the room
+  socket.on("request-questions", async (roomId, complexity) => {
+    console.log(complexity)
+    const questionRoomId = `question_${roomId}`;
+    const newQuestion = await fetchQuestionByComplexity(complexity);
+    console.log("question fetched")
+    io.to(questionRoomId).emit("receive-questions", newQuestion);
+  });
+});
+
+const add_to_db_mutex = new Mutex();
 
 async function findOrCreateDocument(id) {
-    if (id == null) return
+  if (id == null) return;
 
-    const release = await add_to_db_mutex.acquire();
-    var document = null
-    try {
-        document = await Document.findById(id)
+  const release = await add_to_db_mutex.acquire();
+  var document = null;
+  try {
+    document = await Document.findById(id);
 
-        // if document is null, aka isn't in the DB
-        if (!document) {
-            document = await Document.create({_id: id, data: DEFAULT_DOCUMENT_DATA})
-        }
-    
-    } finally {
-        release()
+    // if document is null, aka isn't in the DB
+    if (!document) {
+      document = await Document.create({
+        _id: id,
+        data: DEFAULT_DOCUMENT_DATA,
+      });
     }
-    return document
+  } finally {
+    release();
+  }
+  return document;
 }

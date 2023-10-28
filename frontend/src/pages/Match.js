@@ -21,7 +21,7 @@ const modal_style = {
   p: 4,
 };
 const TIME_LIMIT = 15
-const MATCHING_HOST = process.env.REACT_APP_MATCHING_HOST ? process.env.REACT_APP_MATCHING_HOST : "wss://localhost:3001"
+const MATCHING_HOST = process.env.REACT_APP_MATCHING_HOST ? process.env.REACT_APP_MATCHING_HOST : "ws://localhost:3001"
 const Match = (props) => {
   const [difficulty, setDifficulty] = useState("MEDIUM");
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
@@ -67,9 +67,7 @@ const Match = (props) => {
       setTimeLeft(TIME_LIMIT)
       setStartCount(false)
       setIsSubmitting(false)
-      setTimeout(() => {
-        navigate("/room/" + data["room_id"]);
-        }, 2000);
+      navigate(`/room/${data["room_id"]}?difficulty=${difficulty}`);
     })
 
     socket.on('disconnect', () => {
