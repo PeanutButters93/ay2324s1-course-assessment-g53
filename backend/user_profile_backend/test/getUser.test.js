@@ -9,14 +9,14 @@ chai.use(chaiHttp)
 
 describe('User Server API', () => {
     let server
-    const payload = {
-        user_data: {
-            user_id: 50,
-            username: "adam",
-        }
-    }
+    // const payload = {
+    //     user_data: {
+    //         user_id: 50,
+    //         username: "adam",
+    //     }
+    // }
 
-    const token = jwt.sign(payload, "yourSecretKey")
+    // const token = jwt.sign(payload, "yourSecretKey")
 
     // Before starting the tests, start the server
     before((done) => {
@@ -27,6 +27,13 @@ describe('User Server API', () => {
 
     // Test GET /api/users
     it('should get a list of users', (done) => {
+        const payload = {
+            user_data: {
+                user_id: 50,
+                username: "adam",
+            }
+        }
+        const token = jwt.sign(payload, "yourSecretKey")
         chai.request(app)
             .get('/api/users/users')
             .set('Authorization', `${token}`)
@@ -40,6 +47,13 @@ describe('User Server API', () => {
 
     // Test Get /api/users/userById
     it('should get a user by id', (done) => {
+        const payload = {
+            user_data: {
+                user_id: 50,
+                username: "adam",
+            }
+        }
+        const token = jwt.sign(payload, "yourSecretKey")
         chai.request(app)
             .get('/api/users/userById?user_id=50')
             .set('Authorization', `${token}`)
@@ -55,6 +69,13 @@ describe('User Server API', () => {
 
     // Test Get /api/users/userByName
     it('should get a user by name', (done) => {
+        const payload = {
+            user_data: {
+                user_id: 50,
+                username: "adam",
+            }
+        }
+        const token = jwt.sign(payload, "yourSecretKey")
         chai.request(app)
             .get('/api/users/userByName?username=adam')
             .set('Authorization', `${token}`)
@@ -106,6 +127,13 @@ describe('User Server API', () => {
 
     // Test Get /api/users/checkUserAdmin
     it('should check if a user is an admin', (done) => {
+        const payload = {
+            user_data: {
+                user_id: 50,
+                username: "adam",
+            }
+        }
+        const token = jwt.sign(payload, "yourSecretKey")
         chai.request(app)
             .get('/api/users/checkUserAdmin?username=adam')
             .set('Authorization', `${token}`)
@@ -123,6 +151,13 @@ describe('User Server API', () => {
     // Test Get /api/users/userByName
     // Error: username not in database
     it('cannot get a user by the name', (done) => {
+        const payload = {
+            user_data: {
+                user_id: 50,
+                username: "adam",
+            }
+        }
+        const token = jwt.sign(payload, "yourSecretKey")
         chai.request(app)
             .get('/api/users/userByName?username=abcdefghijklmn1234567890')
             .set('Authorization', `${token}`)
