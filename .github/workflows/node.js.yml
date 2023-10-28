@@ -11,7 +11,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./backend/user_profile_backend
+    working-directory: backend/user_profile_backend
 
 jobs:
   backend:
