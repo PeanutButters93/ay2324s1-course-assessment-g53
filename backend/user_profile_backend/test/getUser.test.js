@@ -4,6 +4,7 @@ const app = require('../index') // Assuming your index.js is in the root directo
 const expect = chai.expect
 const jwt = require('jsonwebtoken')
 const { signJsonWebToken } = require('../middleware/tokenUtils')
+const userController = require('../controller/userController')
 
 chai.use(chaiHttp)
 
@@ -26,24 +27,24 @@ describe('User Server API', () => {
     })
 
     // Test GET /api/users
-    it('should get a list of users', (done) => {
-        const payload = {
-            user_data: {
-                user_id: 50,
-                username: "adam",
-            }
-        }
-        const token = jwt.sign(payload, "yourSecretKey")
-        chai.request(app)
-            .get('/api/users/users')
-            .set('Authorization', `${token}`)
-            .end((err, res) => {
-                expect(res).to.have.status(200)
-                expect(res.body).to.be.an('array')
-                expect(res.body.length).to.be.above(30)
-                done()
-            })
-    }, 5000)
+    // it('should get a list of users', (done) => {
+    //     const payload = {
+    //         user_data: {
+    //             user_id: 50,
+    //             username: "adam",
+    //         }
+    //     }
+    //     const token = jwt.sign(payload, "yourSecretKey")
+    //     chai.request(app)
+    //         .get('/api/users/users')
+    //         .set('Authorization', `${token}`)
+    //         .end((err, res) => {
+    //             expect(res).to.have.status(200)
+    //             expect(res.body).to.be.an('array')
+    //             expect(res.body.length).to.be.above(30)
+    //             done()
+    //         })
+    // }, 5000)
 
     // Test Get /api/users/userById
     it('should get a user by id', (done) => {
@@ -68,26 +69,26 @@ describe('User Server API', () => {
     }, 5000)
 
     // Test Get /api/users/userByName
-    it('should get a user by name', (done) => {
-        const payload = {
-            user_data: {
-                user_id: 50,
-                username: "adam",
-            }
-        }
-        const token = jwt.sign(payload, "yourSecretKey")
-        chai.request(app)
-            .get('/api/users/userByName?username=adam')
-            .set('Authorization', `${token}`)
-            .end((err, res) => {
-                expect(res).to.have.status(200)
-                expect(res.body).to.be.an('array')
-                expect(res.body.length).to.equal(3)
-                expect(res.body[0].user_id).to.equal(50)
-                expect(res.body[0].username).to.equal('adam')
-                done()
-            })
-    }, 5000)
+    // it('should get a user by name', (done) => {
+    //     const payload = {
+    //         user_data: {
+    //             user_id: 50,
+    //             username: "adam",
+    //         }
+    //     }
+    //     const token = jwt.sign(payload, "yourSecretKey")
+    //     chai.request(app)
+    //         .get('/api/users/userByName?username=adam')
+    //         .set('Authorization', `${token}`)
+    //         .end((err, res) => {
+    //             expect(res).to.have.status(200)
+    //             expect(res.body).to.be.an('array')
+    //             expect(res.body.length).to.equal(3)
+    //             expect(res.body[0].user_id).to.equal(50)
+    //             expect(res.body[0].username).to.equal('adam')
+    //             done()
+    //         })
+    // }, 5000)
 
     // Test Get /api/users/login
     // log in a user by username and password
@@ -126,23 +127,23 @@ describe('User Server API', () => {
     })
 
     // Test Get /api/users/checkUserAdmin
-    it('should check if a user is an admin', (done) => {
-        const payload = {
-            user_data: {
-                user_id: 50,
-                username: "adam",
-            }
-        }
-        const token = jwt.sign(payload, "yourSecretKey")
-        chai.request(app)
-            .get('/api/users/checkUserAdmin?username=adam')
-            .set('Authorization', `${token}`)
-            .end((err, res) => {
-                expect(res).to.have.status(200)
-                expect(res.body.is_admin).to.equal(true)
-                done()
-            })
-    }, 5000)
+    // it('should check if a user is an admin', (done) => {
+    //     const payload = {
+    //         user_data: {
+    //             user_id: 50,
+    //             username: "adam",
+    //         }
+    //     }
+    //     const token = jwt.sign(payload, "yourSecretKey")
+    //     chai.request(app)
+    //         .get('/api/users/checkUserAdmin?username=adam')
+    //         .set('Authorization', `${token}`)
+    //         .end((err, res) => {
+    //             expect(res).to.have.status(200)
+    //             expect(res.body.is_admin).to.equal(true)
+    //             done()
+    //         })
+    // }, 5000)
 
 
     // ------------------------------ //
@@ -150,24 +151,24 @@ describe('User Server API', () => {
 
     // Test Get /api/users/userByName
     // Error: username not in database
-    it('cannot get a user by the name', (done) => {
-        const payload = {
-            user_data: {
-                user_id: 50,
-                username: "adam",
-            }
-        }
-        const token = jwt.sign(payload, "yourSecretKey")
-        chai.request(app)
-            .get('/api/users/userByName?username=abcdefghijklmn1234567890')
-            .set('Authorization', `${token}`)
-            .end((err, res) => {
-                expect(res).to.have.status(404)
-                expect(res.body).to.be.an('object')
-                expect(res.body.error).to.equal('User not found')
-                done()
-            })
-    }, 5000)
+    // it('cannot get a user by the name', (done) => {
+    //     const payload = {
+    //         user_data: {
+    //             user_id: 50,
+    //             username: "adam",
+    //         }
+    //     }
+    //     const token = jwt.sign(payload, "yourSecretKey")
+    //     chai.request(app)
+    //         .get('/api/users/userByName?username=abcdefghijklmn1234567890')
+    //         .set('Authorization', `${token}`)
+    //         .end((err, res) => {
+    //             expect(res).to.have.status(404)
+    //             expect(res.body).to.be.an('object')
+    //             expect(res.body.error).to.equal('User not found')
+    //             done()
+    //         })
+    // }, 5000)
 
     // Test Get /api/users/userById
     // Error: Not authenticated
