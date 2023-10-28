@@ -4,7 +4,6 @@ const app = require('../index') // Assuming your index.js is in the root directo
 const expect = chai.expect
 const jwt = require('jsonwebtoken')
 const { signJsonWebToken } = require('../middleware/tokenUtils')
-const userController = require('../controller/userController')
 
 chai.use(chaiHttp)
 
