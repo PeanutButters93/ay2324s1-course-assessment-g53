@@ -28,6 +28,6 @@ jobs:
         with:
           node-version: '20.x'
       - name: Install Dependencies
-        run: npm install
+        run: npm install mocha chai --save-dev
         working-directory: backend/user_profile_backend
       - run: npm test
