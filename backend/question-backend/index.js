@@ -4,6 +4,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import QuestionRouter from "./routes/questionRouter.js";
 import cors from "cors";
+import CategoryRouter from "./routes/categoryRouter.js";
 
 dotenv.config({
   path: ".env.local",
@@ -18,7 +19,8 @@ mongoose.connect(uri);
 
 
 app.use("/api/questions", QuestionRouter);
-app.use("/", (req, res) => res.status(200).json({status: "OK"}))
+app.use("/api/categories", CategoryRouter);
+app.use("/", (req, res) => res.status(200).json({status: "OK"})) // health check, to see if can be removed
 app.listen(port, () => {
   console.log(`Question service connected on port ${port}`);
   console.log(process.env.USER_HOST)

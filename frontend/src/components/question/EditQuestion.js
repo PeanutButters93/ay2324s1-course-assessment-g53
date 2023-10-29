@@ -1,14 +1,40 @@
+import axios from 'axios';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import { OutlinedInput } from '@mui/material';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Title from './Title';
+import useCookie from '../useCookie';
 import { useState, useEffect } from 'react';
+import useTheme from '@mui/material/styles/useTheme';
 
+const CATEGORIES_HOST = process.env.REACT_APP_CATEGORIES_HOST ? process.env.REACT_APP_CATEGORIES_HOST : "http://localhost:8000/api/categories";
 const cancelMessage = "Are you sure you want to cancel? All changes will be lost.";
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+function getStyles(category, categories, theme) {
+    return {
+        fontWeight:
+        categories.indexOf(category) === -1
+            ? theme.typography.fontWeightRegular
+            : theme.typography.fontWeightMedium,
+    };
+}
 
 const EditQuestion = (props) => {
     const question = props.question;
@@ -20,6 +46,7 @@ const EditQuestion = (props) => {
     const duplicateCheckers = props.duplicateCheckers;
     const duplicateMessages = props.duplicateMessages;
     const editQuestion = props.editQuestion
+    const setSelectedQuestion = props.setSelectedQuestion;
 
     const [title, setTitle] = useState(question.title);
     const [categories, setCategories] = useState(question.categories);
@@ -28,30 +55,51 @@ const EditQuestion = (props) => {
 
     const [emptyTitleMessage, setEmptyTitleMessage] = useState('');
     const [emptyDescriptionMessage, setEmptyDescriptionMessage] = useState('');
-    const [emptyCategoryMessage, setEmptyCategoryMessage] = useState('');
+    const [emptyCategoryMessage, setEmptyCategoryMessage] = useState([]);
     const [emptyComplexityMessage, setEmptyComplexityMessage] = useState('');
 
-    // const [originalTitle, setOriginalTitle] = useState(question.title);
-    // const [originalDescription, setOriginalDescription] = useState(question.description);
-    // const [originalCategories, setOriginalCategories] = useState(question.categories);
-    // const [originalComplexity, setOriginalComplexity] = useState(question.complexity);
     const [hasDuplicateTitle, setHasDuplicateTitle] = useState(false);
     const [hasDuplicateDescription, setHasDuplicateDescription] = useState(false);
+
+    const theme = useTheme();
+    const [categoriesList, setCategoriesList] = useState([]);
+    const {getAuthCookie} = useCookie();
+
+    useEffect(() => {
+        async function fetchCategories() {
+            const response = await axios.get(CATEGORIES_HOST, {
+                headers: {
+                    'Authorization': getAuthCookie()
+                }
+            })
+            const data = response.data;
+            const categories = [];
+            for (var i of data) {
+                categories.push(i.name);
+            }
+            setCategoriesList(categories);
+        }
+        fetchCategories()
+    }, [])
+
+    const handleChange = (event) => {
+        const { target: { value } } = event;
+        setCategories(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
 
     // Use useEffect to update state when the question prop changes
     useEffect(() => {
         setTitle(question.title);
         setCategories(question.categories);
         setComplexity(question.complexity);
-        setDescription(question.desc);
+        setDescription(question.description);
         setEmptyTitleMessage("");
         setEmptyDescriptionMessage("");
         setEmptyCategoryMessage("");
         setEmptyComplexityMessage("");
-        // setOriginalTitle(question.title);
-        // setOriginalDescription(question.description);
-        // setOriginalCategories(question.categories);
-        // setOriginalComplexity(question.complexity);
     }, [question]);
 
     useEffect(() => {
@@ -60,13 +108,13 @@ const EditQuestion = (props) => {
         );
       }, [description, questions, duplicateCheckers]);
     
-      useEffect(() => {
+    useEffect(() => {
         setHasDuplicateTitle(
-          duplicateCheckers.checkDuplicateTitle(title, questions)
+            duplicateCheckers.checkDuplicateTitle(title, questions)
         );
       }, [title, questions, duplicateCheckers]);
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         checkEmpty(title, setEmptyTitleMessage, description, setEmptyDescriptionMessage, categories, setEmptyCategoryMessage, complexity, setEmptyComplexityMessage);
 
         if (!title || !description || !categories || !complexity) {
@@ -77,8 +125,8 @@ const EditQuestion = (props) => {
             return;
         }
 
-
-        editQuestion(question, title, description, categories, complexity, questions)
+        const editedQuestion = await editQuestion(question, title, description, categories, complexity, questions)
+        setSelectedQuestion(editedQuestion);
         setEditPage(false);
         setViewPage(true);
     };
@@ -102,21 +150,40 @@ const EditQuestion = (props) => {
               margin="normal" 
               value = {title} 
               onChange={event => setTitle(event.target.value)}
-            //   error = {!!emptyTitleMessage}
-            //   helperText={emptyTitleMessage}
               error = {!!emptyTitleMessage || !!duplicateTitleMessage}
               helperText={emptyTitleMessage || duplicateTitleMessage}
             />
-            <TextField 
-              fullWidth 
-              label={'Categories'} 
-              id="Categories" 
-              margin="normal" 
-              value={categories} 
-              onChange={event => setCategories(event.target.value)}
-              error={!!emptyCategoryMessage}
-              helperText={emptyCategoryMessage}
-            />
+            <FormControl sx={{ width: 588 }}>
+                <InputLabel id="categories" error={!!emptyCategoryMessage}>Categories</InputLabel>
+                <Select
+                    labelId="categories-label"
+                    id="categories"
+                    multiple
+                    value={categories}
+                    onChange={handleChange}
+                    input={<OutlinedInput id="select-categories" label="Categories" />}
+                    error={!!emptyCategoryMessage}
+                    renderValue={(selected) => (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((value) => (
+                            <Chip key={value} label={value} />
+                        ))}
+                        </Box>
+                    )}
+                    MenuProps={MenuProps}
+                >
+                    {categoriesList.map((category) => (
+                        <MenuItem
+                        key={category}
+                        value={category}
+                        style={getStyles(category, categories, theme)}
+                        >
+                            {category}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <FormHelperText error>{emptyCategoryMessage}</FormHelperText>
+            </FormControl>
             <FormControl fullWidth sx={{ marginTop: 2 }}>
                 <InputLabel id="complexity" error={!!emptyComplexityMessage}>Complexity</InputLabel>
                 <Select
@@ -127,7 +194,6 @@ const EditQuestion = (props) => {
                     onChange={event => setComplexity(event.target.value)}
                     error={!!emptyComplexityMessage}
                 >
-                    <MenuItem value=""><em>--Please select--</em></MenuItem>
                     <MenuItem value={COMPLEXITY.EASY}>EASY</MenuItem>
                     <MenuItem value={COMPLEXITY.MEDIUM}>MEDIUM</MenuItem>
                     <MenuItem value={COMPLEXITY.HARD}>HARD</MenuItem>

@@ -32,11 +32,12 @@ on:
 
 env:
   AWS_REGION: ap-southeast-1                  # set this to your preferred AWS region, e.g. us-west-1
+
   ECR_REPOSITORY: peerprep-user-backend          # set this to your Amazon ECR repository name
   ECS_SERVICE: Peerprep-User-Backend                 # set this to your Amazon ECS service name
   ECS_CLUSTER: PeerPrepDev                # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: ./backend/user_profile_backend/task-definition.json # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
+                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: peerprep-user-backend           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
 
@@ -73,6 +74,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
+
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ./backend/user_profile_backend/Dockerfile ./backend/user_profile_backend
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
@@ -92,3 +94,4 @@ jobs:
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
+

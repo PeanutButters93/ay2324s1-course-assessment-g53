@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const questionSchema = new mongoose.Schema({
-  id: Number,
-  title: String,
-  desc: String,
-  categories: String,
-  complexity: String,
+    id: Number,
+    title: String,
+    description: String,
+    categories: [String],
+    complexity: String,
 });
 
 const Question = mongoose.model("question", questionSchema);
