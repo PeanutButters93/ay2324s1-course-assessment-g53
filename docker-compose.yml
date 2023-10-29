@@ -52,6 +52,13 @@ services:
       - user_profile_backend
       - question-backend
 
+  communication-backend:
+    build:
+      context: ./backend/communication-backend
+    ports:
+      - 9001:9001
+    environment:
+      - FRONTEND_HOST=http://localhost:3000
   rabbitmq:
     image: rabbitmq:management-alpine
     container_name: rabbitmq
