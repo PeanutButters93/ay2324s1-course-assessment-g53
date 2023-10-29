@@ -45,7 +45,7 @@ function LogEditorButton () {
     setOutput(responseData)
   }
 
-  const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
+  const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000/api/collab"
 
   async function get_document () {
     return axios.post(COLLAB_HOST + "/get_document_raw", {
