@@ -89,12 +89,12 @@ jobs:
       with:
         task-definition: ${{ env.ECS_USER_TASK_DEFINITION }}
         container-name: ${{ env.USER_CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
+        image: ${{ steps.build-user-service-image.outputs.image }}
 
     - name: User service - Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        task-definition: ${{ steps.user-service-task-def.outputs.task-definition }}
         service: ${{ env.ECS_USER_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
@@ -120,12 +120,12 @@ jobs:
       with:
         task-definition: ${{ env.ECS_QUESTION_TASK_DEFINITION }}
         container-name: ${{ env.QUESTION_CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
+        image: ${{ steps.build-question-service-image.outputs.image }}
   
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        task-definition: ${{ steps.question-service-task-def.outputs.task-definition }}
         service: ${{ env.ECS_QUESTION_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
