@@ -1,0 +1,70 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:523416566849:task-definition/peerprep-question-backend:2",
+    "containerDefinitions": [
+        {
+            "name": "peerprep-question-backend",
+            "image": "zzthian/peerprep:question-backend",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "peerprep-question-backend-8000-tcp",
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/peerprep-question-backend",
+                    "awslogs-region": "ap-southeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ],
+    "family": "peerprep-question-backend",
+    "executionRoleArn": "arn:aws:iam::523416566849:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 2,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "runtimePlatform": {
+        "cpuArchitecture": "ARM64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2023-10-21T09:08:54.784Z",
+    "registeredBy": "arn:aws:iam::523416566849:root",
+    "tags": []
+}
