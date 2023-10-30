@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:523416566849:task-definition/peerprep-user-backend:11",
+    "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:523416566849:task-definition/peerprep-user-backend:13",
     "containerDefinitions": [
         {
             "name": "peerprep-user-backend",
-            "image": "523416566849.dkr.ecr.ap-southeast-1.amazonaws.com/peerprep-user-backend:24e947fb0e8d157a0746053c490626d5decbcdb4",
+            "image": "523416566849.dkr.ecr.ap-southeast-1.amazonaws.com/peerprep-user-backend:2b91f979b30710018f2822fb4f959cf3a4966bda",
             "cpu": 0,
             "portMappings": [
                 {
@@ -14,7 +14,12 @@
                 }
             ],
             "essential": true,
-            "environment": [],
+            "environment": [
+                {
+                    "name": "PORT",
+                    "value": "4000"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": [],
             "logConfiguration": {
@@ -31,7 +36,7 @@
     "family": "peerprep-user-backend",
     "executionRoleArn": "arn:aws:iam::523416566849:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 11,
+    "revision": 13,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -71,7 +76,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-10-30T05:50:48.574Z",
+    "registeredAt": "2023-10-30T09:42:06.184Z",
     "registeredBy": "arn:aws:iam::523416566849:root",
     "tags": []
 }
