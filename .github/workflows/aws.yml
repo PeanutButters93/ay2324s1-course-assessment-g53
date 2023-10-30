@@ -51,7 +51,7 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest
+    runs-on: linux
     environment: production
 
     steps:
