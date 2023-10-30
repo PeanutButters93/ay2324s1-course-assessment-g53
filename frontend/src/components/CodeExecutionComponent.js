@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import { useParams } from "react-router-dom"
-import axios from 'axios'
 import { Button } from '@mui/material'
 
-function CodeExecutionComponent () {
-  const { id: roomId } = useParams()
+function CodeExecutionComponent ({userCode}) {
   const [output, setOutput] = useState(null)
   
   // Event handler for the submit button
   const handleSubmit = async () => {
-    const code = await get_document()
+    const code = userCode
     console.log(code)
     const cleanedCode = code.replace(/[\u00A0]/g, '  ')
 
@@ -43,26 +41,6 @@ function CodeExecutionComponent () {
     // Handle the response (you may want to do error checking here)
     const responseData = await response.json()
     setOutput(responseData)
-  }
-
-  const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000/api/collab"
-
-  async function get_document () {
-    return axios.post(COLLAB_HOST + "/get_document_raw", {
-      documentID: roomId,
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
-      .then((response) => {
-        const { document } = response.data
-        return document
-      })
-      .catch(error => {
-        console.error('Error:', error)
-        throw error
-      })
   }
 
   return (

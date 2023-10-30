@@ -85,7 +85,7 @@ const Room = () => {
 
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: '16px' }}>
-            <CodeExecutionComponent />
+            <CodeExecutionComponent userCode={userCode}/>
           </Paper>
           
         </Paper>
