@@ -74,17 +74,10 @@ services:
       - 9000:9000
     environment:
       - FRONTEND_HOST=http://localhost:3000
-      - QUESTION_HOST=http://question-backend:8000/api/questions
       - MONGODB_URI=mongodb://mongodb_container/document_db
     depends_on:
       - mongodb_container
-  communication-backend:
-      build:
-        context: ./backend/communication-backend
-      ports:
-        - 9001:9001
-      environment:
-        - FRONTEND_HOST=http://localhost:3000
+
   mongodb_container:
     image: mongo:latest
     build:
