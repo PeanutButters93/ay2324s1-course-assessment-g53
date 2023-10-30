@@ -35,18 +35,24 @@ env:
 
   ECR_USER_REPOSITORY: peerprep-user-backend
   ECR_QUESTION_REPOSITORY: peerprep-question-backend          # set this to your Amazon ECR repository name
+  ECR_MATCHING_REPOSITORY: peerprep-matching-backend
   ECR_FRONTEND_REPOSITORY: peerprep-frontend
+
   ECS_USER_SERVICE: Peerprep-User-Backend                 # set this to your Amazon ECS service name
   ECS_QUESTION_SERVICE: Peerprep-Question-Backend
   ECS_FRONTEND_SERVICE: PeerPrep-FE
+  ECS_MATCHING_SERVICE: Peerprep-Matching-BE
+
   ECS_CLUSTER: PeerPrepDev # set this to your Amazon ECS cluster name
   
   ECS_USER_TASK_DEFINITION: ./backend/user_profile_backend/task-definition.json # set this to the path to your Amazon ECS task definition
   ECS_QUESTION_TASK_DEFINITION: ./backend/question-backend/task-definition.json # file, e.g. .aws/task-definition.json
+  ECS_MATCHING_TASK_DEFINITION: ./backend/matching_backend/task-definition.json
   ECS_FRONTEND_TASK_DEFINITION: ./frontend/task-definition.json
-  
+
   USER_CONTAINER_NAME: peerprep-user-backend           # set this to the name of the container in the containerDefinitions section of your task definition
   QUESTION_CONTAINER_NAME: peerprep-question-backend
+  MATCHING_CONTAINER_NAME: Peerprep-Matching-Backend
   FRONTEND_CONTAINER_NAME: peerprep-frontend 
 
 permissions:
@@ -161,6 +167,36 @@ jobs:
       with:
         task-definition: ${{ steps.frontend-service-task-def.outputs.task-definition }}
         service: ${{ env.ECS_FRONTEND_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+
+    - name: Matching service - Build, tag, and push image to Amazon ECR
+      id: build-matching-service-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+
+        docker build -t $ECR_REGISTRY/$ECR_MATCHING_REPOSITORY:$IMAGE_TAG -f ./backend/matching_backend/Dockerfile ./backend/matching_backend
+        docker push $ECR_REGISTRY/$ECR_MATCHING_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_MATCHING_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: matching-service-task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_MATCHING_TASK_DEFINITION }}
+        container-name: ${{ env.MATCHING_CONTAINER_NAME }}
+        image: ${{ steps.build-matching-service-image.outputs.image }}
+
+    - name: Matching service - Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.matching-service-task-def.outputs.task-definition }}
+        service: ${{ env.ECS_MATCHING_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
 
