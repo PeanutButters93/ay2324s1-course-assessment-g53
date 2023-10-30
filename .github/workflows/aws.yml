@@ -79,7 +79,7 @@ jobs:
         # push it to ECR so that it can
         # be deployed to ECS.
 
-        docker build -t $ECR_REGISTRY/$ECR_USER_REPOSITORY:$IMAGE_TAG -f ./backend/user_profile_backend/Dockerfile ./backend/user_profile_backend --platform=linux/amd64
+        docker build -t $ECR_REGISTRY/$ECR_USER_REPOSITORY:$IMAGE_TAG -f ./backend/user_profile_backend/Dockerfile ./backend/user_profile_backend --platform=linux/arm64/v8
         docker push $ECR_REGISTRY/$ECR_USER_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_USER_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
@@ -110,7 +110,7 @@ jobs:
         # push it to ECR so that it can
         # be deployed to ECS.
 
-        docker build -t $ECR_REGISTRY/$ECR_QUESTION_REPOSITORY:$IMAGE_TAG -f ./backend/question-backend/Dockerfile ./backend/question-backend --platform=linux/amd64
+        docker build -t $ECR_REGISTRY/$ECR_QUESTION_REPOSITORY:$IMAGE_TAG -f ./backend/question-backend/Dockerfile ./backend/question-backend --platform=linux/arm64/v8
         docker push $ECR_REGISTRY/$ECR_QUESTION_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_QUESTION_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
   
