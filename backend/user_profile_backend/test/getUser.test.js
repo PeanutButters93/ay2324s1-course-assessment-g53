@@ -21,6 +21,7 @@ describe('User Server API', () => {
     // Before starting the tests, start the server
     before((done) => {
         server = app.listen(0, () => {
+            console.log('Server is started')
             done()
         })
     })
