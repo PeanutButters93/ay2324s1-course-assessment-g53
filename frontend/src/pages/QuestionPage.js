@@ -12,8 +12,7 @@ import AddQuestion from "../components/question/AddQuestion";
 import { getQuestionsFromLocalStorage, saveQuestionsToLocalStorage } from "../LocalStorage";
 import axios from 'axios';
 import useCookie from "../components/useCookie";
-import { useDispatch, useSelector } from "react-redux"
-
+import Categories from "../components/question/Categories";
 
 const COMPLEXITY = {
   EASY: "EASY",
@@ -27,7 +26,7 @@ const DEFAULT_QNS = [
     title: "Reverse a String",
     description:
       "Write a function that reverses a string. The input string is given as an array of characters s. You must do this by modifying the input array in-place with O(1) extra memory.",
-    categories: "Strings, Algorithms",
+    categories: ["Strings", "Algorithms"],
     complexity: COMPLEXITY.EASY,
   },
   {
@@ -35,14 +34,14 @@ const DEFAULT_QNS = [
     title: "Linked List Cycle Detection",
     description:
       "Given head, the head of a linked list, determine if the linked list has a cycle in it. There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter. Return true if there is a cycle in the linked list. Otherwise, return false.",
-    categories: "Data Structures, Algorithms",
+    categories: ["Data Structures", "Algorithms"],
     complexity: COMPLEXITY.EASY,
   },
 ];
 const QUESTION_HOST = process.env.REACT_APP_QUESTION_HOST ? process.env.REACT_APP_QUESTION_HOST : "http://localhost:8000/api/questions"
 const emptyTitleMessage = "Title cannot be empty!";
 const emptyDescriptionMessage = "Description cannot be empty!";
-const emptyCategoryMessage = "Category cannot be empty!";
+const emptyCategoryMessage = "Please select a category!";
 const emptyComplexityMessage = "Complexity cannot be empty!";
 
 const duplicateMessages = {
@@ -60,20 +59,33 @@ function checkEmpty(
   complexity,
   setEmptyComplexityMessage
 ) {
-  if (!title) {
-    setEmptyTitleMessage(emptyTitleMessage);
-  }
-  if (!description) {
-    setEmptyDescriptionMessage(emptyDescriptionMessage);
-  }
-  if (!category) {
-    setEmptyCategoryMessage(emptyCategoryMessage);
-  }
-  if (!complexity) {
-    setEmptyComplexityMessage(emptyComplexityMessage);
-  }
-  return;
+    if (title) {
+        setEmptyTitleMessage("");
+    } else {
+        setEmptyTitleMessage(emptyTitleMessage);
+    }
+
+    if (description) {
+        setEmptyDescriptionMessage("");
+    } else {
+        setEmptyDescriptionMessage(emptyDescriptionMessage);
+    }
+
+    if (category.length !== 0) {
+        setEmptyCategoryMessage("");
+    } else {
+        setEmptyCategoryMessage(emptyCategoryMessage);
+    }
+
+    if (complexity) {
+        setEmptyComplexityMessage("");
+    } else {
+        setEmptyComplexityMessage(emptyComplexityMessage);
+    }
+
+    return;
 }
+
 function QuestionPage() {
     const {getAuthCookie} = useCookie();
 
@@ -82,7 +94,7 @@ function QuestionPage() {
     };
 
     const checkDuplicateDescription = (description, questions) => {
-        return questions.some((question) => question.desc === description);
+        return questions.some((question) => question.description === description);
     };
 
     const duplicateCheckers = {
@@ -96,7 +108,7 @@ function QuestionPage() {
     }
 
     async function addQuestion(title, description, categories, complexity, questions) {
-        const id = questions ? questions[questions.length -1].id + 1 : 1;
+        const id = questions ? questions[questions.length - 1].id + 1 : 1;
         const question = { id, title, description, categories, complexity };
         axios.post(QUESTION_HOST, question, {
         headers: {
@@ -114,7 +126,7 @@ function QuestionPage() {
 
     async function editQuestion(questionToEdit, title, description, categories, complexity, questions) {
         const id = questionToEdit.id;
-        const question = {id, title, desc: description, categories, complexity}
+        const question = {id, title, description, categories, complexity}
         await axios.put(QUESTION_HOST, question, {
         headers: {
             'Content-Type': 'application/json', 
@@ -123,9 +135,10 @@ function QuestionPage() {
         }).catch(error => {
         console.error('Error:', error);
         return;
-    })
+        })
         const res = [...questions, question].sort((a,b) => a.id - b.id)
         setQuestions(res);
+        return question;
     }
 
     async function deleteQuestion(questionToDelete, questions) {
@@ -137,38 +150,43 @@ function QuestionPage() {
         }).catch(error => {
         console.error('Error:', error);
         return;
-    })
-    setQuestions(questions.filter(x => x.id !== questionToDelete.id));
+        })
+        setQuestions(questions.filter(x => x.id !== questionToDelete.id));
     }
 
     const [questions, setQuestions] = useState(DEFAULT_QNS)
     const [viewPage, setViewPage] = useState(false);
     const [addPage, setAddPage] = useState(false);
     const [editPage, setEditPage] = useState(false);
+    const [categoriesPage, setCategoriesPage] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
+    const [buttonClickCount, setButtonClickCount] = useState(0); // For lack of better options
+    const [filteredQuestions, setFilteredQuestions] = useState(questions);
 
     React.useEffect(() => {
         async function fetchQuestions() {
-        console.log("Here is the process env question host value")
-        console.log(process.env.REACT_APP_QUESTION_HOST)
-        console.log("Here is the process env user host value")
-        console.log(process.env.REACT_APP_USER_HOST)
+            console.log("Here is the process env question host value")
+            console.log(process.env.REACT_APP_QUESTION_HOST)
+            console.log("Here is the process env user host value")
+            console.log(process.env.REACT_APP_USER_HOST)
 
 
-        const response = await axios.get(QUESTION_HOST, {
-            headers: {
-                'Authorization': getAuthCookie()
+            const response = await axios.get(QUESTION_HOST, {
+                headers: {
+                    'Authorization': getAuthCookie()
+                }
+            })
+            const data = response.data
+            const questions = []
+            for (var i in data) {
+                questions.push(data[i])
             }
-        })
-        const data = response.data
-        const questions = []
-        for (var i in data) {
-        questions.push(data[i])
-        }
-        setQuestions(questions)
+            setQuestions(questions)
+            setFilteredQuestions(questions)
         }
         fetchQuestions()
-    }, [])
+    }, [buttonClickCount]);
+
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
@@ -184,9 +202,13 @@ function QuestionPage() {
                         setAddPage={setAddPage}
                         setViewPage={setViewPage}
                         setEditPage={setEditPage}
+                        setCategoriesPage={setCategoriesPage}
                         setSelectedQuestion={setSelectedQuestion}
                         selectedQuestion={selectedQuestion}
+                        filteredQuestions={filteredQuestions}
+                        setFilteredQuestions={setFilteredQuestions}
                         deleteQuestion={deleteQuestion}
+                        buttonClickCount={buttonClickCount}
                     />
                     </Paper>
                 </Grid>
@@ -256,13 +278,32 @@ function QuestionPage() {
                         duplicateCheckers={duplicateCheckers}
                         duplicateMessages={duplicateMessages}
                         editQuestion={editQuestion}
+                        setSelectedQuestion={setSelectedQuestion}
+                        />
+                    </Paper>
+                    </Grid>
+                )}
+                {/* Categories */}
+                {categoriesPage && (
+                    <Grid item xs={12} md={6}>
+                    <Paper
+                        sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "110%",
+                        }}
+                    >
+                        <Categories
+                            setCategoriesPage={setCategoriesPage}
+                            buttonClickCount={buttonClickCount}
+                            setButtonClickCount={setButtonClickCount}
                         />
                     </Paper>
                     </Grid>
                 )}
                 </Grid>
             </Container>
-
         </Box>
     );
 }
