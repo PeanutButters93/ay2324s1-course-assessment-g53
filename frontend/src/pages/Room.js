@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, Paper, Typography } from "@mui/material";
 import TextEditor from "../components/TextEditor";
 import DividerIcon from "@mui/icons-material/DragHandle";
-import LogEditorButton from "../components/LogEditorButton";
+import CodeExecutionComponent from "../components/CodeExecutionComponent";
 import VideoCall from "../components/VideoCall";
 import SaveSolutionButton from "../components/SaveSolutionButton";
 
@@ -85,7 +85,7 @@ const Room = () => {
 
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: '16px' }}>
-            <LogEditorButton />
+            <CodeExecutionComponent />
           </Paper>
           
         </Paper>

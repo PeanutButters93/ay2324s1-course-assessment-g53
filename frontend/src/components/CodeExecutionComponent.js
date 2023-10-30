@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import axios from 'axios'
 import { Button } from '@mui/material'
 
-function LogEditorButton () {
+function CodeExecutionComponent () {
   const { id: roomId } = useParams()
   const [output, setOutput] = useState(null)
   
@@ -92,4 +92,4 @@ function LogEditorButton () {
   )
 }
 
-export default LogEditorButton
+export default CodeExecutionComponent
