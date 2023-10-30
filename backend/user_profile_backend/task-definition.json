@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:523416566849:task-definition/peerprep-user-backend:3",
+    "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:523416566849:task-definition/peerprep-user-backend:11",
     "containerDefinitions": [
         {
             "name": "peerprep-user-backend",
-            "image": "zzthian/peerprep:user-backend",
+            "image": "523416566849.dkr.ecr.ap-southeast-1.amazonaws.com/peerprep-user-backend:24e947fb0e8d157a0746053c490626d5decbcdb4",
             "cpu": 0,
             "portMappings": [
                 {
@@ -31,7 +31,7 @@
     "family": "peerprep-user-backend",
     "executionRoleArn": "arn:aws:iam::523416566849:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 3,
+    "revision": 11,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -42,7 +42,13 @@
             "name": "ecs.capability.execution-role-awslogs"
         },
         {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
@@ -62,10 +68,10 @@
     "cpu": "256",
     "memory": "512",
     "runtimePlatform": {
-        "cpuArchitecture": "ARM64",
+        "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-10-21T08:55:05.111Z",
+    "registeredAt": "2023-10-30T05:50:48.574Z",
     "registeredBy": "arn:aws:iam::523416566849:root",
     "tags": []
 }
