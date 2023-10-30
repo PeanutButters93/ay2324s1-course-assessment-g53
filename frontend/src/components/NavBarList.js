@@ -7,7 +7,7 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import NavBarItem from './NavBarItem'
 import useCookie from './useCookie';
 
-const NavBarList = () => {
+const NavBarList = ({is_admin}) => {
 
   const {clearCookies} = useCookie();
 
@@ -28,11 +28,15 @@ const NavBarList = () => {
         icon = {<PersonIcon />}
         href = "../profile"
       />
-      <NavBarItem
+
+      {
+        is_admin &&
+        <NavBarItem
         text = "Admin View"
         icon = {<DataObjectIcon />}
         href = "../adminview"
       />
+      }
       
       <NavBarItem
         text = "Log Out"
