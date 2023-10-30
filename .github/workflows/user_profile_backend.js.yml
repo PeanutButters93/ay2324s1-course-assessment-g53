@@ -34,13 +34,4 @@ jobs:
         
       - name: Run Tests with Coverage
         run: npm run test-with-coverage
-        continue-on-error: true
-
-      - name: Check Test Status and Prevent Merge
-        run: |
-          if [ ${{ job.status }} == "failure" ]; then
-            echo "Tests failed, preventing merge."
-            exit 1
-          else
-            echo "Tests passed, merge can proceed."
-          fi
+        
