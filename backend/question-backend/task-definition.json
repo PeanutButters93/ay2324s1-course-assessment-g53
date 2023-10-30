@@ -18,6 +18,10 @@
                 {
                     "name":"PORT",
                     "value":"8000"
+                },
+                {
+                    "name":"MONGODB_URI",
+                    "value":"mongodb+srv://zzthian:Keb1Z4YrZerfAesv@peerprepcluster.gdf9nh3.mongodb.net/questions?retryWrites=true&w=majority"
                 }
             ],
             "mountPoints": [],
