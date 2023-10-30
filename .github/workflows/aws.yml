@@ -105,16 +105,17 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
+        MONGODB_URI: ${{secrets.MONGODB_URI}}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
 
-        docker build -t $ECR_REGISTRY/$ECR_QUESTION_REPOSITORY:$IMAGE_TAG -f ./backend/question-backend/Dockerfile ./backend/question-backend
+        docker build -t $ECR_REGISTRY/$ECR_QUESTION_REPOSITORY:$IMAGE_TAG -f ./backend/question-backend/Dockerfile ./backend/question-backend --build-arg MONGODB_URI=${{env.MONGODB_URI}}
         docker push $ECR_REGISTRY/$ECR_QUESTION_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_QUESTION_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
   
-    - name: Fill in the new image ID in the Amazon ECS task definition
+    - name: Question Service - Fill in the new image ID in the Amazon ECS task definition
       id: question-service-task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
