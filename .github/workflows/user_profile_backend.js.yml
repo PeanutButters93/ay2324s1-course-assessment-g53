@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '20.x'
       - name: Install Dependencies
-          run: npm ci
+        run: npm ci
         # run: npm install mocha chai sinon --save-dev
         #   npm install --save-dev nyc
         working-directory: backend/user_profile_backend
