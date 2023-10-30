@@ -31,4 +31,4 @@ jobs:
         run: npm install mocha chai sinon --save-dev
             npm install --save-dev nyc
         working-directory: backend/user_profile_backend
-      - run: npm run test-with-coveraget
+      - run: npm run test-with-coverage
