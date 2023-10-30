@@ -1,63 +1,80 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const { describe, it, beforeEach } = require('mocha')
-const { createUser } = require('../controller/createUser') // Adjust the path to your user module
+const { updateUserInfo } = require('../controller/updateUser')
 const { expect } = chai
 const sinon = require('sinon')
-const pool = require('../database/db') // Adjust the path to your database module
-const jwt = require('jsonwebtoken')
+const pool = require('../database/db')
 
 chai.use(chaiHttp)
 
-describe('User Registration', () => {
+describe('Update User Information', () => {
     beforeEach(() => {
         sinon.stub(pool, 'query')
-        errorLogStub = sinon.stub(console, 'error')
     })
 
     afterEach(() => {
-        errorLogStub.restore()
         pool.query.restore()
     })
 
-    it('should register a new user', (done) => {
+    it('should update user information successfully', (done) => {
         const request = {
             body: {
-                username: 'testuser',
-                email: 'testuser@example.com',
-                password: 'password',
-                firstName: 'John',
-                lastName: 'Doe'
+                user_id: 1,
+                new_username: 'newusername',
+                new_email: 'newemail@example.com',
             }
         }
 
         const response = {
             status: (statusCode) => {
-                expect(statusCode).to.equal(201)
+                expect(statusCode).to.equal(200)
                 return {
                     json: (result) => {
-                        expect(result).to.have.property('message')
-                        expect(result).to.have.property('token')
+                        expect(result).to.have.property('message', 'User information updated successfully.')
                         done()
-                    }
+                    },
                 }
-            }
+            },
         }
 
         // Mock the database query to return a successful result
-        pool.query.callsArgWith(2, null, { rows: [{ user_id: 1 }] })
+        pool.query.callsArgWith(2, null, { rowCount: 1 })
 
-        createUser(request, response)
+        updateUserInfo(request, response)
     })
 
-    it('should handle username already taken', (done) => {
+    it('should handle user not found', (done) => {
         const request = {
             body: {
-                username: 'testuser',
-                email: 'testuser@example.com',
-                password: 'password',
-                firstName: 'John',
-                lastName: 'Doe'
+                user_id: 2,
+                new_username: 'newusername',
+            }
+        }
+
+        const response = {
+            status: (statusCode) => {
+                expect(statusCode).to.equal(404)
+                return {
+                    json: (result) => {
+                        expect(result).to.have.property('error', 'User not found.')
+                        done()
+                    },
+                }
+            },
+        }
+
+        // Mock the database query to simulate no rows affected
+        pool.query.callsArgWith(2, null, { rowCount: 0 })
+
+        updateUserInfo(request, response)
+    })
+
+    it('should handle unique username constraint violation', (done) => {
+        const request = {
+            body: {
+                user_id: 1,
+                new_username: 'existingusername',
             }
         }
 
@@ -68,9 +85,9 @@ describe('User Registration', () => {
                     json: (result) => {
                         expect(result).to.have.property('error', 'Username is already taken')
                         done()
-                    }
+                    },
                 }
-            }
+            },
         }
 
         // Mock the database query to simulate a unique constraint violation
@@ -79,17 +96,14 @@ describe('User Registration', () => {
         uniqueConstraintError.constraint = 'unique_username'
         pool.query.callsArgWith(2, uniqueConstraintError)
 
-        createUser(request, response)
+        updateUserInfo(request, response)
     })
 
-    it('should handle password complexity constraint', (done) => {
+    it('should handle password complexity constraint violation', (done) => {
         const request = {
             body: {
-                username: 'testuser',
-                email: 'testuser@example.com',
-                password: 'weak',
-                firstName: 'John',
-                lastName: 'Doe'
+                user_id: 1,
+                new_password: 'weak',
             }
         }
 
@@ -100,28 +114,29 @@ describe('User Registration', () => {
                     json: (result) => {
                         expect(result).to.have.property('error', 'Password does not meet complexity requirements')
                         done()
-                    }
+                    },
                 }
-            }
+            },
         }
 
         // Mock the database query to simulate a password complexity constraint violation
         const passwordComplexityError = new Error('Password complexity constraint violation')
-
         passwordComplexityError.constraint = 'check_password_complexity'
 
+        // Suppress the error log
+        const errorLog = sinon.stub(console, 'error')
+        errorLog.returns(null)
+
         pool.query.callsArgWith(2, passwordComplexityError)
-        createUser(request, response)
+
+        updateUserInfo(request, response)
     })
 
     it('should handle internal server error', (done) => {
         const request = {
             body: {
-                username: 'testuser',
-                email: 'testuser@example.com',
-                password: 'password',
-                firstName: 'John',
-                lastName: 'Doe'
+                user_id: 1,
+                new_username: 'newusername',
             }
         }
 
@@ -132,18 +147,15 @@ describe('User Registration', () => {
                     json: (result) => {
                         expect(result).to.have.property('error', 'Internal server error')
                         done()
-                    }
+                    },
                 }
-            }
+            },
         }
+
         // Mock the database query to simulate an internal server error
         const internalServerError = new Error('Internal server error')
-
-
         pool.query.callsArgWith(2, internalServerError)
 
-        createUser(request, response)
+        updateUserInfo(request, response)
     })
-});
-
-
+})

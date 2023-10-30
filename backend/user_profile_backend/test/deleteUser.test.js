@@ -1,12 +1,10 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const { describe, it, beforeEach } = require('mocha')
-const { createUser } = require('../controller/createUser') // Adjust the path to your user module
-const { deleteUserByUserID } = require('../controller/deleteUser') // Adjust the path to your delete user module
+const { deleteUserByUserID } = require('../controller/deleteUser')
 const { expect } = chai
 const sinon = require('sinon')
-const pool = require('../database/db') // Adjust the path to your database module
-const jwt = require('jsonwebtoken')
+const pool = require('../database/db')
 
 chai.use(chaiHttp)
 
