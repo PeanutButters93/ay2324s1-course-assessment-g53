@@ -1,5 +1,5 @@
-const axios = require('axios');
-const { verifyJsonWebToken } = require('./tokenUtils');
+const axios = require('axios')
+const { verifyJsonWebToken } = require('./tokenUtils')
 const USER_HOST = process.env.USER_HOST ? process.env.USER_HOST : "http://localhost:4000/api/users"
 
 
@@ -8,7 +8,6 @@ async function validateUser (request, response, next) {
     let user_id
 
     try {
-        console.log(token)
         user_id = verifyJsonWebToken(token).user_data.user_id
         if (!user_id) {
             return response.status(401).json({ error: 'Invalid token' })
@@ -21,7 +20,7 @@ async function validateUser (request, response, next) {
 
 
     try {
-        const res = await axios.get(`${USER_HOST}/userById`, { headers : { authorization: token } });
+        const res = await axios.get(`${USER_HOST}/userById`, { headers: { authorization: token } })
 
         if (res.status !== 200) {
             return response.status(401).json({ error: 'User not found' })
