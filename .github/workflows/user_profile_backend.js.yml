@@ -14,7 +14,7 @@ defaults:
     working-directory: backend/user_profile_backend
 
 jobs:
-  user_profile_backend test and coverage:
+  user_profile_backend_test_and_coverage:
     runs-on: ubuntu-latest
 
     steps:
