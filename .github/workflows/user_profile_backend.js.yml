@@ -14,7 +14,7 @@ defaults:
     working-directory: backend/user_profile_backend
 
 jobs:
-  backend:
+  user_profile_backend test and coverage:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +31,6 @@ jobs:
         run: npm install mocha chai sinon --save-dev
           npm install --save-dev nyc
         working-directory: backend/user_profile_backend
-        
+
       - name: Run Tests with Coverage
         run: npm run test-with-coverage
-        
