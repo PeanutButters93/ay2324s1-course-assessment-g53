@@ -11,7 +11,7 @@ defaults:
     working-directory: backend/question-backend
 
 jobs:
-  question-backend test and coverage:
+  question-backend_test_and_coverage:
     runs-on: ubuntu-latest
 
     steps:
