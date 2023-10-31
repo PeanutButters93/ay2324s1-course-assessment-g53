@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test --exit",
+    "test-with-coverage": "nyc --reporter=text mocha --exit && nyc check-coverage --lines 70",
     "start": "node index.js"
   },
   "keywords": [],
@@ -18,5 +19,9 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "chai-http": "^4.4.0",
+    "nyc": "^15.1.0"
   }
 }
