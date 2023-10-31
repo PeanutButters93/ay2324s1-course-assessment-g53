@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test --exit",
-    "test-with-coverage": "nyc --reporter=text mocha --exit && nyc check-coverage --lines 70",
+    "test-with-coverage": "nyc --reporter=text mocha --exit && nyc check-coverage --lines 90",
     "start": "node index.js"
   },
   "keywords": [],
