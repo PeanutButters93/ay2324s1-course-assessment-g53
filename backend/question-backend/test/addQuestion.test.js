@@ -84,11 +84,6 @@ describe('addQuestion Controller', () => {
             expect(error.message).to.equal('Some error')
         }
 
-        // // Assertions
-        // expect(findOneStub.calledOnceWithExactly({ title: 'Test Question' })).to.be.true
-        // expect(res.status.calledWith(400)).to.be.true
-        // expect(res.send.getCall(0).args[0]).to.equal('ERROR')
-
         findOneStub.restore()
     })
 
