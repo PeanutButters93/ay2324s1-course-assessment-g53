@@ -30,7 +30,7 @@ services:
       - RABBIT_MQ_HOST=amqp://rabbitmq:5672
       - FRONTEND_HOST=http://localhost:3000
       - USER_HOST=http://user_profile_backend:4000/api/users
-      - REACT_APP_COLLAB_HOST=http://collab-backend:9000/api/collab
+      - COLLAB_HOST=http://collab-backend:9000/api/collab
     depends_on:
       - rabbitmq
       - frontend

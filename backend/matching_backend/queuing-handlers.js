@@ -46,7 +46,7 @@ async function notifyWaitingUser(connection, matchedUserId, room_id) {
   channel.publish("match-events", matchedUserId.toString(), Buffer.from(room_id.toString()));
 }
 
-const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
+const COLLAB_HOST = process.env.COLLAB_HOST ? process.env.COLLAB_HOST : "http://localhost:9000"
 
 async function get_room_id(user1, user2) {
   return axios.post(COLLAB_HOST + "/api/collab/get_room_id", {

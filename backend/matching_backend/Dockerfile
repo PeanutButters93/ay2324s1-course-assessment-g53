@@ -5,6 +5,6 @@ RUN npm install
 COPY . .
 ENV USER_HOST=http://peerprep-g53-fe-2022344057.ap-southeast-1.elb.amazonaws.com/api/users
 ENV FRONTEND_HOST=https://peerprep.jonoans.com
-ENV REACT_APP_COLLAB_HOST=http://peerprep-g53-fe-2022344057.ap-southeast-1.elb.amazonaws.com/api/collab
+ENV COLLAB_HOST=http://peerprep-g53-fe-2022344057.ap-southeast-1.elb.amazonaws.com
 EXPOSE 3001
 CMD ["npm", "start"]
