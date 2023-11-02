@@ -4,6 +4,7 @@ const router = express.Router();
 const Document = require("../Document")
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
+const amq = require("amqplib")
 
 dotenv.config({
     path: ".env.local"
@@ -11,6 +12,24 @@ dotenv.config({
 
 mongoose.connect(process.env.MONGODB_URI)
 
+const RABBIT_MQ_HOST = process.env.RABBIT_MQ_HOST ? process.env.RABBIT_MQ_HOST : 'amqp://guest:guest@localhost:5672'
+const queueName = "questionHistoryAddEntry"
+
+router.post("/save_solution", async (req, res) => {
+    const msg = req.body
+    const connection = await amq.connect(RABBIT_MQ_HOST)
+    const channel = await connection.createChannel()
+    try {
+        await channel.assertQueue(queueName)
+    } catch (error) {
+        console.log(error)
+    }
+    console.log(msg)
+    channel.sendToQueue(
+        queueName,
+        Buffer.from(JSON.stringify(msg))
+    )
+})
 
 router.post("/get_document", async (req, res) => {
     const {documentID} = req.body
