@@ -36,7 +36,12 @@ async function startConsumer() {
       channel.consume(queueName, (message) => {
         if (message.content) {
           const messageData = message.content.toString('utf-8');
-          console.log('Received message:', messageData);
+
+          const tokenBody = messageData.split('.')[1]
+          let buffer = JSON.parse(atob(tokenBody))
+          const user_id = buffer.user_data.user_id
+
+          console.log(user_id)
           // Process the message as needed
   
           // Acknowledge the message to remove it from the queue
