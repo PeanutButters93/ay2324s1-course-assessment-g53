@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Grid, Paper, Typography } from "@mui/material";
 import TextEditor from "../components/TextEditor";
 import DividerIcon from "@mui/icons-material/DragHandle";
-import LogEditorButton from "../components/LogEditorButton";
+import CodeExecutionComponent from "../components/CodeExecutionComponent";
 import VideoCall from "../components/VideoCall";
+import SaveSolutionButton from "../components/SaveSolutionButton";
 
 const Room = () => {
   const [dividerPosition, setDividerPosition] = useState(50)
   const [isDragging, setIsDragging] = useState(false)
+  const [userCode, setUserCode] = useState()
 
   const handleDividerDrag = (e) => {
     const newDividerPosition = Math.max(20, Math.min((e.clientX / window.innerWidth) * 100, 80)) // Limiting the movement between 20% and 80%
@@ -40,8 +42,9 @@ const Room = () => {
             Here is the problem description. It should explain what the problem is
             and what the user is expected to do in order to solve it.
           </Typography>
+
           <Paper/>
-          
+          <SaveSolutionButton userCode={userCode}/>
         </Paper>
         <Paper style={{ margin:"10px", height: "30%"}}>
           <VideoCall/>
@@ -77,12 +80,12 @@ const Room = () => {
           {/* Playground */}
           <div style={{ flex: 1, padding: '16px', overflowY: 'auto', overflowX: 'auto', whiteSpace: 'pre-wrap', wordWrap: 'break-word', maxHeight: 'calc(100vh - 64px - 68px)' }}>
             <Typography variant="h6">Playground</Typography>
-            <TextEditor />
+            <TextEditor setUserCode={setUserCode}/>
           </div>
 
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: '16px' }}>
-            <LogEditorButton />
+            <CodeExecutionComponent userCode={userCode}/>
           </Paper>
           
         </Paper>
