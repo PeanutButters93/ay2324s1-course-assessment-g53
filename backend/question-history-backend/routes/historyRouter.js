@@ -6,6 +6,7 @@ dotenv.config({
     path: ".env.local"
 })
 
+router.get("/", getQuestions);
 router.post("/", async (req, res) => {
     res.send({ document : "Hello from the BE~!"})
 })

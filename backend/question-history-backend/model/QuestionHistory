@@ -1,0 +1,14 @@
+import mongoose from "mongoose";
+
+const quesHistorySchema = new mongoose.Schema({
+    userid: Number,
+    question_title: String,
+    question_description: String,
+    categories: [String],
+    last_attempt: Date, 
+    attempt: String,
+    complexity: String,
+});
+
+const QuestionHistory = mongoose.model("questionHistory", quesHistorySchema);
+export default QuestionHistory;
