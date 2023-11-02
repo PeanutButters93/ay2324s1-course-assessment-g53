@@ -76,6 +76,7 @@ const Room = () => {
           <Typography variant="h5">
             {/* Rendering the title directly */}
             {question?.title || "Loading title..."}
+            {console.log(question)}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
             Difficulty: {difficulty}
