@@ -14,8 +14,11 @@ services:
       context: ./backend/question-history-backend
     environment:
       - HISTORY_HOST="http://history-backend:5000/api/history"
+      - RABBIT_MQ_HOST=amqp://rabbitmq:5672
     ports:
       - 5000:5000
+    depends_on:
+      - rabbitmq
 
   question-backend:
     build:
@@ -82,10 +85,12 @@ services:
     ports:
       - 9000:9000
     environment:
+      - RABBIT_MQ_HOST=amqp://rabbitmq:5672
       - FRONTEND_HOST=http://localhost:3000
       - MONGODB_URI=mongodb://mongodb_container/document_db
     depends_on:
       - mongodb_container
+      - rabbitmq
 
   mongodb_container:
     image: mongo:latest
