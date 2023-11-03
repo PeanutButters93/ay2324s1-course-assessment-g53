@@ -28,6 +28,27 @@ const Room = () => {
     setDividerPosition(newDividerPosition);
   };
 
+  const handleReceiveQuestions = (data) => {
+    console.log("handlereceived reached");
+    setQuestion(data);
+  };
+
+  const requestAndReceiveQuestions = () => {
+    // Emit event to join the room
+    socket.emit("join-question-room", roomId);
+
+    // Emit event to request questions
+    socket.emit("request-questions", {
+      roomId: roomId,
+      complexity: difficulty,
+    });
+
+    socket.emit("request-new-questions", roomId, difficulty);
+
+    // Listen for the response with the question data
+    socket.on("receive-questions", handleReceiveQuestions);
+  };
+
   useEffect(() => {
     const handleMouseUp = () => setIsDragging(false);
 
@@ -37,20 +58,8 @@ const Room = () => {
     }
 
     if (!question) {
-
-    // Emit event to join the room
-    socket.emit('join-question-room', roomId);
-    
-    // Emit event to request questions
-    socket.emit("request-questions", roomId, difficulty);
+      requestAndReceiveQuestions();
     }
-
-    // Listen for the response with the question data
-    const handleReceiveQuestions = (data) => {
-      console.log("handlereceived reached")
-      setQuestion(data);
-    };
-    socket.on('receive-questions', handleReceiveQuestions);
 
     return () => {
       document.removeEventListener("mousemove", handleDividerDrag);
@@ -58,7 +67,7 @@ const Room = () => {
       // Remove the socket listener
       socket.off("receive-questions", handleReceiveQuestions);
     };
-  }, [isDragging, handleDividerDrag, roomId, difficulty]);
+  }, [isDragging, handleDividerDrag, roomId, difficulty, question]);
 
   return (
     <Grid

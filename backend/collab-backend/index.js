@@ -1,8 +1,10 @@
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const Document = require("./Document");
+const roomSchema = require("./roomSchema");
 const { Mutex } = require("async-mutex");
 const axios = require("axios");
 
@@ -72,15 +74,7 @@ io.on("connection", (socket) => {
     });
   });
 
-  async function fetchQuestionByComplexity(complexity) {
-    try {
-      const response = await axios.get(`${QUESTION_HOST}/${complexity}`, {});
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching question:", error);
-      return null;
-    }
-  }
+
   // Join the question room
   socket.on("join-question-room", (roomId) => {
     console.log("join-question-room")
@@ -89,14 +83,57 @@ io.on("connection", (socket) => {
   });
 
   // Request questions for the room
-  socket.on("request-questions", async (roomId, complexity) => {
+  
+  socket.on("request-questions", async (data) => {
+    const {roomId, complexity} =  data
     console.log(complexity)
+    console.log(roomId)
     const questionRoomId = `question_${roomId}`;
-    const newQuestion = await fetchQuestionByComplexity(complexity);
+    const newQuestion = await findOrFetchNewQuestion(roomId, complexity);
+    console.log(newQuestion)
     console.log("question fetched")
     io.to(questionRoomId).emit("receive-questions", newQuestion);
   });
 });
+
+async function fetchQuestionByComplexity(complexity) {
+  try {
+    const response = await axios.get(`${QUESTION_HOST}/${complexity}`, {});
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching question:", error);
+    return null;
+  }
+}
+const question_mutex = new Mutex();
+
+async function findOrFetchNewQuestion(id, complexity) {
+  console.log("fetch by question")
+  if (id == null) return;
+
+  const release = await question_mutex.acquire();
+  var question = null;
+  try {
+    question = await roomSchema.findById(id);
+    console.log("a")
+
+    // if document is null, aka isn't in the DB
+    if (!question) {
+      console.log("b")
+      quesiton = await fetchQuestionByComplexity(complexity)
+      console.log(question)
+      console.log(complexity)
+      question = await roomSchema.create({
+        _id: id,
+        question: await fetchQuestionByComplexity(complexity),
+      });
+    }
+  } finally {
+    release();
+  }
+  return question;
+}
 
 const add_to_db_mutex = new Mutex();
 
@@ -120,3 +157,4 @@ async function findOrCreateDocument(id) {
   }
   return document;
 }
+
