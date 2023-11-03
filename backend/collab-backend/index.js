@@ -74,7 +74,6 @@ io.on("connection", (socket) => {
     });
   });
 
-
   // Join the question room
   socket.on("join-question-room", (roomId) => {
     console.log("join-question-room")
@@ -86,12 +85,8 @@ io.on("connection", (socket) => {
   
   socket.on("request-questions", async (data) => {
     const {roomId, complexity} =  data
-    console.log(complexity)
-    console.log(roomId)
     const questionRoomId = `question_${roomId}`;
     const newQuestion = await findOrFetchNewQuestion(roomId, complexity);
-    console.log(newQuestion)
-    console.log("question fetched")
     io.to(questionRoomId).emit("receive-questions", newQuestion);
   });
 });
@@ -99,7 +94,6 @@ io.on("connection", (socket) => {
 async function fetchQuestionByComplexity(complexity) {
   try {
     const response = await axios.get(`${QUESTION_HOST}/${complexity}`, {});
-    console.log(response)
     return response.data;
   } catch (error) {
     console.error("Error fetching question:", error);
@@ -109,21 +103,16 @@ async function fetchQuestionByComplexity(complexity) {
 const question_mutex = new Mutex();
 
 async function findOrFetchNewQuestion(id, complexity) {
-  console.log("fetch by question")
   if (id == null) return;
 
   const release = await question_mutex.acquire();
   var question = null;
   try {
     question = await roomSchema.findById(id);
-    console.log("a")
 
     // if document is null, aka isn't in the DB
     if (!question) {
-      console.log("b")
       quesiton = await fetchQuestionByComplexity(complexity)
-      console.log(question)
-      console.log(complexity)
       question = await roomSchema.create({
         _id: id,
         question: await fetchQuestionByComplexity(complexity),
