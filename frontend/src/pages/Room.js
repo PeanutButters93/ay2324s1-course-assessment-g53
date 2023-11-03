@@ -31,6 +31,7 @@ const Room = () => {
   const handleReceiveQuestions = (data) => {
     console.log("handlereceived reached");
     setQuestion(data);
+    setQuestion(data.question);
   };
 
   const requestAndReceiveQuestions = () => {
