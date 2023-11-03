@@ -86,7 +86,19 @@ io.on("connection", (socket) => {
   socket.on("request-questions", async (data) => {
     const {roomId, complexity} =  data
     const questionRoomId = `question_${roomId}`;
-    const newQuestion = await findOrFetchNewQuestion(roomId, complexity);
+    const newQuestion = await findOrFetchNewQuestion(questionRoomId, complexity);
+    io.to(questionRoomId).emit("receive-questions", newQuestion);
+  });
+
+  socket.on("request-new-questions", async (data) => {
+    const {roomId, complexity} =  data
+    const questionRoomId = `question_${roomId}`;
+    
+    const newQuestion = await fetchQuestionByComplexity(complexity)
+    console.log("getnewqsn time")
+    console.log(newQuestion)
+    const foo = await roomSchema.findByIdAndUpdate(questionRoomId, {question : newQuestion});
+    console.log(foo)
     io.to(questionRoomId).emit("receive-questions", newQuestion);
   });
 });

@@ -6,6 +6,7 @@ import LogEditorButton from "../components/LogEditorButton";
 import VideoCall from "../components/VideoCall";
 import { useParams, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
+import {Button} from "@mui/material";
 
 const Room = () => {
   const [dividerPosition, setDividerPosition] = useState(50);
@@ -19,7 +20,12 @@ const Room = () => {
     ? process.env.REACT_APP_COLLAB_HOST
     : "http://localhost:9000";
   const socket = io(COLLAB_HOST);
-
+  const handleClick = () => {
+    socket.emit("request-new-questions", {
+      roomId: roomId,
+      complexity: difficulty,
+    });
+  };
   const handleDividerDrag = (e) => {
     const newDividerPosition = Math.max(
       20,
@@ -30,7 +36,6 @@ const Room = () => {
 
   const handleReceiveQuestions = (data) => {
     console.log("handlereceived reached");
-    setQuestion(data);
     setQuestion(data.question);
   };
 
@@ -44,8 +49,6 @@ const Room = () => {
       roomId: roomId,
       complexity: difficulty,
     });
-
-    socket.emit("request-new-questions", roomId, difficulty);
 
     // Listen for the response with the question data
     socket.on("receive-questions", handleReceiveQuestions);
@@ -66,8 +69,6 @@ const Room = () => {
     return () => {
       document.removeEventListener("mousemove", handleDividerDrag);
       document.removeEventListener("mouseup", handleMouseUp);
-      // Remove the socket listener
-      socket.off("receive-questions", handleReceiveQuestions);
     };
   }, [isDragging, handleDividerDrag, roomId, difficulty, question]);
 
@@ -159,6 +160,9 @@ const Room = () => {
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: "16px" }}>
             <LogEditorButton />
+            <Button variant="contained" color="primary" onClick={handleClick}>
+            get New qsn
+          </Button>
           </Paper>
         </Paper>
       </Grid>
