@@ -11,7 +11,7 @@ const Room = () => {
   const [dividerPosition, setDividerPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [question, setQuestion] = useState(null);
-  const { roomId } = useParams();
+  const { id : roomId } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const difficulty = queryParams.get("difficulty");
@@ -36,6 +36,7 @@ const Room = () => {
   const requestAndReceiveQuestions = () => {
     // Emit event to join the room
     socket.emit("join-question-room", roomId);
+    console.log(roomId)
 
     // Emit event to request questions
     socket.emit("request-questions", {
