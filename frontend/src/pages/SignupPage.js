@@ -54,14 +54,43 @@ function SignupPage () {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [username, setUsername] = useState('')
-    const [isValid, setIsValid] = useState(true)
+    const [emptyFirstName, setEmptyFirstName] = useState('')
+    const [emptyLastName, setEmptyLastName] = useState('')
+    const [emailError, setEmailError] = useState('')
+    const [usernameError, setUsernameError] = useState('')
+    const [passwordError, setPasswordError] = useState('')
     const navigate = useNavigate()
 
     const handleSubmit = (event) => {
         event.preventDefault()
 
-        if (!isValidPassword(password) || !isValidEmail(email) || !firstName || !lastName || !username) {
-            setIsValid(false)
+        setEmptyFirstName('')
+        setEmptyLastName('')
+        setEmailError('')
+        setUsernameError('')
+        setPasswordError('')
+
+        const invalidPassword = !isValidPassword(password)
+        const invalidEmail = !isValidEmail(email)
+
+        if (!firstName || !lastName || invalidEmail || !username || invalidPassword) {
+            if (!firstName) {
+                setEmptyFirstName("First name is required")
+            }
+            if (!lastName) {
+                setEmptyLastName("Last name is required")
+            }
+            if (invalidEmail) {
+                setEmailError("Please enter a valid email")
+            }
+            if (!username) {
+                setUsernameError("Please enter a username")
+            }
+            if (password.length === 0) {
+                setPasswordError("Please enter a password")
+            } else if (invalidPassword) {
+                setPasswordError("A minimum 8-character password containing a combination of uppercase and lowercase letter, number and symbol is required")
+            }
             return // Don't proceed further
         }
 
@@ -86,7 +115,12 @@ function SignupPage () {
                 navigate('/questionpage')
             })
             .catch(error => {
-                console.error('Error:', error)
+                const errorMessage = error.response.data.error
+                if (errorMessage == "Username is already taken") {
+                    setUsernameError(errorMessage);
+                } else {
+                    console.error('Error:', error)
+                }
                 // Maybe show an error message to the user
             })
     }
@@ -143,9 +177,10 @@ function SignupPage () {
                                     id="firstName"
                                     label="First Name"
                                     onChange={e => setFirstName(e.target.value)}
+                                    error={!!emptyFirstName}
+                                    helperText={emptyFirstName}
                                     autoFocus
                                 />
-                                {!firstName && <p>First name is required.</p>}
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -155,9 +190,10 @@ function SignupPage () {
                                     label="Last Name"
                                     name="lastName"
                                     onChange={e => setLastName(e.target.value)}
+                                    error={!!emptyLastName}
+                                    helperText={emptyLastName}
                                     autoComplete="family-name"
                                 />
-                                {!lastName && <p>Last name is required.</p>}
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -168,8 +204,9 @@ function SignupPage () {
                                     name="email"
                                     autoComplete="email"
                                     onChange={e => setEmail(e.target.value)}
+                                    error={!!emailError}
+                                    helperText={emailError}
                                 />
-                                {!isValidEmail(email) && <p>Email is not valid.</p>}
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -180,8 +217,9 @@ function SignupPage () {
                                     name="username"
                                     autoComplete="username"
                                     onChange={e => setUsername(e.target.value)}
+                                    error={!!usernameError}
+                                    helperText={usernameError}
                                 />
-                                {!username && <p>Username is required.</p>}
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -193,8 +231,9 @@ function SignupPage () {
                                     id="password"
                                     autoComplete="new-password"
                                     onChange={e => setPassword(e.target.value)}
+                                    error={!!passwordError}
+                                    helperText={passwordError}
                                 />
-                                {!isValidPassword(password) && <p>Password does not meet the requirements.</p>}
                             </Grid>
                         </Grid>
                         <Button
