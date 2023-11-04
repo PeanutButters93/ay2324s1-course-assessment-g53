@@ -1,6 +1,7 @@
 const express = require("express");
 const http = require("http");
 const amq = require("amqplib")
+const cors = require('cors');
 const { Server } = require("socket.io");
 const { validateUser } = require("./validation.js");
 const { addToQueue, findFromQueue, removeFromQueue } = require("./queuing-handlers.js")
@@ -9,6 +10,7 @@ const FRONTEND_HOST = process.env.FRONTEND_HOST ?  process.env.FRONTEND_HOST : "
 const RABBIT_MQ_HOST = process.env.RABBIT_MQ_HOST ? process.env.RABBIT_MQ_HOST : 'amqp://guest:guest@localhost:5672'
 
 const app = express();
+app.use(cors())
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {

@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Container, Paper } from '@mui/material'
+import { Container, Paper, Modal} from '@mui/material'
 import axios from 'axios'
 import useCookie from '../components/useCookie'
 import Button from '@mui/material/Button'
@@ -18,6 +18,19 @@ const defaultTheme = createTheme({
     mode: 'dark',
   },
 })
+
+const modal_style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
 export default function UserProfile () {
   const [user, setUser] = useState({})
@@ -26,6 +39,7 @@ export default function UserProfile () {
 
   const [isEditingUserName, setIsEditingUserName] = useState(false)
   const [editedUsername, setEditedUsername] = useState(user.username)
+  const [showModal, setShowModal] = useState(false)
 
   const [isEditingEmail, setIsEditingEmail] = useState(false)
 
@@ -155,6 +169,10 @@ export default function UserProfile () {
     }
   }
 
+  const handleCloseModal = () => {
+    setShowModal(false)
+  }
+
 
   const handleBlurBio = (event) => {
     setIsEditingBio(false)
@@ -212,6 +230,32 @@ export default function UserProfile () {
         console.error('Error:', error)
         alert('Error updating user information.')
       })
+  }
+
+  const handleUnregister = () => {
+    setShowModal(true)
+  }
+
+  const handleConfirmUnregister = () => {
+    axios.delete(`${USER_HOST}/deleteUser`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': getAuthCookie()
+      },
+    })
+      .then((response) => {
+        alert('User deleted successfully.')
+        console.log(response.data)
+        window.location.href = '/'
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+        alert('Error deleting user.')
+      })
+  }
+
+  const handleCancelUnregister = () => {
+    setShowModal(false)
   }
 
 
@@ -300,9 +344,30 @@ export default function UserProfile () {
               </Typography>
             </div>
 
+            <Button color='error' onClick={handleUnregister}>Unregister</Button>
+
           </Paper>
         </Container>
       </Box>
+
+      <Modal
+        open={showModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modal_style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            WARNING
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Are you sure that you want to delete your profile? This action is irreversible.
+          </Typography>
+          <Button onClick={handleConfirmUnregister}>Yes</Button>
+          <Button onClick={handleCancelUnregister}>Cancel</Button>
+        </Box>
+      </Modal>
+
     </ThemeProvider >
   )
 }

@@ -115,13 +115,13 @@ async function findOrFetchNewQuestion(id, complexity) {
   if (id == null) return;
 
   const release = await question_mutex.acquire();
-  var question = null;
+  let question = null;
   try {
     question = await roomSchema.findById(id);
 
     // if document is null, aka isn't in the DB
     if (!question) {
-      quesiton = await fetchQuestionByComplexity(complexity)
+      question = await fetchQuestionByComplexity(complexity)
       question = await roomSchema.create({
         _id: id,
         question: await fetchQuestionByComplexity(complexity),

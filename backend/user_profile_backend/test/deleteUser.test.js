@@ -33,7 +33,7 @@ describe('Delete User', () => {
     it('should return success message when user is deleted', (done) => {
         const request = {
             body: {
-                user_id: 100,
+                user_data : {user_id: 100},
             },
         }
 
@@ -55,7 +55,7 @@ describe('Delete User', () => {
     it('should return a 404 error message if the user does not exist', (done) => {
         const request = {
             body: {
-                user_id: 2,
+                user_data: {user_id: 2},
             },
         }
 
