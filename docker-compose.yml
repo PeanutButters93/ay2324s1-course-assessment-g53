@@ -76,7 +76,6 @@ services:
       - FRONTEND_HOST=http://localhost:3000
       - MONGODB_URI=mongodb://mongodb_container/document_db
       - QUESTION_HOST=http://question-backend:8000/api/questions
-      - QUESTION_HOST=http://question-backend:8000/api/questions
 
     depends_on:
       - mongodb_container
