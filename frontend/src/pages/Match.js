@@ -68,7 +68,7 @@ const Match = (props) => {
       setStartCount(false)
       setIsSubmitting(false)
       setTimeout(() => {
-        navigate("/room/" + data["room_id"]);
+        navigate(`/room/${data["room_id"]}?difficulty=${difficulty}`);
         }, 2000);
     })
 

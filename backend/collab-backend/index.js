@@ -15,6 +15,8 @@ dotenv.config({
 const DEFAULT_DOCUMENT_DATA = ""
 const PORT = process.env.PORT ? process.env.PORT : 9000
 const FRONTEND_HOST = process.env.FRONTEND_HOST ? process.env.FRONTEND_HOST : "http://localhost:3000"
+const QUESTION_HOST = process.env.QUESTION_HOST ? process.env.QUESTION_HOST : "http://localhost:8000/api/questions";
+
 
 mongoose.connect(process.env.MONGODB_URI)
 
