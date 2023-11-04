@@ -133,7 +133,7 @@ const Room = () => {
 
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: '16px' }}>
-            <LogEditorButton />
+            <CodeExecutionComponent />
             <Button variant="contained" color="primary" onClick={handleClick}>
             get New qsn
           </Button>
