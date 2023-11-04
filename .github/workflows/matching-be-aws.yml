@@ -58,7 +58,7 @@ jobs:
         # push it to ECR so that it can
         # be deployed to ECS.
 
-        docker build -t $ECR_REGISTRY/$ECR_MATCHING_REPOSITORY:$IMAGE_TAG -f ./backend/matching_backend/Dockerfile ./backend/matching_backend
+        docker build -t $ECR_REGISTRY/$ECR_MATCHING_REPOSITORY:$IMAGE_TAG -f ./backend/matching_backend/Dockerfile.prod ./backend/matching_backend
         docker push $ECR_REGISTRY/$ECR_MATCHING_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_MATCHING_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 

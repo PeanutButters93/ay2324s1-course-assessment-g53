@@ -55,7 +55,7 @@ jobs:
           # push it to ECR so that it can
           # be deployed to ECS.
   
-          docker build -t $ECR_REGISTRY/$ECR_COMMUNICATION_REPOSITORY:$IMAGE_TAG -f ./backend/communication-backend/Dockerfile ./backend/communication-backend
+          docker build -t $ECR_REGISTRY/$ECR_COMMUNICATION_REPOSITORY:$IMAGE_TAG -f ./backend/communication-backend/Dockerfile.prod ./backend/communication-backend
           docker push $ECR_REGISTRY/$ECR_COMMUNICATION_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_COMMUNICATION_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
   

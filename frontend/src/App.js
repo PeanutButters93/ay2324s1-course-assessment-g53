@@ -42,7 +42,7 @@ const App = () => {
         <Route path="signup" element={<SignupPage />} />
         <Route path="logout" element={<Logout />} />
         <Route path="/" element={<Layout />}>
-        <Route path="match" element = {<Match/>}/>
+          {isLogin ? <Route path="match" element = {<Match/>}/> : null}
           {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
           {isLogin ? <Route path="profile" element={<UserProfile />} /> : null}
           {isLogin ? <Route path="room/:id" element={<Room />} /> : null}
