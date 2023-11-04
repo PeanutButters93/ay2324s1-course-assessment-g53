@@ -11,9 +11,6 @@ import { getQuestionsByComplexity } from "../controller/getQuestionsByComplexity
 
  const router = express.Router();
  
-router.get("/", getQuestions);
-router.get("/", getQuestions);
-
  router.get("/", getQuestions);
 
  router.post("/", [checkLogin, checkAdmin], addQuestion);
