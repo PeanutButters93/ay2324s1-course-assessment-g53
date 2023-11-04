@@ -95,7 +95,7 @@ const Room = () => {
           </Typography>
 
           <Paper/>
-          <SaveSolutionButton userCode={userCode}/>
+          <SaveSolutionButton userCode={userCode} question={question}/>
         </Paper>
         <Paper style={{ margin:"10px", height: "30%"}}>
           <VideoCall/>

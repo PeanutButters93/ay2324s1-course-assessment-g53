@@ -4,18 +4,17 @@ import axios from "axios"
 
 const REACT_APP_COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000/api/collab"
 
-const SaveSolutionButton = ({userCode}) => {
+const SaveSolutionButton = ({userCode, question}) => {
     const { getAuthCookie } = useCookie()
 
     const handleSubmit = async () => {
-        // Get ID
-        console.log(getAuthCookie());
-        // get Soln
         console.log(userCode)
-        // TODO Question
 
         return axios.post(REACT_APP_COLLAB_HOST + "/save_solution", {
             user_cookie: getAuthCookie(),
+            question: question,
+            attempt: userCode,
+            timestamp: Date.now(),
         }, {
             headers: {
             "Content-Type": "application/json",

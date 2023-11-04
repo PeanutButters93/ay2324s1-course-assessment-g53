@@ -24,7 +24,6 @@ router.post("/save_solution", async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-    console.log(msg)
     channel.sendToQueue(
         queueName,
         Buffer.from(JSON.stringify(msg))
