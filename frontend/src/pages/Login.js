@@ -47,12 +47,13 @@ function Login (props) {
   const navigate = useNavigate()
   const [userIdentifier, setUserIdentifier] = useState('')  // This replaces the email state
   const [password, setPassword] = useState('')
+  const [usernameError, setUsernameError] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  const isValidPassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}|:"<>?])(?=.*[0-9]).{8,}$/
-    return regex.test(password)
-  }
+//   const isValidPassword = (password) => {
+//     const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}|:"<>?])(?=.*[0-9]).{8,}$/
+//     return regex.test(password)
+//   }
 
   const isValidEmailOrUsername = (input) => {
     // Simple check to see if it contains '@'. 
@@ -64,18 +65,16 @@ function Login (props) {
     console.log("Hello here is the user host:")
     console.log(USER_HOST)
     event.preventDefault()
+
+    setUsernameError('')
+    setPasswordError('')
+
     // Additional validation here
     if (!isValidEmailOrUsername(userIdentifier)) {
-      alert('Please enter a valid email or username.')
+      setUsernameError('Please enter a valid email or username.')
       return
     }
 
-    if (!isValidPassword(password)) {
-      setPasswordError('Password does not meet the requirements.')
-      return
-    } else {
-      setPasswordError('')  // Clear the error
-    }
     axios.post(`${USER_HOST}/login`, {
       userIdentifier: userIdentifier,  // Use the userIdentifier state variable
       password: password,              // Use the password state variable
@@ -112,14 +111,15 @@ function Login (props) {
         navigate('/questionpage')
       })
       .catch(error => {
+        const errorMessage = error.response.data.error
         // Handle different types of errors here
-        if (error.error === 'Incorrect password') {
-          alert('Incorrect password. Please try again.')
-        } else if (error.error === 'User not found') {
-          alert('User not found. Please try again or register.')
+        if (errorMessage === 'User not found') {
+            setUsernameError('User not found. Please try again or register.')
+            setPasswordError('Please enter a valid username or email.')
+        } else if (errorMessage === 'Incorrect password') {
+            setPasswordError('Incorrect password. Please try again.')
         } else {
-          console.error('Error:', error)
-          alert('An error occurred. Please try again.')
+          console.error('Error:', errorMessage)
         }
       })
   }
@@ -175,6 +175,8 @@ function Login (props) {
               autoComplete="email"
               value={userIdentifier}
               onChange={e => setUserIdentifier(e.target.value)}  // Use the new state variable here
+              error={!!usernameError}
+              helperText={usernameError}
               autoFocus
             />
             <TextField
