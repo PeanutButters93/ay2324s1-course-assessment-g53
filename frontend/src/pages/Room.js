@@ -81,14 +81,13 @@ const Room = () => {
           <Typography variant="h5">Problem Title</Typography>
           <Typography variant="h5">
             {/* Rendering the title directly */}
-            {question?.title || "Loading title..."}
+            {question?.title}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
             Difficulty: {difficulty}
           </Typography>
           <Typography variant="body1" paragraph>
-            Here is the problem description. It should explain what the problem is
-            and what the user is expected to do in order to solve it.
+          {question?.description}
           </Typography>
           <Paper/>
           
@@ -134,7 +133,7 @@ const Room = () => {
           <Paper elevation={3} style={{ padding: '16px' }}>
             <LogEditorButton />
             <Button variant="contained" color="primary" onClick={handleClick}>
-            get New qsn
+            Request New Question
           </Button>
           </Paper>
           
