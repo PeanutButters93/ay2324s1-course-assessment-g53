@@ -6,12 +6,13 @@ import LogEditorButton from "../components/LogEditorButton";
 import VideoCall from "../components/VideoCall";
 import { useParams, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
+import {Button} from "@mui/material";
 
 const Room = () => {
   const [dividerPosition, setDividerPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [question, setQuestion] = useState(null);
-  const { roomId } = useParams();
+  const { id : roomId } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const difficulty = queryParams.get("difficulty");
@@ -19,13 +20,38 @@ const Room = () => {
     ? process.env.REACT_APP_COLLAB_HOST
     : "http://localhost:9000";
   const socket = io(COLLAB_HOST);
-
+  const handleClick = () => {
+    socket.emit("request-new-questions", {
+      roomId: roomId,
+      complexity: difficulty,
+    });
+  };
   const handleDividerDrag = (e) => {
     const newDividerPosition = Math.max(
       20,
       Math.min((e.clientX / window.innerWidth) * 100, 80)
     ); // Limiting the movement between 20% and 80%
     setDividerPosition(newDividerPosition);
+  };
+
+  const handleReceiveQuestions = (data) => {
+    console.log("handlereceived reached");
+    setQuestion(data.question);
+  };
+
+  const requestAndReceiveQuestions = () => {
+    // Emit event to join the room
+    socket.emit("join-question-room", roomId);
+    console.log(roomId)
+
+    // Emit event to request questions
+    socket.emit("request-questions", {
+      roomId: roomId,
+      complexity: difficulty,
+    });
+
+    // Listen for the response with the question data
+    socket.on("receive-questions", handleReceiveQuestions);
   };
 
   useEffect(() => {
@@ -37,28 +63,14 @@ const Room = () => {
     }
 
     if (!question) {
-
-    // Emit event to join the room
-    socket.emit('join-question-room', roomId);
-    
-    // Emit event to request questions
-    socket.emit("request-questions", roomId, difficulty);
+      requestAndReceiveQuestions();
     }
-
-    // Listen for the response with the question data
-    const handleReceiveQuestions = (data) => {
-      console.log("handlereceived reached")
-      setQuestion(data);
-    };
-    socket.on('receive-questions', handleReceiveQuestions);
 
     return () => {
       document.removeEventListener("mousemove", handleDividerDrag);
       document.removeEventListener("mouseup", handleMouseUp);
-      // Remove the socket listener
-      socket.off("receive-questions", handleReceiveQuestions);
     };
-  }, [isDragging, handleDividerDrag, roomId, difficulty]);
+  }, [isDragging, handleDividerDrag, roomId, difficulty, question]);
 
   return (
     <Grid
@@ -148,6 +160,9 @@ const Room = () => {
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: "16px" }}>
             <LogEditorButton />
+            <Button variant="contained" color="primary" onClick={handleClick}>
+            get New qsn
+          </Button>
           </Paper>
         </Paper>
       </Grid>
