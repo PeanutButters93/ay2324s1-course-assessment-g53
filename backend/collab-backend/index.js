@@ -1,9 +1,12 @@
-const express = require("express")
-const cors = require("cors")
-const mongoose = require("mongoose")
-const dotenv = require("dotenv")
-const Document = require("./Document")
-const { Mutex } = require('async-mutex')
+
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const Document = require("./Document");
+const roomSchema = require("./roomSchema");
+const { Mutex } = require("async-mutex");
+const axios = require("axios");
 
 const collabRouter = require('./routes/collabRouter')
 dotenv.config({
@@ -41,33 +44,92 @@ io.on("connection", socket => {
         socket.join(documentID)
         socket.emit("load-document", document.data)
 
-        // Proprogate changes from users to other users in the same channel
-        socket.on("send-changes", delta => {
-            socket.broadcast.to(documentID).emit("recieve-changes", delta)
-        })
-        
-        // Save document into MongoDB
-        socket.on("save-document", async data => {
-            await Document.findByIdAndUpdate(documentID, {data})
-            findOrCreateDocument(documentID)
-        })
-    })
-//socket for the video calling
-    socket.on('join-room', (roomId, userId) => {
-        socket.join(roomId)
-        // console.log("user has joined the room")
-        socket.on("video-ready", () => {
-            // console.log("server sees that user's video is ready")
-            socket.to(roomId).emit('user-connected', userId)
-        })
-        
+    // Proprogate changes from users to other users in the same channel
+    socket.on("send-changes", (delta) => {
+      socket.broadcast.to(documentID).emit("recieve-changes", delta);
+    });
+
+    // Save document into MongoDB
+    socket.on("save-document", async (data) => {
+      await Document.findByIdAndUpdate(documentID, { data });
+      findOrCreateDocument(documentID);
+    });
+  });
+  //socket for the video calling
+  socket.on("join-room", (roomId, userId) => {
+    socket.join(roomId);
+    // console.log("user has joined the room")
+    socket.on("video-ready", () => {
+      // console.log("server sees that user's video is ready")
+      socket.to(roomId).emit("user-connected", userId);
+    });
+
+    socket.on("disconnect", () => {
+      socket.to(roomId).emit("user-disconnected", userId);
+    });
+  });
+
+  // Join the question room
+  socket.on("join-question-room", (roomId) => {
+    console.log("join-question-room")
+    const questionRoomId = `question_${roomId}`;
+    socket.join(questionRoomId);
+  });
+
+  // Request questions for the room
+  
+  socket.on("request-questions", async (data) => {
+    const {roomId, complexity} =  data
+    const questionRoomId = `question_${roomId}`;
+    const newQuestion = await findOrFetchNewQuestion(questionRoomId, complexity);
+    io.to(questionRoomId).emit("receive-questions", newQuestion);
+  });
+
+  socket.on("request-new-questions", async (data) => {
+    const {roomId, complexity} =  data
+    const questionRoomId = `question_${roomId}`;
     
-        socket.on('disconnect', () => {
-          socket.to(roomId).emit('user-disconnected', userId)
-        })
-      })
-    
-})
+    const newQuestion = await fetchQuestionByComplexity(complexity)
+    console.log("getnewqsn time")
+    console.log(newQuestion)
+    const foo = await roomSchema.findByIdAndUpdate(questionRoomId, {question : newQuestion});
+    console.log(foo)
+    io.to(questionRoomId).emit("receive-questions", newQuestion);
+  });
+});
+
+async function fetchQuestionByComplexity(complexity) {
+  try {
+    const response = await axios.get(`${QUESTION_HOST}/${complexity}`, {});
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching question:", error);
+    return null;
+  }
+}
+const question_mutex = new Mutex();
+
+async function findOrFetchNewQuestion(id, complexity) {
+  if (id == null) return;
+
+  const release = await question_mutex.acquire();
+  var question = null;
+  try {
+    question = await roomSchema.findById(id);
+
+    // if document is null, aka isn't in the DB
+    if (!question) {
+      quesiton = await fetchQuestionByComplexity(complexity)
+      question = await roomSchema.create({
+        _id: id,
+        question: await fetchQuestionByComplexity(complexity),
+      });
+    }
+  } finally {
+    release();
+  }
+  return question;
+}
 
 const add_to_db_mutex = new Mutex()
 
@@ -79,13 +141,15 @@ async function findOrCreateDocument(id) {
     try {
         document = await Document.findById(id)
 
-        // if document is null, aka isn't in the DB
-        if (!document) {
-            document = await Document.create({_id: id, data: DEFAULT_DOCUMENT_DATA})
-        }
-    
-    } finally {
-        release()
+    // Handle document is not in the DB
+    if (!document) {
+      document = await Document.create({
+        _id: id,
+        data: DEFAULT_DOCUMENT_DATA,
+      });
     }
-    return document
+  } finally {
+    release();
+  }
+  return document;
 }
