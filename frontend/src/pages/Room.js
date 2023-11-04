@@ -4,15 +4,55 @@ import TextEditor from "../components/TextEditor";
 import DividerIcon from "@mui/icons-material/DragHandle";
 import LogEditorButton from "../components/LogEditorButton";
 import VideoCall from "../components/VideoCall";
+import { useParams, useLocation } from "react-router-dom";
+import { io } from "socket.io-client";
+import {Button} from "@mui/material";
 
 const Room = () => {
-  const [dividerPosition, setDividerPosition] = useState(50)
-  const [isDragging, setIsDragging] = useState(false)
-
+  const [dividerPosition, setDividerPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const [question, setQuestion] = useState(null);
+  const { id : roomId } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const difficulty = queryParams.get("difficulty");
+  const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST
+    ? process.env.REACT_APP_COLLAB_HOST
+    : "http://localhost:9000";
+  const socket = io(COLLAB_HOST);
+  const handleClick = () => {
+    socket.emit("request-new-questions", {
+      roomId: roomId,
+      complexity: difficulty,
+    });
+  };
   const handleDividerDrag = (e) => {
-    const newDividerPosition = Math.max(20, Math.min((e.clientX / window.innerWidth) * 100, 80)) // Limiting the movement between 20% and 80%
-    setDividerPosition(newDividerPosition)
-  }
+    const newDividerPosition = Math.max(
+      20,
+      Math.min((e.clientX / window.innerWidth) * 100, 80)
+    ); // Limiting the movement between 20% and 80%
+    setDividerPosition(newDividerPosition);
+  };
+
+  const handleReceiveQuestions = (data) => {
+    console.log("handlereceived reached");
+    setQuestion(data.question);
+  };
+
+  const requestAndReceiveQuestions = () => {
+    // Emit event to join the room
+    socket.emit("join-question-room", roomId);
+    console.log(roomId)
+
+    // Emit event to request questions
+    socket.emit("request-questions", {
+      roomId: roomId,
+      complexity: difficulty,
+    });
+
+    // Listen for the response with the question data
+    socket.on("receive-questions", handleReceiveQuestions);
+  };
 
   useEffect(() => {
     const handleMouseUp = () => setIsDragging(false)
@@ -22,11 +62,15 @@ const Room = () => {
       document.addEventListener('mouseup', handleMouseUp)
     }
 
-    return () => {
-      document.removeEventListener('mousemove', handleDividerDrag)
-      document.removeEventListener('mouseup', handleMouseUp)
+    if (!question) {
+      requestAndReceiveQuestions();
     }
-  }, [isDragging, handleDividerDrag])
+
+    return () => {
+      document.removeEventListener("mousemove", handleDividerDrag);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, handleDividerDrag, roomId, difficulty, question]);
 
   return (
     <Grid container spacing={3} style={{ position: 'relative', overflow: 'hidden' }}>
@@ -35,7 +79,13 @@ const Room = () => {
       <Grid item style={{ flex: `0 0 ${dividerPosition}%`, position: 'relative' }}>
         <Paper elevation={3} style={{ padding: '16px', height: '70%' }}>
           <Typography variant="h5">Problem Title</Typography>
-          <Typography variant="subtitle1" color="textSecondary">Difficulty: Easy</Typography>
+          <Typography variant="h5">
+            {/* Rendering the title directly */}
+            {question?.title || "Loading title..."}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            Difficulty: {difficulty}
+          </Typography>
           <Typography variant="body1" paragraph>
             Here is the problem description. It should explain what the problem is
             and what the user is expected to do in order to solve it.
@@ -83,6 +133,9 @@ const Room = () => {
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: '16px' }}>
             <LogEditorButton />
+            <Button variant="contained" color="primary" onClick={handleClick}>
+            get New qsn
+          </Button>
           </Paper>
           
         </Paper>
