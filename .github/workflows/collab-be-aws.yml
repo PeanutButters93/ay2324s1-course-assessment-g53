@@ -1,0 +1,76 @@
+
+name: Deploy Collab BE to Amazon ECS
+
+on:
+  push:
+    branches: [ "master" ]
+
+env:
+  AWS_REGION: ap-southeast-1                  # set this to your preferred AWS region, e.g. us-west-1
+
+  ECR_COLLABORATION_REPOSITORY: peerprep-collab-backend
+
+  ECS_COLLABORATION_SERVICE: Peerprep-Collab-Backend
+
+  ECS_CLUSTER: PeerPrepDev # set this to your Amazon ECS cluster name
+  
+  ECS_COLLABORATION_TASK_DEFINITION: ./backend/collab-backend/task-definition.json
+
+
+  COLLABORATION_CONTAINER_NAME: Peerprep-Collab-Backend
+
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    #repeat everything below this for each service
+
+    - name: Collaboration service - Build, tag, and push image to Amazon ECR
+      id: build-collaboration-service-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+
+        docker build -t $ECR_REGISTRY/$ECR_COLLABORATION_REPOSITORY:$IMAGE_TAG -f ./backend/collab-backend/Dockerfile.prod ./backend/collab-backend
+        docker push $ECR_REGISTRY/$ECR_COLLABORATION_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_COLLABORATION_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: collaboration-service-task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_COLLABORATION_TASK_DEFINITION }}
+        container-name: ${{ env.COLLABORATION_CONTAINER_NAME }}
+        image: ${{ steps.build-collaboration-service-image.outputs.image }}
+
+    - name: Collaboration service - Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.collaboration-service-task-def.outputs.task-definition }}
+        service: ${{ env.ECS_COLLABORATION_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true

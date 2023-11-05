@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 const uri = process.env.MONGODB_URI;
-const port = process.env.PORT;
+const port = process.env.PORT ? process.env.PORT : 8000;
 mongoose.connect(uri);
 
 

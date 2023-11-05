@@ -6,6 +6,7 @@ export async function addQuestion (req, res) {
     return
   }
   try {
+    console.log(req.body)
 
     const question = new Question({
       id: req.body.id,
@@ -14,6 +15,7 @@ export async function addQuestion (req, res) {
       categories: req.body.categories,
       complexity: req.body.complexity,
     })
+    await question.save();
     res.send("Success")
   } catch (error) {
     console.log(error)

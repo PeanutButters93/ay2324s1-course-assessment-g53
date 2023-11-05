@@ -6,7 +6,7 @@ const USER_HOST = process.env.USER_HOST ? process.env.USER_HOST : "http://localh
 async function validateUser (request, response, next) {
     const token = request.headers.authorization
     let user_id
-
+    console.log(token)
     try {
         user_id = verifyJsonWebToken(token).user_data.user_id
         if (!user_id) {
