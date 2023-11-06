@@ -1,16 +1,18 @@
 import { Button } from "@mui/material"
 import useCookie from "./useCookie"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const REACT_APP_COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000/api/collab"
 
 const SaveSolutionButton = ({userCode, question}) => {
     const { getAuthCookie } = useCookie()
+    const navigate = useNavigate()
 
     const handleSubmit = async () => {
         console.log(userCode)
 
-        return axios.post(REACT_APP_COLLAB_HOST + "/save_solution", {
+        axios.post(REACT_APP_COLLAB_HOST + "/save_solution", {
             user_cookie: getAuthCookie(),
             question: question,
             attempt: userCode,
@@ -24,6 +26,8 @@ const SaveSolutionButton = ({userCode, question}) => {
             console.error('Error:', error)
             throw error
         })
+
+        navigate("..\\..\\QuestionPage")
     }
 
     return <Button
@@ -31,7 +35,7 @@ const SaveSolutionButton = ({userCode, question}) => {
         color="primary"
         onClick={handleSubmit}
         sx={{ width: "150px", height: "50px", margin: "30px" }} >
-        Save
+        Save and Exit
     </Button>
 }
 
