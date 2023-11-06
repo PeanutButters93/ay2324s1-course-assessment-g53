@@ -42,7 +42,7 @@ const App = () => {
         <Route index element={<Login />} />
         <Route path="signup" element={<SignupPage />} />
         <Route path="logout" element={<Logout />} />
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout is_admin={is_admin} />}>
           {isLogin ? <Route path="match" element = {<Match/>}/> : null}
           {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
           {isLogin ? <Route path="profile" element={<UserProfile />} /> : null}
