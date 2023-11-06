@@ -12,19 +12,14 @@ dotenv.config({
 const app = express()
 const PORT = process.env.PORT || 5000
 const secretKey = "yourSecretKey"
+const RABBIT_MQ_HOST = process.env.RABBIT_MQ_HOST ? process.env.RABBIT_MQ_HOST : 'amqp://guest:guest@localhost:5672'
+const AddEntryQueue = "questionHistoryAddEntry"
+const DeleteUserQueue = "deleteUserQueue"
 
 app.use(cors())
 
 app.use("/api/history", historyRouter)
 app.use("/", (req, res) => res.status(200).json({status: "OK"}))
-app.listen(PORT, () => {
-    console.log(`Question history service connected on port ${PORT}`);
-});
-
-
-const RABBIT_MQ_HOST = process.env.RABBIT_MQ_HOST ? process.env.RABBIT_MQ_HOST : 'amqp://guest:guest@localhost:5672'
-const AddEntryQueue = "questionHistoryAddEntry"
-const DeleteUserQueue = "deleteUserQueue"
 
 async function startAmqp() {
   // Connect to RabbitMQ
@@ -33,8 +28,6 @@ async function startAmqp() {
   startAddEntryQueue(channel);
   startDeleteUserQueue(channel);
 }
-
-
 
 async function startAddEntryQueue(channel) {
     try {
@@ -92,3 +85,7 @@ async function startDeleteUserQueue(channel) {
 }
 
 startAmqp()
+
+app.listen(PORT, () => {
+  console.log(`Question history service connected on port ${PORT}`);
+});
