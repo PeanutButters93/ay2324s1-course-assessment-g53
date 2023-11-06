@@ -4,5 +4,6 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 ENV FRONTEND_HOST=https://peerprep.jonoans.com
+ENV QUESTION_HOST=https://peerprep.jonoans.com/api/questions
 EXPOSE 9000
 CMD [ "node", "index.js" ]
