@@ -8,6 +8,7 @@ import SaveSolutionButton from "../components/SaveSolutionButton";
 import { useParams, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import {Button} from "@mui/material";
+import ExitButton from "../components/ExitButton"
 
 
 const Room = () => {
@@ -80,26 +81,31 @@ const Room = () => {
     <Grid container spacing={3} style={{ position: 'relative', overflow: 'hidden' }}>
 
       {/* Problem Description Section */}
-      <Grid item style={{ flex: `0 0 ${dividerPosition}%`, position: 'relative' }}>
-        <Paper elevation={3} style={{ padding: '16px', height: '70%' }}>
-          <Typography variant="h5">Problem Title</Typography>
-          <Typography variant="h5">
-            {/* Rendering the title directly */}
-            {question?.title}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            Difficulty: {difficulty}
-          </Typography>
-          <Typography variant="body1" paragraph>
-          {question?.description}
-          </Typography>
+      <Grid item style={{ flex: `0 0 ${dividerPosition}%`, position: 'relative'}}>
+        <Paper elevation={3} style={{ padding: '16px', height: '70%', display: 'flex', flexDirection: 'column'}}>
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+            <Typography variant="h5">Problem Title</Typography>
+            <Typography variant="h5">
+              {/* Rendering the title directly */}
+              {question?.title}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              Difficulty: {difficulty}
+            </Typography>
+            <Typography variant="body1" paragraph>
+            {question?.description}
+            </Typography>
+            </div>
+          <Button variant="contained" color="primary" sx={{ width: "150px", height: "50px"}} onClick={handleClick}>
+              New Question
+          </Button>
 
-          <Paper/>
-          <SaveSolutionButton userCode={userCode} question={question}/>
         </Paper>
+
         <Paper style={{ margin:"10px", height: "30%"}}>
           <VideoCall/>
         </Paper>
+          
       </Grid>
 
       {/* Divider */}
@@ -139,12 +145,13 @@ const Room = () => {
 
             <CodeExecutionComponent userCode={userCode}/>
 
-            <Button variant="contained" color="primary" onClick={handleClick}>
-            Request New Question
-          </Button>
+            
 
           </Paper>
-          
+          <Paper style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <ExitButton/>
+            <SaveSolutionButton userCode={userCode} question={question}/>
+          </Paper>
         </Paper>
       </Grid>
 
