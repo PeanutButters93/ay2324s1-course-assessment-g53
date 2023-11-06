@@ -15,10 +15,11 @@ dotenv.config({
 const DEFAULT_DOCUMENT_DATA = ""
 const PORT = process.env.PORT ? process.env.PORT : 9000
 const FRONTEND_HOST = process.env.FRONTEND_HOST ? process.env.FRONTEND_HOST : "http://localhost:3000"
-const QUESTION_HOST = process.env.QUESTION_HOST ? process.env.QUESTION_HOST : "http://localhost:8000/api/questions";
+const QUESTION_HOST = process.env.QUESTION_HOST ? process.env.QUESTION_HOST : "http://localhost:8000/api/questions"
+const MONGODB_URI = process.env.MONGODB_URI ? process.env.MONGODB_URI : "mongodb://localhost/document_db"
 
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(MONGODB_URI)
 
 const app = express()
 const server = require("http").createServer(app)

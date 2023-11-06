@@ -8,8 +8,8 @@ const dotenv = require("dotenv")
 dotenv.config({
     path: ".env.local"
 })
-
-mongoose.connect(process.env.MONGODB_URI)
+const MONGODB_URI = process.env.MONGODB_URI ? process.env.MONGODB_URI : "mongodb://localhost/document_db"
+mongoose.connect(MONGODB_URI)
 
 
 router.post("/get_document", async (req, res) => {
@@ -19,6 +19,7 @@ router.post("/get_document", async (req, res) => {
 })
 
 router.post("/get_document_raw", async (req, res) => {
+    console.log("Submitting code...")
     const {documentID} = req.body
     var document = await Document.findById(documentID)
     document = document.data.ops.map(item => item.insert).join('')
