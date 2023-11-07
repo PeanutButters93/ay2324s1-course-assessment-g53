@@ -6,6 +6,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import NavBarItem from './NavBarItem'
 import useCookie from './useCookie';
+import HistoryIcon from '@mui/icons-material/History';
+
 
 const NavBarList = ({is_admin}) => {
 
@@ -29,6 +31,12 @@ const NavBarList = ({is_admin}) => {
         href = "../profile"
       />
 
+      <NavBarItem
+        text = "Questions History"
+        icon = {<HistoryIcon />}
+        href = "../questionhistory"
+      />
+
       {
         is_admin &&
         <NavBarItem
@@ -37,7 +45,7 @@ const NavBarList = ({is_admin}) => {
         href = "../adminview"
       />
       }
-      
+
       <NavBarItem
         text = "Log Out"
         icon = {<LogoutIcon />}

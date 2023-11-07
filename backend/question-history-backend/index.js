@@ -1,3 +1,4 @@
+const mongoose = require("mongoose")
 const express = require("express")
 const cors = require("cors")
 const dotenv = require("dotenv")
@@ -17,6 +18,11 @@ const AddEntryQueue = "questionHistoryAddEntry"
 const DeleteUserQueue = "deleteUserQueue"
 
 app.use(cors())
+app.use(express.json());
+const uri = process.env.MONGODB_URI;
+mongoose.connect(uri);
+
+
 
 app.use("/api/history", historyRouter)
 app.use("/", (req, res) => res.status(200).json({status: "OK"}))

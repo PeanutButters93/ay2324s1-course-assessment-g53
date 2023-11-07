@@ -14,8 +14,8 @@ import ExitButton from "../components/ExitButton"
 const Room = () => {
   const [dividerPosition, setDividerPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
-  const [userCode, setUserCode] = useState()
   const [question, setQuestion] = useState(null);
+  const [userCode, setUserCode] = useState(null);
   const { id : roomId } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -142,7 +142,6 @@ const Room = () => {
 
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: '16px' }}>
-
             <CodeExecutionComponent userCode={userCode}/>
 
             
