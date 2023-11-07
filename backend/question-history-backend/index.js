@@ -4,6 +4,7 @@ const cors = require("cors")
 const dotenv = require("dotenv")
 const amqp = require("amqplib")
 const jwt = require("jsonwebtoken");
+const Question = require("./model/QuestionHistory");
 
 const historyRouter = require('./routes/historyRouter')
 dotenv.config({
@@ -49,11 +50,27 @@ async function startAddEntryQueue(channel) {
           var token = messageData.user_cookie
           
           try {
+            // It will error out if not verifiable
             const user_id = jwt.verify(token, secretKey).user_data.user_id;
-            console.log(user_id)
-            console.log(messageData.question)
-            console.log(messageData.attempt)
-            console.log(messageData.timestamp)
+            
+            //Delete duplicates
+            Question.deleteMany({userid: user_id, question_title: messageData.question.title})
+            .then(() => {
+              Question.create({
+                userid: user_id,
+                question_title: messageData.question.title,
+                question_description: messageData.question.description,
+                categories: messageData.question.complexity,
+                last_attempt: messageData.timestamp, 
+                attempt: messageData.attempt,
+                complexity: messageData.question.complexity,
+              })
+            })
+            // .then(() => {
+            //   Question.find({})
+            //   .then(console.log)
+            // })       
+
           } catch (e) {
             console.log(e)
           } finally {
@@ -79,8 +96,13 @@ async function startDeleteUserQueue(channel) {
       // Consume messages from the queue
       channel.consume(DeleteUserQueue, (message) => {
         if (message.content) {
-          const messageData = JSON.parse(message.content.toString('utf-8'));
-          console.log(messageData)
+          const user_id = JSON.parse(message.content.toString('utf-8'));
+
+          Question.deleteMany({userid: user_id})
+          // .then(() => {
+          //   Question.find({})
+          //   .then(console.log)
+          // })       
         }
       });
   
