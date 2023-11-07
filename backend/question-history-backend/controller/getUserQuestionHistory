@@ -4,12 +4,13 @@ const Question = require('../model/QuestionHistory');
 // Define the getQuestions function
 const getQuestionsHistory = async(req, res) => {
     try {
+        console.log("function is executed")
         // Extract userID from the request parameters
         const userID = req.params.userID;
         
         // Find questions by userID
         const questions = await Question.find({ userid: userID });
-        console.log("backend", questions);
+        console.log("backend");
 
         // If no questions found, return 404
         if (!questions || questions.length === 0) {
