@@ -9,5 +9,4 @@ dotenv.config({
 
 router.get("/questions/:userID", getQuestionsHistory);
 
-// router.get("/", getQuestionsHistory);
 module.exports = router;
