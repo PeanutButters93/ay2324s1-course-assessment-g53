@@ -1,24 +1,30 @@
-import express from 'express';
-import QuestionHistory from './path-to-your-model/QuestionHistory'; // Adjust the path to where your model is located
+// Import the Question model from its file path
+const Question = require('../model/QuestionHistory');
 
-const app = express();
-
-app.get('/questions/:userID', async (req, res) => {
+// Define the getQuestions function
+const getQuestionsHistory = async(req, res) => {
     try {
+        // Extract userID from the request parameters
         const userID = req.params.userID;
-        const questions = await QuestionHistory.find({ userid: userID });
+        
+        // Find questions by userID
+        const questions = await Question.find({ userid: userID });
+        console.log("backend", questions);
 
+        // If no questions found, return 404
         if (!questions || questions.length === 0) {
             return res.status(404).send('No questions found for the given user.');
         }
 
-        res.json(questions);
+        // Send back the list of questions
+        res.send(questions);
     } catch (err) {
+        // Log the error and return a 500 status code
+        console.error(err);
         res.status(500).send('Error retrieving questions: ' + err.message);
     }
-});
+}
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+module.exports = {
+    getQuestionsHistory
+}

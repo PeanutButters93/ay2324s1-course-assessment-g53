@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Grid, Paper, Typography } from "@mui/material";
 import TextEditor from "../components/TextEditor";
 import DividerIcon from "@mui/icons-material/DragHandle";
-import CodeExecutionComponent from "../components/CodeExecutionComponent";
+import SaveSolutionButton from "../components/SaveSolutionButton";
 import VideoCall from "../components/VideoCall";
 import { useParams, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import {Button} from "@mui/material";
+import CodeExecutionComponent from "../components/CodeExecutionComponent"
 
 const Room = () => {
   const [dividerPosition, setDividerPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [question, setQuestion] = useState(null);
+  const [userCode, setUserCode] = useState(null);
   const { id : roomId } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -132,7 +134,7 @@ const Room = () => {
 
           {/* Submit Section */}
           <Paper elevation={3} style={{ padding: '16px' }}>
-            <CodeExecutionComponent />
+            <CodeExecutionComponent userCode={userCode}/>
             <Button variant="contained" color="primary" onClick={handleClick}>
             Request New Question
           </Button>
