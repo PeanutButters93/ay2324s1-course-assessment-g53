@@ -7,6 +7,6 @@ dotenv.config({
     path: ".env.local"
 })
 
-router.get("/", getQuestionsHistory);
+router.get("/", getQuestionsHistory)
 
 module.exports = router;
