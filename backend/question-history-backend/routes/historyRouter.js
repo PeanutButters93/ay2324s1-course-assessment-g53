@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const dotenv = require("dotenv")
-const getQuestionsHistory = require("../controller/getUserQuestionHistory")
-const mongoose = require("mongoose");
+const {getQuestionsHistory} = require("../controller/getUserQuestionHistory")
 
 dotenv.config({
     path: ".env.local"
@@ -10,4 +9,5 @@ dotenv.config({
 
 router.get("/questions/:userID", getQuestionsHistory);
 
+// router.get("/", getQuestionsHistory);
 module.exports = router;
