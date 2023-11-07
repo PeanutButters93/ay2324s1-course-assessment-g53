@@ -35,7 +35,7 @@ function QuestionHistoryPage() {
         const response = await axios.get(
           `${HISTORY_HOST}/questions/${user_id}`
         );
-        setHistory(response.data);
+        setHistory(response.data.reverse());
       } catch (error) {
         console.error("Error fetching history:", error);
       }
@@ -144,11 +144,11 @@ function QuestionHistoryPage() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "auto", // Adjusted for content width
+            width: "auto",
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
-            overflow: "auto", // In case of overflow
+            overflow: "auto", 
           }}
         >
           <Typography id="modal-modal-title" variant="h6" component="h2">
