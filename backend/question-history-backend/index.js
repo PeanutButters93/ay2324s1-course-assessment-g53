@@ -53,7 +53,7 @@ async function startAddEntryQueue(channel) {
             console.log(user_id)
             console.log(messageData.question)
             console.log(messageData.attempt)
-            console.log(messageData.timestamp)
+            console.log(messageData.date)
           } catch (e) {
             console.log(e)
           } finally {

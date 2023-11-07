@@ -16,7 +16,7 @@ const SaveSolutionButton = ({userCode, question}) => {
             user_cookie: getAuthCookie(),
             question: question,
             attempt: userCode,
-            timestamp: Date.now(),
+            date: new Date().toISOString().split('T')[0],
         }, {
             headers: {
             "Content-Type": "application/json",
