@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+const { Schema, model } = require("mongoose")
 
-const quesHistorySchema = new mongoose.Schema({
+const quesHistorySchema = new Schema({
     userid: Number,
     question_title: String,
     question_description: String,
@@ -10,5 +10,4 @@ const quesHistorySchema = new mongoose.Schema({
     complexity: String,
 });
 
-const QuestionHistory = mongoose.model("questionHistory", quesHistorySchema);
-export default QuestionHistory;
+module.exports = model("questionHistory", quesHistorySchema);
