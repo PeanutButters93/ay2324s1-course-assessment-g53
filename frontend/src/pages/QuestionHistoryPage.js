@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import useCookie from "../components/useCookie";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const HISTORY_HOST =
   process.env.REACT_APP_HISTORY_HOST || "http://localhost:5000/api/history";
@@ -145,20 +146,67 @@ function QuestionHistoryPage() {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: "auto",
+            maxWidth: "80vw",
+            maxHeight: "80vh", // Prevent the modal from being too tall
+            overflow: "auto", // Allow scrolling within the modal
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
-            overflow: "auto", 
+            display: "flex",
+            flexDirection: "row",
           }}
         >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {selectedQuestion?.question_title}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <pre>
-              <code>{selectedQuestion?.attempt}</code>
-            </pre>
-          </Typography>
+          {/* Description Column */}
+          <Box
+            sx={{
+              flex: 1,
+              pr: 2,
+              maxHeight: "70vh", // Set a max height for scrolling
+              overflowY: "auto", // Allow vertical scrolling
+            }}
+          >
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {selectedQuestion?.question_description}
+            </Typography>
+          </Box>
+
+          {/* Vertical Separator */}
+          <Box
+            sx={{
+              width: "1px",
+              bgcolor: "grey.500",
+              opacity: 0.5,
+              mx: 2,
+              alignSelf: "stretch",
+            }}
+          />
+
+          {/* Code Column */}
+          <Box
+            sx={{
+              flex: 1,
+              pl: 2,
+              maxHeight: "70vh", // Set a max height for scrolling
+              overflow: "auto", // Allow scrolling
+            }}
+          >
+            <Typography
+              component="pre"
+              sx={{
+                fontFamily: "monospace",
+                whiteSpace: "pre-wrap", // Wrap long lines of code
+                wordBreak: "break-word", // Break long words
+              }}
+            >
+              {selectedQuestion?.attempt}
+            </Typography>
+            {/* Copy to Clipboard Button */}
+            <CopyToClipboard text={selectedQuestion?.attempt}>
+              <Button variant="contained" sx={{ mt: 2 }}>
+                Copy Code
+              </Button>
+            </CopyToClipboard>
+          </Box>
         </Box>
       </Modal>
     </div>
