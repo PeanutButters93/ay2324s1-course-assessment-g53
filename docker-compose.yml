@@ -6,7 +6,6 @@ services:
       context: ./backend/user_profile_backend
     environment:
       - USER_HOST=http://user_profile_backend:4000/api/users
-      - RABBIT_MQ_HOST=amqp://rabbitmq:5672
     ports: 
       - 4000:4000
 
