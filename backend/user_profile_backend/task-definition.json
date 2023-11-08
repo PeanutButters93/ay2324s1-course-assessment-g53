@@ -18,6 +18,10 @@
                 {
                     "name": "PORT",
                     "value": "4000"
+                },
+                {
+                    "name": "RABBIT_MQ_HOST",
+                    "value": "amqps://guest1234567:guest1234567@b-b10cf8dd-5436-4633-a1db-9fc790c896d7.mq.ap-southeast-1.amazonaws.com:5671"
                 }
             ],
             "mountPoints": [],
