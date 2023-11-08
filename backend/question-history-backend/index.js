@@ -2,9 +2,6 @@ const mongoose = require("mongoose")
 const express = require("express")
 const cors = require("cors")
 const dotenv = require("dotenv")
-const amqp = require("amqplib")
-const jwt = require("jsonwebtoken");
-const Question = require("./model/QuestionHistory");
 
 const historyRouter = require('./routes/historyRouter')
 dotenv.config({
@@ -13,79 +10,14 @@ dotenv.config({
 
 const app = express()
 const PORT = process.env.PORT || 5000
-const secretKey = "yourSecretKey"
-const RABBIT_MQ_HOST = process.env.RABBIT_MQ_HOST ? process.env.RABBIT_MQ_HOST : 'amqp://guest:guest@localhost:5672'
-const AddEntryQueue = "questionHistoryAddEntry"
 
 app.use(cors())
 app.use(express.json());
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri);
 
-
-
 app.use("/api/history", historyRouter)
 app.use("/", (req, res) => res.status(200).json({status: "OK"}))
-
-async function startAmqp() {
-  // Connect to RabbitMQ
-  const connection = await amqp.connect(RABBIT_MQ_HOST);
-  const channel = await connection.createChannel();
-  startAddEntryQueue(channel);
-}
-
-async function startAddEntryQueue(channel) {
-    try {
-  
-      // Declare a queue (must match the queue you want to consume from)
-      await channel.assertQueue(AddEntryQueue);
-  
-      // Consume messages from the queue
-      channel.consume(AddEntryQueue, (message) => {
-        if (message.content) {
-          const messageData = JSON.parse(message.content.toString('utf-8'));
-
-          var token = messageData.user_cookie
-          
-          try {
-            // It will error out if not verifiable
-            const user_id = jwt.verify(token, secretKey).user_data.user_id;
-            
-            //Delete duplicates
-            Question.deleteMany({userid: user_id, question_title: messageData.question.title})
-            .then(() => {
-              Question.create({
-                userid: user_id,
-                question_title: messageData.question.title,
-                question_description: messageData.question.description,
-                categories: messageData.question.complexity,
-                last_attempt: messageData.timestamp, 
-                attempt: messageData.attempt,
-                complexity: messageData.question.complexity,
-              })
-            })
-            // .then(() => {
-            //   Question.find({})
-            //   .then(console.log)
-            // })       
-
-          } catch (e) {
-            console.log(e)
-          } finally {
-            // Acknowledge the message to remove it from the queue
-            channel.ack(message);
-          }
-
-        }
-      });
-  
-      console.log(`Consumer is listening for messages in the "${AddEntryQueue}" queue.`);
-    } catch (error) {
-      console.error('Error starting consumer:', error);
-    }
-}
-
-startAmqp()
 
 app.listen(PORT, () => {
   console.log(`Question history service connected on port ${PORT}`);
