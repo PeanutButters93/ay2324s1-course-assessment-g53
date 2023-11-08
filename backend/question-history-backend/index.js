@@ -16,7 +16,6 @@ const PORT = process.env.PORT || 5000
 const secretKey = "yourSecretKey"
 const RABBIT_MQ_HOST = process.env.RABBIT_MQ_HOST ? process.env.RABBIT_MQ_HOST : 'amqp://guest:guest@localhost:5672'
 const AddEntryQueue = "questionHistoryAddEntry"
-const DeleteUserQueue = "deleteUserQueue"
 
 app.use(cors())
 app.use(express.json());
@@ -33,7 +32,6 @@ async function startAmqp() {
   const connection = await amqp.connect(RABBIT_MQ_HOST);
   const channel = await connection.createChannel();
   startAddEntryQueue(channel);
-  startDeleteUserQueue(channel);
 }
 
 async function startAddEntryQueue(channel) {
@@ -82,31 +80,6 @@ async function startAddEntryQueue(channel) {
       });
   
       console.log(`Consumer is listening for messages in the "${AddEntryQueue}" queue.`);
-    } catch (error) {
-      console.error('Error starting consumer:', error);
-    }
-}
-
-async function startDeleteUserQueue(channel) {
-    try {
-  
-      // Declare a queue (must match the queue you want to consume from)
-      await channel.assertQueue(DeleteUserQueue);
-  
-      // Consume messages from the queue
-      channel.consume(DeleteUserQueue, (message) => {
-        if (message.content) {
-          const user_id = JSON.parse(message.content.toString('utf-8'));
-
-          Question.deleteMany({userid: user_id})
-          // .then(() => {
-          //   Question.find({})
-          //   .then(console.log)
-          // })       
-        }
-      });
-  
-      console.log(`Consumer is listening for messages in the "${DeleteUserQueue}" queue.`);
     } catch (error) {
       console.error('Error starting consumer:', error);
     }
